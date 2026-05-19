@@ -1,0 +1,93 @@
+.about {
+  padding: clamp(4rem, 12vw, 10rem) 0;
+  background: var(--coffee-cream);
+  position: relative;
+  border-top: 1px solid rgba(44, 24, 16, 0.1);
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 8vw, 6rem);
+  align-items: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.about-content.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-text h2 {
+  color: var(--coffee-dark);
+  margin-bottom: 1.5rem;
+}
+
+.about-text p {
+  color: var(--coffee-brown);
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.about-text .btn {
+  margin-top: 1rem;
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.value-card {
+  padding: 2rem;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.value-card:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-8px);
+}
+
+.value-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.value-card h3 {
+  color: var(--coffee-dark);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.value-card p {
+  color: var(--coffee-brown);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr;
+  }
+
+  .about-text p {
+    font-size: 14px;
+  }
+}
