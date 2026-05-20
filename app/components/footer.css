@@ -1,8 +1,9 @@
 .c-footer {
   background: #000;
-  color: #fff;
+  color: #f5ede4;
   position: relative;
   overflow: hidden;
+  border-top: 1px solid rgba(217, 191, 158, 0.1);
 }
 
 .c-footer-inner {
@@ -17,6 +18,12 @@
 .c-footer-circles {
   display: block;
   margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.c-footer-circles circle {
+  stroke: #d9bf9e;
+  stroke-opacity: 0.5;
 }
 
 .c-footer-title {
@@ -27,6 +34,7 @@
 
 .c-footer-title i {
   font-style: italic;
+  color: #d9bf9e;
 }
 
 /* Body layout */
@@ -54,7 +62,7 @@
 }
 
 .c-footer-gray {
-  color: #666970;
+  color: #8b7355;
 }
 
 .c-footer-address {
@@ -67,15 +75,16 @@
   align-items: center;
   gap: 6px;
   margin-top: 32px;
-  color: #fff;
+  color: #d9bf9e;
   text-decoration: none;
   font-size: max(1.5625vw, 18px);
   font-weight: 400;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 .c-footer-email:hover {
-  opacity: 0.7;
+  opacity: 0.8;
+  color: #f5ede4;
 }
 
 .c-footer-arrow {
@@ -97,7 +106,7 @@
 }
 
 .c-footer-social-link {
-  color: #7f7f7f;
+  color: #8b7355;
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 700;
@@ -107,7 +116,7 @@
 }
 
 .c-footer-social-link:hover {
-  color: #fff;
+  color: #d9bf9e;
 }
 
 /* Nav */
@@ -128,7 +137,7 @@
 .c-footer-nav-link {
   display: inline-flex;
   align-items: center;
-  color: #7f7f7f;
+  color: #8b7355;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -140,14 +149,14 @@
   width: 0;
   border-top: 3px solid transparent;
   border-bottom: 3px solid transparent;
-  border-left: 5px solid #fff;
+  border-left: 5px solid #d9bf9e;
   margin-right: 7px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .c-footer-nav-link:hover {
-  color: #fff;
+  color: #d9bf9e;
 }
 
 .c-footer-nav-link:hover::before {
@@ -160,7 +169,7 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 120px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(217, 191, 158, 0.15);
   padding-top: 20px;
 }
 
@@ -172,8 +181,8 @@
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  border: 1px solid #fff;
-  color: #fff;
+  border: 1px solid #d9bf9e;
+  color: #d9bf9e;
   cursor: pointer;
   background: none;
   font-family: inherit;
@@ -181,12 +190,14 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
   text-align: center;
 }
 
 .c-footer-top-btn:hover {
   transform: scale(1.05);
+  background: #d9bf9e;
+  color: #000;
 }
 
 @media only screen and (max-width: 979px) {

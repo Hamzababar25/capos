@@ -17,28 +17,28 @@ const projects: Project[] = [
     title: 'CAPOS ORIGIN BLEND',
     titleDisplay: 'CAP<i>O</i>S <i>O</i>R<i>I</i>G<i>I</i>N ‣ BLEND',
     categories: ['Brand design', 'Packaging'],
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b3f7?w=1200&h=900&fit=crop&auto=format',
+    image: '/capos1.PNG',
   },
   {
     id: 2,
     title: 'SINGLE ORIGIN SERIES',
     titleDisplay: 'S<i>I</i>NGLE <i>O</i>R<i>I</i>G<i>I</i>N ‣ SER<i>I</i>ES',
     categories: ['Identity', 'Photography'],
-    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=900&fit=crop&auto=format',
+    image: '/capos2.PNG',
   },
   {
     id: 3,
     title: 'ROASTERY EXPERIENCE',
     titleDisplay: 'R<i>O</i>ASTERY ‣ EXPER<i>I</i>ENCE',
     categories: ['Spatial', 'Brand design'],
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&h=900&fit=crop&auto=format',
+    image: '/capos3.PNG',
   },
   {
     id: 4,
     title: 'SEASONAL COLLECTION',
     titleDisplay: 'SEAS<i>O</i>NAL ‣ C<i>O</i>LLECT<i>I</i><i>O</i>N',
     categories: ['Packaging', 'Art direction'],
-    image: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=900&fit=crop&auto=format',
+    image: '/capos1.PNG',
   },
 ];
 

@@ -3,9 +3,21 @@ import SmoothScroll from "./components/SmoothScroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CAPOS | Exceptional Coffee Moments",
-  description: "Premium single-origin and artisanal coffee blends. Ethically sourced, expertly roasted, thoughtfully crafted.",
-  keywords: "coffee, specialty coffee, artisanal, single origin, CAPOS",
+  title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
+  description: "Experience exceptional coffee moments with CAPOS. Premium single-origin and artisanal coffee blends, ethically sourced and expertly roasted in small batches.",
+  keywords: "coffee, specialty coffee, artisanal coffee, single origin, coffee roasters, premium coffee, CAPOS, ethically sourced coffee, small batch roasting",
+  authors: [{ name: "CAPOS Coffee" }],
+  openGraph: {
+    title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
+    description: "Experience exceptional coffee moments with CAPOS. Premium single-origin and artisanal coffee blends.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
+    description: "Experience exceptional coffee moments with CAPOS.",
+  },
 };
 
 export default function RootLayout({

@@ -1,10 +1,18 @@
 .c-header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 100;
-  color: #fff;
+  color: #f5ede4;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+  backdrop-filter: blur(10px);
+  transition: background 0.3s ease;
+}
+
+.c-header.scrolled {
+  background: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
 .c-header-inner {
@@ -65,12 +73,13 @@
 .c-header-nav-link {
   color: inherit;
   text-decoration: none;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 .c-header-nav-link:hover {
   opacity: 1;
+  color: #d9bf9e;
 }
 
 .c-header-clocks {
@@ -86,12 +95,13 @@
 }
 
 .c-header-clock {
-  opacity: 0.4;
+  opacity: 0.5;
   transition: opacity 0.3s ease;
 }
 
 .c-header-clock.is-active {
   opacity: 1;
+  color: #d9bf9e;
 }
 
 .c-header-burger {
@@ -174,7 +184,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background: #000;
+  background: linear-gradient(135deg, #1a0f08 0%, #000 50%, #2d1810 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,15 +218,17 @@
 .c-header-overlay-nav ul li a {
   font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 400;
-  color: #fff;
+  color: #f5ede4;
   text-decoration: none;
   text-transform: uppercase;
   opacity: 0.8;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 .c-header-overlay-nav ul li a:hover {
   opacity: 1;
+  color: #d9bf9e;
 }
 
 @media only screen and (max-width: 767px) {

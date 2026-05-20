@@ -483,6 +483,8 @@ export default function GradientHero() {
               filter: isHoveringText ? 'blur(3px)' : 'blur(0px)',
               transition: 'filter 0.3s ease-out',
             }}
+            role="heading"
+            aria-level={1}
           >
             <span className="pixi-intro-line pixi-intro-line--1">
               We are a brand
@@ -528,7 +530,7 @@ export default function GradientHero() {
             </div>
 
             <div className="pixi-intro-scroll-wrap">
-              <svg viewBox="0 0 17 52" width="17" height="52" fill="none">
+              <svg viewBox="0 0 17 52" width="17" height="52" fill="none" aria-label="Scroll down indicator">
                 <line x1="8.5" y1="0" x2="8.5" y2="42" stroke="white" strokeOpacity="0.5" strokeWidth="1" />
                 <path d="M2 38 L8.5 52 L15 38" stroke="white" strokeOpacity="0.5" strokeWidth="1" fill="none" />
               </svg>

@@ -46,21 +46,21 @@ export default function About() {
                   <span className="c-about-value-num">01</span>
                   <div>
                     <h4 className="t-h6">Sustainable</h4>
-                    <p className="t-text" style={{ color: '#7f7f7f', marginTop: '8px' }}>100% ethically sourced</p>
+                    <p className="t-text" style={{ color: '#8b7355', marginTop: '8px' }}>100% ethically sourced</p>
                   </div>
                 </div>
                 <div className="c-about-value">
                   <span className="c-about-value-num">02</span>
                   <div>
                     <h4 className="t-h6">Small Batch</h4>
-                    <p className="t-text" style={{ color: '#7f7f7f', marginTop: '8px' }}>Roasted for peak flavor</p>
+                    <p className="t-text" style={{ color: '#8b7355', marginTop: '8px' }}>Roasted for peak flavor</p>
                   </div>
                 </div>
                 <div className="c-about-value">
                   <span className="c-about-value-num">03</span>
                   <div>
                     <h4 className="t-h6">Artisanal</h4>
-                    <p className="t-text" style={{ color: '#7f7f7f', marginTop: '8px' }}>15+ years of expertise</p>
+                    <p className="t-text" style={{ color: '#8b7355', marginTop: '8px' }}>15+ years of expertise</p>
                   </div>
                 </div>
               </div>

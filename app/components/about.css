@@ -1,6 +1,6 @@
 .c-about {
   background: #000;
-  color: #fff;
+  color: #f5ede4;
   padding: 160px 0;
   opacity: 0;
   transform: translateY(30px);
@@ -18,13 +18,13 @@
 }
 
 .c-about-head {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(217, 191, 158, 0.2);
   padding-top: 40px;
   margin-bottom: 60px;
 }
 
 .c-about-label {
-  color: #7f7f7f;
+  color: #8b7355;
 }
 
 .c-about-body {
@@ -41,6 +41,7 @@
 
 .c-about-title i {
   font-style: italic;
+  color: #d9bf9e;
 }
 
 .c-about-text {
@@ -60,14 +61,15 @@
   align-items: flex-start;
   gap: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(217, 191, 158, 0.15);
 }
 
 .c-about-value-num {
   font-size: max(0.677vw, 12px);
   font-weight: 700;
   text-transform: uppercase;
-  opacity: 0.4;
+  color: #d9bf9e;
+  opacity: 0.6;
   padding-top: 2px;
   flex-shrink: 0;
 }

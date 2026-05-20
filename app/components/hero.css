@@ -247,6 +247,11 @@
   filter: drop-shadow(0 0 10px rgba(217, 191, 158, 0.4));
 }
 
+.pixi-intro-foot-circles circle {
+  stroke: #d9bf9e;
+  stroke-opacity: 0.5;
+}
+
 .pixi-intro-scroll-wrap {
   flex-shrink: 0;
   opacity: 0.7;
@@ -254,6 +259,12 @@
   align-items: flex-end;
   filter: drop-shadow(0 0 8px rgba(217, 191, 158, 0.3));
   animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.pixi-intro-scroll-wrap svg line,
+.pixi-intro-scroll-wrap svg path {
+  stroke: #d9bf9e;
+  stroke-opacity: 0.6;
 }
 
 @keyframes scrollBounce {

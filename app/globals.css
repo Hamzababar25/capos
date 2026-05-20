@@ -62,7 +62,13 @@ a {
 
 a:focus,
 a:active {
-  outline: 0;
+  outline: 2px solid #d9bf9e;
+  outline-offset: 2px;
+}
+
+button:focus {
+  outline: 2px solid #d9bf9e;
+  outline-offset: 2px;
 }
 
 button {
@@ -72,7 +78,11 @@ button {
   padding: 0;
   font-family: inherit;
   color: inherit;
-  outline: 0;
+}
+
+button:focus {
+  outline: 2px solid #d9bf9e;
+  outline-offset: 2px;
 }
 
 img {
@@ -177,13 +187,13 @@ canvas {
   align-items: center;
   gap: 8px;
   padding: 14px 14px 13px 24px;
-  color: var(--white);
+  color: #f5ede4;
   border-radius: 42px;
   text-transform: uppercase;
   font-size: max(0.677vw, 12px);
   font-weight: 700;
   font-family: inherit;
-  border: 1px solid var(--white);
+  border: 1px solid #d9bf9e;
   overflow: hidden;
   transition: color 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
   cursor: pointer;
@@ -199,13 +209,13 @@ canvas {
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  background: var(--white);
+  background: #d9bf9e;
   transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
   transform: translate(-150%, 50%) translateZ(0);
 }
 
 .btn-primary:hover {
-  color: var(--black);
+  color: #000;
 }
 
 .btn-primary:hover::before {
@@ -219,6 +229,7 @@ canvas {
 @media only screen and (max-width: 767px) {
   .t-h1 {
     font-size: max(12.53vw, 47px);
+    line-height: 0.95;
   }
 
   .t-h2 {
@@ -227,5 +238,10 @@ canvas {
 
   .t-h3 {
     font-size: max(6.4vw, 24px);
+  }
+  
+  .t-text-lg {
+    font-size: max(1.1vw, 16px);
+    line-height: 1.6;
   }
 }
