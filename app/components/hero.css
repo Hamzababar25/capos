@@ -1,0 +1,142 @@
+.pixi-intro {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  color: #fff;
+}
+
+.pixi-intro-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
+
+.pixi-intro-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pixi-intro-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.pixi-intro-title {
+  width: 100%;
+  margin: 0;
+}
+
+.pixi-intro-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(30px) translateZ(0);
+  animation: heroLineIn 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.pixi-intro-line i {
+  font-style: italic;
+}
+
+.pixi-intro-line--1 {
+  animation-delay: 0.4s;
+  margin-left: 16.51vw;
+}
+
+.pixi-intro-line--2 {
+  animation-delay: 0.55s;
+  margin-left: 10.416vw;
+}
+
+.pixi-intro-line--3 {
+  animation-delay: 0.7s;
+  margin-left: 0;
+}
+
+@keyframes heroLineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* Footer strip */
+.pixi-intro-foot {
+  padding-bottom: 35px;
+  opacity: 0;
+  transform: translateY(20px) translateZ(0);
+  animation: heroLineIn 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) 1s forwards;
+}
+
+.pixi-intro-foot-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.pixi-intro-foot-circles {
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.pixi-intro-foot-items {
+  display: flex;
+  flex: 1;
+  padding: 0 4vw;
+  gap: 5vw;
+}
+
+.pixi-intro-foot-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.pixi-intro-foot-item strong {
+  font-weight: 600;
+}
+
+.pixi-intro-foot-sub {
+  display: block;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+
+.pixi-intro-scroll-wrap {
+  flex-shrink: 0;
+  opacity: 0.6;
+  display: flex;
+  align-items: flex-end;
+}
+
+@media only screen and (max-width: 979px) {
+  .pixi-intro-line--1,
+  .pixi-intro-line--2 {
+    margin-left: 0;
+  }
+
+  .pixi-intro-foot-items {
+    gap: 3vw;
+    padding: 0 3vw;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .pixi-intro-foot-items {
+    display: none;
+  }
+
+  .pixi-intro-foot {
+    padding-bottom: 30px;
+  }
+}

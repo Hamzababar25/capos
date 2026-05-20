@@ -1,115 +1,136 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useRef, useState } from 'react';
+import './featured-projects.css';
 
 interface Project {
   id: number;
   title: string;
-  category: string;
+  titleDisplay: string;
+  categories: string[];
   image: string;
-  offset?: number;
 }
 
 const projects: Project[] = [
   {
     id: 1,
-    title: 'NKORA COFFEE',
-    category: 'Brand design',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b3f7?w=1200&h=900&fit=crop',
-    offset: 0,
+    title: 'CAPOS ORIGIN BLEND',
+    titleDisplay: 'CAP<i>O</i>S <i>O</i>R<i>I</i>G<i>I</i>N ‣ BLEND',
+    categories: ['Brand design', 'Packaging'],
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b3f7?w=1200&h=900&fit=crop&auto=format',
   },
   {
     id: 2,
-    title: 'PARIS WORLD CHAMPIONSHIPS',
-    category: 'Spatial Design',
-    image: 'https://images.unsplash.com/photo-1549887534-7edbc0ec9fb5?w=1200&h=900&fit=crop',
-    offset: 150,
+    title: 'SINGLE ORIGIN SERIES',
+    titleDisplay: 'S<i>I</i>NGLE <i>O</i>R<i>I</i>G<i>I</i>N ‣ SER<i>I</i>ES',
+    categories: ['Identity', 'Photography'],
+    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=900&fit=crop&auto=format',
   },
   {
     id: 3,
-    title: 'FINISH LINE CAFE',
-    category: 'Spatial Design',
-    image: 'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=1200&h=900&fit=crop',
-    offset: 0,
+    title: 'ROASTERY EXPERIENCE',
+    titleDisplay: 'R<i>O</i>ASTERY ‣ EXPER<i>I</i>ENCE',
+    categories: ['Spatial', 'Brand design'],
+    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&h=900&fit=crop&auto=format',
   },
   {
     id: 4,
-    title: 'KOREAN FRIED CHICKEN',
-    category: 'Branding',
-    image: 'https://images.unsplash.com/photo-1565299624946-b28cf4ba199e?w=1200&h=900&fit=crop',
-    offset: 150,
+    title: 'SEASONAL COLLECTION',
+    titleDisplay: 'SEAS<i>O</i>NAL ‣ C<i>O</i>LLECT<i>I</i><i>O</i>N',
+    categories: ['Packaging', 'Art direction'],
+    image: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=900&fit=crop&auto=format',
   },
 ];
 
 export default function FeaturedProjects() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    itemsRef.current.forEach((item, index) => {
-      if (!item) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = sectionsRef.current.indexOf(entry.target as HTMLDivElement);
+            if (idx !== -1) setActiveIndex(idx);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
 
-      gsap.to(item, {
-        scrollTrigger: {
-          trigger: item,
-          start: 'top center',
-          end: 'center center',
-          scrub: 1,
-          markers: false,
-        },
-        opacity: 1,
-        y: 0,
-        duration: 1,
-      });
+    sectionsRef.current.forEach((el) => {
+      if (el) observer.observe(el);
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section ref={containerRef} className="projects-section">
-      <div className="projects-container">
-        <h2 className="projects-title">Recent Work</h2>
+    <section id="work" className="home-projects" ref={containerRef}>
+      {/* Sticky sidebar */}
+      <div className="home-projects-sticky container">
+        <div className="home-projects-sidebar">
+          <p className="home-projects-label t-text-sm">RECENT WORK</p>
 
-        <div className="projects-grid">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              ref={(el) => {
-                itemsRef.current[index] = el;
-              }}
-              className="project-item"
-              style={{ transform: 'translateY(40px)', opacity: 0 }}
-            >
-              <div className="project-image-wrapper">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="project-image"
+          <div className="home-projects-titles">
+            {projects.map((project, i) => (
+              <div
+                key={project.id}
+                className={`home-projects-title-item ${
+                  i === activeIndex
+                    ? 'is-active'
+                    : i < activeIndex
+                    ? 'is-prev'
+                    : 'is-next'
+                }`}
+              >
+                <h3
+                  className="t-h3"
+                  dangerouslySetInnerHTML={{ __html: project.titleDisplay }}
                 />
-                <div className="project-overlay" />
+                <ul className="home-projects-categories t-h6">
+                  {project.categories.map((cat) => (
+                    <li key={cat}>{cat}</li>
+                  ))}
+                </ul>
               </div>
+            ))}
+          </div>
 
-              <div className="project-info">
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-category">{project.category}</p>
-              </div>
+          <a href="#work" className="home-projects-view-btn t-h6">
+            <span className="home-projects-view-circle">→</span>
+          </a>
+        </div>
+      </div>
+
+      {/* Scrollable project sections */}
+      <div className="home-projects-scroll">
+        {projects.map((project, i) => (
+          <div
+            key={project.id}
+            ref={(el) => { sectionsRef.current[i] = el; }}
+            className="home-project-section"
+          >
+            <div className="home-project-image-wrap">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="home-project-image"
+                loading="lazy"
+              />
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="projects-footer">
-          <button className="discover-btn">
-            Discover all projects
-            <span className="btn-arrow">→</span>
-          </button>
-        </div>
+      {/* Discover button */}
+      <div className="home-projects-discover container">
+        <button className="btn-primary">
+          <span>Discover all projects</span>
+          <span>→</span>
+        </button>
       </div>
     </section>
   );

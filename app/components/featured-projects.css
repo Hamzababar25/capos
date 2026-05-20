@@ -1,0 +1,205 @@
+.home-projects {
+  position: relative;
+  background: #000;
+  color: #fff;
+}
+
+/* Sticky sidebar that pins while user scrolls projects */
+.home-projects-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.home-projects-sidebar {
+  position: relative;
+  pointer-events: auto;
+  padding-top: 120px;
+}
+
+.home-projects-label {
+  opacity: 0.5;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.home-projects-titles {
+  margin-top: 16px;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.home-projects-title-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.895, 0.03, 0.685, 0.22),
+    opacity 0.4s cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.home-projects-title-item.is-active {
+  opacity: 1;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s,
+    opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s;
+}
+
+.home-projects-title-item.is-prev {
+  transform: translateY(-40px) translateZ(0);
+}
+
+.home-projects-title-item.is-next {
+  transform: translateY(40px) translateZ(0);
+}
+
+/* Make the first item take space so the container has height */
+.home-projects-title-item:first-child {
+  position: relative;
+}
+
+.home-projects-categories {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  margin: 16px 0 0 0;
+  padding: 0;
+  opacity: 0.5;
+}
+
+.home-projects-categories li {
+  display: flex;
+  align-items: center;
+}
+
+.home-projects-categories li::before {
+  content: '';
+  display: inline-block;
+  height: 3px;
+  width: 3px;
+  background: currentColor;
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+.home-projects-categories li:first-child::before {
+  display: none;
+}
+
+.home-projects-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-top: 24px;
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  font-size: 20px;
+}
+
+.home-projects-view-btn:hover {
+  opacity: 1;
+}
+
+.home-projects-view-circle {
+  line-height: 1;
+}
+
+/* Scrollable project images — positioned to overlap behind sticky sidebar */
+.home-projects-scroll {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 58%;
+  z-index: 1;
+}
+
+.home-project-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 3.9vw;
+}
+
+.home-project-image-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.home-project-image-wrap::before {
+  content: '';
+  display: block;
+  padding-top: 62.5%;
+}
+
+.home-project-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.home-project-section:hover .home-project-image {
+  transform: scale(1.03);
+}
+
+/* Discover btn row */
+.home-projects-discover {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0 120px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Ensure the section has enough height for all projects */
+.home-projects {
+  /* padding-top is provided by sticky height, leave bottom for discover btn */
+  padding-bottom: 0;
+}
+
+@media only screen and (max-width: 979px) {
+  .home-projects-scroll {
+    position: relative;
+    width: 100%;
+  }
+
+  .home-projects-sticky {
+    height: auto;
+    position: relative;
+    padding: 80px 0 40px;
+  }
+
+  .home-project-section {
+    height: 70vw;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .home-projects-sidebar {
+    padding-top: 60px;
+  }
+
+  .home-project-section {
+    height: 80vw;
+    padding: 0 3.65vw;
+  }
+
+  .home-projects-view-btn {
+    display: none;
+  }
+}

@@ -1,0 +1,98 @@
+.c-about {
+  background: #000;
+  color: #fff;
+  padding: 160px 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.c-about.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.c-about-inner {
+  position: relative;
+}
+
+.c-about-head {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 40px;
+  margin-bottom: 60px;
+}
+
+.c-about-label {
+  color: #7f7f7f;
+}
+
+.c-about-body {
+  display: flex;
+  gap: 8vw;
+  align-items: flex-start;
+}
+
+.c-about-title {
+  flex: 0 0 45%;
+  text-transform: uppercase;
+  line-height: 0.94;
+}
+
+.c-about-title i {
+  font-style: italic;
+}
+
+.c-about-text {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.c-about-values {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.c-about-value {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.c-about-value-num {
+  font-size: max(0.677vw, 12px);
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.4;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+@media only screen and (max-width: 979px) {
+  .c-about-body {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .c-about-title {
+    flex: auto;
+  }
+
+  .c-about {
+    padding: 100px 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .c-about {
+    padding: 60px 0;
+  }
+
+  .c-about-head {
+    margin-bottom: 40px;
+  }
+}

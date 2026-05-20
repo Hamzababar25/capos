@@ -6,17 +6,17 @@ import Navigation from './components/Navigation';
 import FeaturedProjects from './components/FeaturedProjects';
 import About from './components/About';
 import Footer from './components/Footer';
-import './styles/home.css';
 
 export default function Home() {
   const [isPageReady, setIsPageReady] = useState(false);
 
   useEffect(() => {
-    setIsPageReady(true);
+    const id = requestAnimationFrame(() => setIsPageReady(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (
-    <main className={`home-page ${isPageReady ? 'is-ready' : ''}`}>
+    <main className={`home-page${isPageReady ? ' is-ready' : ''}`}>
       <Navigation />
       <GradientHero />
       <FeaturedProjects />
