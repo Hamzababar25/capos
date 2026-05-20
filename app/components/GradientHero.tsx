@@ -3,15 +3,30 @@
 import { useEffect, useRef, useState } from 'react';
 import './hero.css';
 
+interface CoffeeBean {
+  x: number;
+  y: number;
+  rotation: number;
+  speed: number;
+  rotationSpeed: number;
+  size: number;
+  opacity: number;
+  sway: number;
+  swaySpeed: number;
+}
+
 export default function GradientHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const beansCanvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
+  const beansRafRef = useRef<number>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentMousePos = useRef({ x: 0.5, y: 0.5 });
   const targetMousePos = useRef({ x: 0.5, y: 0.5 });
+  const beansRef = useRef<CoffeeBean[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,99 +51,146 @@ export default function GradientHero() {
     `;
 
     const fsSource = `
-      precision mediump float;
+      precision highp float;
       uniform float uTime;
       uniform vec2 uResolution;
       uniform vec2 uMouse;
       uniform float uHover;
 
-      // Noise function for organic movement
-      float noise(vec2 p) {
-        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+      // Enhanced noise function
+      float hash(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
       }
 
-      float smoothNoise(vec2 p) {
+      float noise(vec2 p) {
         vec2 i = floor(p);
         vec2 f = fract(p);
         f = f * f * (3.0 - 2.0 * f);
         
-        float a = noise(i);
-        float b = noise(i + vec2(1.0, 0.0));
-        float c = noise(i + vec2(0.0, 1.0));
-        float d = noise(i + vec2(1.0, 1.0));
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
         
         return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      }
+
+      float fbm(vec2 p) {
+        float value = 0.0;
+        float amplitude = 0.5;
+        for(int i = 0; i < 5; i++) {
+          value += amplitude * noise(p);
+          p *= 2.0;
+          amplitude *= 0.5;
+        }
+        return value;
+      }
+
+      // Liquid distortion
+      vec2 liquify(vec2 uv, vec2 center, float strength) {
+        vec2 delta = uv - center;
+        float dist = length(delta);
+        float influence = smoothstep(0.5, 0.0, dist) * strength;
+        
+        float angle = atan(delta.y, delta.x);
+        float spiral = sin(dist * 15.0 - uTime * 3.0) * influence;
+        
+        return uv + vec2(
+          cos(angle + spiral) * influence * 0.1,
+          sin(angle + spiral) * influence * 0.1
+        );
       }
 
       void main() {
         vec2 uv = gl_FragCoord.xy / uResolution;
         
-        // Distance from mouse for bubble effect
+        // Mouse interaction
         float dist = distance(uv, uMouse);
+        float bubble = smoothstep(0.5, 0.0, dist) * uHover;
         
-        // Create crazy bubble effect on hover
-        float bubble = smoothstep(0.4, 0.0, dist) * uHover;
-        float bubbleRipple = sin(dist * 20.0 - uTime * 3.0) * bubble * 0.5;
+        // Crazy liquid distortion on hover
+        vec2 distortedUV = liquify(uv, uMouse, bubble * 2.0);
         
-        // Crazy rotation and distortion around mouse
-        vec2 toMouse = uv - uMouse;
+        // Add swirling vortex effect
+        vec2 toMouse = distortedUV - uMouse;
         float angle = atan(toMouse.y, toMouse.x);
-        float rotation = bubble * sin(uTime * 2.0) * 3.14159;
+        float radius = length(toMouse);
         
-        // Apply rotation to UV
-        vec2 rotatedUV = uv;
+        // Rotate around mouse
+        float rotation = bubble * sin(uTime * 2.5) * 6.28318;
+        float cosA = cos(rotation * radius * 3.0);
+        float sinA = sin(rotation * radius * 3.0);
+        
+        vec2 rotatedUV = distortedUV;
         if (bubble > 0.01) {
-          float cosA = cos(rotation);
-          float sinA = sin(rotation);
-          vec2 centered = uv - uMouse;
+          vec2 centered = distortedUV - uMouse;
           rotatedUV = vec2(
             centered.x * cosA - centered.y * sinA,
             centered.x * sinA + centered.y * cosA
           ) + uMouse;
         }
         
-        // Coffee-inspired colors
-        // Rich Dark Brown (espresso)
-        vec3 c1 = vec3(0.18, 0.10, 0.06);
-        // Medium Coffee Brown
-        vec3 c2 = vec3(0.45, 0.28, 0.18);
-        // Cream/Latte color
-        vec3 c3 = vec3(0.85, 0.75, 0.62);
+        // Enhanced coffee colors - more vibrant and rich
+        vec3 c1 = vec3(0.12, 0.06, 0.03);      // Deep espresso
+        vec3 c2 = vec3(0.55, 0.32, 0.18);      // Rich coffee brown
+        vec3 c3 = vec3(0.92, 0.82, 0.68);      // Creamy latte
+        vec3 accent = vec3(0.85, 0.45, 0.20);  // Caramel accent
         
-        float t = uTime * 0.15;
+        float t = uTime * 0.12;
         
-        // Create diagonal gradient from bottom-left to top-right
-        // Each color covers 33% width
+        // Multi-layer noise for depth
+        float n1 = fbm(rotatedUV * 2.5 + vec2(t, -t * 0.5));
+        float n2 = fbm(rotatedUV * 3.5 + vec2(-t * 0.7, t * 0.9));
+        float n3 = fbm(rotatedUV * 1.8 + vec2(t * 1.3, -t * 0.6));
+        
+        // Diagonal gradient (bottom-left to top-right)
         float diagonal = (rotatedUV.x + rotatedUV.y) * 0.5;
         
-        // Add crazy noise movement
-        float n1 = smoothNoise(rotatedUV * 3.0 + vec2(t, -t * 0.5));
-        float n2 = smoothNoise(rotatedUV * 2.5 + vec2(-t * 0.7, t));
-        float n3 = smoothNoise(rotatedUV * 4.0 + vec2(t * 1.2, t * 0.8));
+        // Add bubble chaos
+        float chaos = sin(angle * 8.0 + uTime * 4.0) * cos(radius * 20.0 - uTime * 5.0);
+        diagonal += chaos * bubble * 0.5;
         
-        // Add bubble distortion to noise
-        n1 += bubbleRipple * 2.0;
-        n2 += sin(angle * 5.0 + uTime * 3.0) * bubble;
-        n3 += cos(angle * 7.0 - uTime * 2.5) * bubble;
-        
-        // Mix colors based on diagonal position with noise
-        float pos1 = diagonal + n1 * 0.3;
-        float pos2 = diagonal + n2 * 0.3;
-        
+        // Enhanced color mixing
         vec3 col = c1;
-        col = mix(col, c2, smoothstep(0.2, 0.5, pos1));
-        col = mix(col, c3, smoothstep(0.5, 0.8, pos2));
+        col = mix(col, c2, smoothstep(0.15, 0.45, diagonal + n1 * 0.4));
+        col = mix(col, c3, smoothstep(0.45, 0.85, diagonal + n2 * 0.4));
+        col = mix(col, accent, n3 * 0.3 * bubble);
         
-        // Add swirling effect on hover
-        float swirl = sin(angle * 3.0 + uTime * 2.0 + dist * 10.0) * bubble;
-        col += vec3(swirl * 0.2);
+        // Chromatic aberration on hover
+        if (bubble > 0.1) {
+          vec2 offset = normalize(toMouse) * bubble * 0.02;
+          float r = mix(c1.r, c2.r, smoothstep(0.15, 0.45, diagonal + n1 * 0.4 + offset.x));
+          r = mix(r, c3.r, smoothstep(0.45, 0.85, diagonal + n2 * 0.4 + offset.x));
+          
+          float b = mix(c1.b, c2.b, smoothstep(0.15, 0.45, diagonal + n1 * 0.4 - offset.x));
+          b = mix(b, c3.b, smoothstep(0.45, 0.85, diagonal + n2 * 0.4 - offset.x));
+          
+          col.r = mix(col.r, r, bubble * 0.7);
+          col.b = mix(col.b, b, bubble * 0.7);
+        }
         
-        // Brighten and add energy around mouse
-        col += vec3(bubble * 0.15);
+        // Intense glow around mouse
+        float glow = exp(-dist * 3.0) * bubble;
+        col += vec3(glow * 0.4, glow * 0.25, glow * 0.15);
         
-        // Add pulsing glow
-        float pulse = sin(uTime * 1.5) * 0.5 + 0.5;
-        col += vec3(bubble * pulse * 0.1);
+        // Pulsing energy
+        float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
+        float energy = bubble * pulse;
+        col += vec3(energy * 0.2, energy * 0.15, energy * 0.1);
+        
+        // Sparkle effect
+        float sparkle = smoothstep(0.98, 1.0, noise(rotatedUV * 50.0 + uTime));
+        col += vec3(sparkle * bubble * 0.5);
+        
+        // Vignette for depth
+        float vignette = smoothstep(0.8, 0.2, length(uv - 0.5));
+        col *= 0.7 + vignette * 0.3;
+        
+        // Contrast boost
+        col = pow(col, vec3(0.9));
+        col *= 1.15;
 
         gl_FragColor = vec4(col, 1.0);
       }
@@ -238,10 +300,110 @@ export default function GradientHero() {
     };
   }, []);
 
+  // Coffee beans animation
+  useEffect(() => {
+    const canvas = beansCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Initialize beans
+    const createBean = (fromLeft: boolean): CoffeeBean => ({
+      x: fromLeft ? Math.random() * (canvas.width * 0.15) : canvas.width - Math.random() * (canvas.width * 0.15),
+      y: -20,
+      rotation: Math.random() * Math.PI * 2,
+      speed: 1 + Math.random() * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.1,
+      size: 8 + Math.random() * 8,
+      opacity: 0.3 + Math.random() * 0.4,
+      sway: Math.random() * 40 - 20,
+      swaySpeed: 0.02 + Math.random() * 0.03,
+    });
+
+    // Add beans periodically
+    const addBeans = () => {
+      if (beansRef.current.length < 50) {
+        beansRef.current.push(createBean(Math.random() > 0.5));
+      }
+    };
+
+    const beanInterval = setInterval(addBeans, 300);
+
+    // Draw coffee bean shape
+    const drawBean = (bean: CoffeeBean) => {
+      ctx.save();
+      ctx.translate(bean.x, bean.y);
+      ctx.rotate(bean.rotation);
+      ctx.globalAlpha = bean.opacity;
+
+      // Bean body (oval)
+      ctx.fillStyle = '#3d2817';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, bean.size, bean.size * 1.4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bean highlight
+      ctx.fillStyle = '#5c3d2e';
+      ctx.beginPath();
+      ctx.ellipse(-bean.size * 0.3, -bean.size * 0.3, bean.size * 0.4, bean.size * 0.6, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bean crack (center line)
+      ctx.strokeStyle = '#2a1810';
+      ctx.lineWidth = bean.size * 0.15;
+      ctx.beginPath();
+      ctx.arc(0, 0, bean.size * 0.6, -0.3, 0.3);
+      ctx.stroke();
+
+      ctx.restore();
+    };
+
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      beansRef.current = beansRef.current.filter(bean => {
+        // Update position
+        bean.y += bean.speed;
+        bean.x += Math.sin(bean.y * bean.swaySpeed) * 0.5;
+        bean.rotation += bean.rotationSpeed;
+
+        // Remove if off screen
+        if (bean.y > canvas.height + 50) {
+          return false;
+        }
+
+        drawBean(bean);
+        return true;
+      });
+
+      beansRafRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(beansRafRef.current);
+      clearInterval(beanInterval);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
   return (
     <section className="pixi-intro" ref={sectionRef}>
       {/* WebGL canvas */}
       <canvas ref={canvasRef} className="pixi-intro-canvas" />
+
+      {/* Coffee beans canvas */}
+      <canvas ref={beansCanvasRef} className="coffee-beans-canvas" />
 
       {/* Interactive cursor circle */}
       <div 
