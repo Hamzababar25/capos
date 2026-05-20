@@ -4,6 +4,39 @@
   width: 100%;
   overflow: hidden;
   color: #fff;
+  cursor: none;
+}
+
+.cursor-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  backdrop-filter: blur(2px);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  box-shadow: 
+    0 0 40px rgba(255, 255, 255, 0.2),
+    inset 0 0 40px rgba(255, 255, 255, 0.1);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 .pixi-intro-canvas {
@@ -31,11 +64,16 @@
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .pixi-intro-title {
   width: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pixi-intro-line {
@@ -43,6 +81,7 @@
   opacity: 0;
   transform: translateY(30px) translateZ(0);
   animation: heroLineIn 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  text-align: center;
 }
 
 .pixi-intro-line i {
@@ -51,17 +90,14 @@
 
 .pixi-intro-line--1 {
   animation-delay: 0.4s;
-  margin-left: 16.51vw;
 }
 
 .pixi-intro-line--2 {
   animation-delay: 0.55s;
-  margin-left: 10.416vw;
 }
 
 .pixi-intro-line--3 {
   animation-delay: 0.7s;
-  margin-left: 0;
 }
 
 @keyframes heroLineIn {
@@ -120,14 +156,14 @@
 }
 
 @media only screen and (max-width: 979px) {
-  .pixi-intro-line--1,
-  .pixi-intro-line--2 {
-    margin-left: 0;
-  }
-
   .pixi-intro-foot-items {
     gap: 3vw;
     padding: 0 3vw;
+  }
+  
+  .cursor-circle {
+    width: 200px;
+    height: 200px;
   }
 }
 
@@ -138,5 +174,13 @@
 
   .pixi-intro-foot {
     padding-bottom: 30px;
+  }
+  
+  .pixi-intro {
+    cursor: auto;
+  }
+  
+  .cursor-circle {
+    display: none;
   }
 }

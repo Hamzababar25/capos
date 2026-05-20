@@ -1,11 +1,16 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './hero.css';
 
 export default function GradientHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const [isHovering, setIsHovering] = useState(false);
+  const currentMousePos = useRef({ x: 0.5, y: 0.5 });
+  const targetMousePos = useRef({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,9 +38,17 @@ export default function GradientHero() {
       precision mediump float;
       uniform float uTime;
       uniform vec2 uResolution;
+      uniform vec2 uMouse;
+      uniform float uHover;
 
       void main() {
         vec2 uv = gl_FragCoord.xy / uResolution;
+        
+        // Distance from mouse
+        float dist = distance(uv, uMouse);
+        
+        // Create interactive circle effect
+        float circle = smoothstep(0.3, 0.0, dist) * uHover;
 
         vec3 c1 = vec3(0.086, 0.145, 0.294);
         vec3 c2 = vec3(0.137, 0.255, 0.541);
@@ -43,13 +56,19 @@ export default function GradientHero() {
         vec3 c4 = vec3(0.902, 0.310, 0.059);
 
         float t = uTime * 0.18;
-        float n1 = sin(uv.x * 2.5 + t) * cos(uv.y * 1.8 - t * 0.7) * 0.5 + 0.5;
-        float n2 = sin(uv.x * 1.3 - t * 0.5) * cos(uv.y * 2.8 + t * 0.9) * 0.5 + 0.5;
-        float n3 = sin((uv.x + uv.y) * 2.1 + t * 1.1) * 0.5 + 0.5;
+        
+        // Add mouse influence to the noise
+        float mouseInfluence = circle * 2.0;
+        float n1 = sin(uv.x * 2.5 + t + mouseInfluence) * cos(uv.y * 1.8 - t * 0.7) * 0.5 + 0.5;
+        float n2 = sin(uv.x * 1.3 - t * 0.5 + mouseInfluence) * cos(uv.y * 2.8 + t * 0.9) * 0.5 + 0.5;
+        float n3 = sin((uv.x + uv.y) * 2.1 + t * 1.1 + mouseInfluence) * 0.5 + 0.5;
 
         vec3 col = mix(c1, c2, n1);
         col = mix(col, c3, n2 * 0.45);
         col = mix(col, c4, n3 * 0.25);
+        
+        // Brighten area around mouse
+        col += vec3(circle * 0.3);
 
         gl_FragColor = vec4(col, 1.0);
       }
@@ -82,12 +101,27 @@ export default function GradientHero() {
 
     const uTimeLoc = gl.getUniformLocation(prog, 'uTime');
     const uResLoc = gl.getUniformLocation(prog, 'uResolution');
+    const uMouseLoc = gl.getUniformLocation(prog, 'uMouse');
+    const uHoverLoc = gl.getUniformLocation(prog, 'uHover');
 
     let t = 0;
+    let hoverAmount = 0;
+    
     const render = () => {
       t += 0.01;
+      
+      // Smooth lerp for mouse position
+      currentMousePos.current.x += (targetMousePos.current.x - currentMousePos.current.x) * 0.1;
+      currentMousePos.current.y += (targetMousePos.current.y - currentMousePos.current.y) * 0.1;
+      
+      // Smooth hover transition
+      const targetHover = isHovering ? 1.0 : 0.0;
+      hoverAmount += (targetHover - hoverAmount) * 0.1;
+      
       gl!.uniform1f(uTimeLoc, t);
       gl!.uniform2f(uResLoc, canvas.width, canvas.height);
+      gl!.uniform2f(uMouseLoc, currentMousePos.current.x, 1.0 - currentMousePos.current.y);
+      gl!.uniform1f(uHoverLoc, hoverAmount);
       gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
       rafRef.current = requestAnimationFrame(render);
     };
@@ -98,12 +132,48 @@ export default function GradientHero() {
       window.removeEventListener('resize', resize);
       gl.deleteProgram(prog);
     };
+  }, [isHovering]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      targetMousePos.current = { x, y };
+      setMousePos({ x, y });
+    };
+
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+
+    section.addEventListener('mousemove', handleMouseMove);
+    section.addEventListener('mouseenter', handleMouseEnter);
+    section.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      section.removeEventListener('mousemove', handleMouseMove);
+      section.removeEventListener('mouseenter', handleMouseEnter);
+      section.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, []);
 
   return (
-    <section className="pixi-intro">
+    <section className="pixi-intro" ref={sectionRef}>
       {/* WebGL canvas */}
       <canvas ref={canvasRef} className="pixi-intro-canvas" />
+
+      {/* Interactive cursor circle */}
+      <div 
+        className="cursor-circle"
+        style={{
+          left: `${mousePos.x * 100}%`,
+          top: `${mousePos.y * 100}%`,
+          opacity: isHovering ? 1 : 0,
+        }}
+      />
 
       {/* Content */}
       <div className="pixi-intro-inner container">
