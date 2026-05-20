@@ -11,28 +11,11 @@ export default function GradientHero() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    let app: PIXI.Application | null = null;
+    let graphics: PIXI.Graphics | null = null;
+    let filter: PIXI.Filter | null = null;
+    let isDisposed = false;
 
-    // Create PIXI Application
-    const app = new PIXI.Application({
-      width,
-      height,
-      backgroundColor: 0x000000,
-      antialias: true,
-      resolution: window.devicePixelRatio,
-    });
-
-    containerRef.current.appendChild(app.canvas);
-    appRef.current = app;
-
-    // Create gradient display object using filters
-    const graphics = new PIXI.Graphics();
-    graphics.rect(0, 0, width, height);
-    graphics.fill(0xffffff);
-    app.stage.addChild(graphics);
-
-    // Create custom shader for gradient animation
     const fragmentShader = `
       varying vec2 vTextureCoord;
       uniform float uTime;
@@ -51,34 +34,71 @@ export default function GradientHero() {
       }
     `;
 
-    const filter = new PIXI.Filter(undefined, fragmentShader);
-    graphics.filters = [filter];
-
-    // Animation loop
     const animate = () => {
+      if (!filter) return;
       timeRef.current += 0.01;
       if (filter.uniforms.uTime !== undefined) {
         filter.uniforms.uTime = timeRef.current;
       }
     };
 
-    app.ticker.add(animate);
-
-    // Handle resize
     const handleResize = () => {
+      if (!app || !graphics || !filter) return;
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
       app.renderer.resize(newWidth, newHeight);
+      filter.uniforms.uResolution = [newWidth, newHeight];
       graphics.clear();
       graphics.rect(0, 0, newWidth, newHeight);
       graphics.fill(0xffffff);
     };
 
-    window.addEventListener('resize', handleResize);
+    const start = async () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      app = new PIXI.Application();
+      await app.init({
+        width,
+        height,
+        backgroundColor: 0x000000,
+        antialias: true,
+        resolution: window.devicePixelRatio,
+      });
+
+      if (isDisposed || !containerRef.current) {
+        app.destroy(true);
+        app = null;
+        return;
+      }
+
+      containerRef.current.appendChild(app.canvas);
+      appRef.current = app;
+
+      graphics = new PIXI.Graphics();
+      graphics.rect(0, 0, width, height);
+      graphics.fill(0xffffff);
+      app.stage.addChild(graphics);
+
+      filter = new PIXI.Filter(undefined, fragmentShader, {
+        uTime: 0,
+        uResolution: [width, height],
+      });
+      graphics.filters = [filter];
+
+      app.ticker.add(animate);
+      window.addEventListener('resize', handleResize);
+    };
+
+    void start();
 
     return () => {
+      isDisposed = true;
       window.removeEventListener('resize', handleResize);
-      app.destroy(true);
+      if (app) {
+        app.ticker.remove(animate);
+        app.destroy(true);
+      }
     };
   }, []);
 
