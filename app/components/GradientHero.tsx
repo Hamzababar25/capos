@@ -9,6 +9,7 @@ export default function GradientHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const currentMousePos = useRef({ x: 0.5, y: 0.5 });
   const targetMousePos = useRef({ x: 0.5, y: 0.5 });
 
@@ -160,6 +161,24 @@ export default function GradientHero() {
     };
   }, []);
 
+  // Scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      // Calculate scroll progress (0 to 1) based on first viewport
+      const progress = Math.min(scrollY / windowHeight, 1);
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <section className="pixi-intro" ref={sectionRef}>
       {/* WebGL canvas */}
@@ -176,9 +195,21 @@ export default function GradientHero() {
       />
 
       {/* Content */}
-      <div className="pixi-intro-inner container">
+      <div 
+        className="pixi-intro-inner"
+        style={{
+          transform: `translateY(${scrollProgress * 100}px)`,
+          opacity: 1 - scrollProgress * 0.5,
+        }}
+      >
         <div className="pixi-intro-center">
-          <h1 className="pixi-intro-title t-h1">
+          <h1 
+            className="pixi-intro-title t-h1"
+            style={{
+              transform: `scale(${1 + scrollProgress * 0.5})`,
+              opacity: 1 - scrollProgress,
+            }}
+          >
             <span className="pixi-intro-line pixi-intro-line--1">
               We are a brand
             </span>
@@ -191,8 +222,14 @@ export default function GradientHero() {
           </h1>
         </div>
 
-        <div className="pixi-intro-foot">
-          <div className="pixi-intro-foot-row">
+        <div 
+          className="pixi-intro-foot"
+          style={{
+            opacity: 1 - scrollProgress * 1.5,
+            transform: `translateY(${scrollProgress * 50}px)`,
+          }}
+        >
+          <div className="pixi-intro-foot-row container">
             <div className="pixi-intro-foot-circles">
               <svg viewBox="0 0 54 18" width="54" height="18" fill="none">
                 <circle cx="9" cy="9" r="8.5" stroke="white" strokeOpacity="0.5" />
