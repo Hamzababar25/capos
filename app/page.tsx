@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import Hero from './components/Hero';
+import { useEffect, useState } from 'react';
+import GradientHero from './components/GradientHero';
 import Navigation from './components/Navigation';
 import FeaturedProjects from './components/FeaturedProjects';
 import About from './components/About';
@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <main className={`home-page ${isPageReady ? 'is-ready' : ''}`}>
       <Navigation />
-      <Hero />
+      <GradientHero />
       <FeaturedProjects />
       <About />
       <Footer />
