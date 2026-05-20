@@ -42,34 +42,93 @@ export default function GradientHero() {
       uniform vec2 uMouse;
       uniform float uHover;
 
+      // Noise function for organic movement
+      float noise(vec2 p) {
+        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
+      float smoothNoise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        
+        float a = noise(i);
+        float b = noise(i + vec2(1.0, 0.0));
+        float c = noise(i + vec2(0.0, 1.0));
+        float d = noise(i + vec2(1.0, 1.0));
+        
+        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      }
+
       void main() {
         vec2 uv = gl_FragCoord.xy / uResolution;
         
-        // Distance from mouse
+        // Distance from mouse for bubble effect
         float dist = distance(uv, uMouse);
         
-        // Create interactive circle effect
-        float circle = smoothstep(0.3, 0.0, dist) * uHover;
-
-        vec3 c1 = vec3(0.086, 0.145, 0.294);
-        vec3 c2 = vec3(0.137, 0.255, 0.541);
-        vec3 c3 = vec3(0.667, 0.875, 0.851);
-        vec3 c4 = vec3(0.902, 0.310, 0.059);
-
-        float t = uTime * 0.18;
+        // Create crazy bubble effect on hover
+        float bubble = smoothstep(0.4, 0.0, dist) * uHover;
+        float bubbleRipple = sin(dist * 20.0 - uTime * 3.0) * bubble * 0.5;
         
-        // Add mouse influence to the noise
-        float mouseInfluence = circle * 2.0;
-        float n1 = sin(uv.x * 2.5 + t + mouseInfluence) * cos(uv.y * 1.8 - t * 0.7) * 0.5 + 0.5;
-        float n2 = sin(uv.x * 1.3 - t * 0.5 + mouseInfluence) * cos(uv.y * 2.8 + t * 0.9) * 0.5 + 0.5;
-        float n3 = sin((uv.x + uv.y) * 2.1 + t * 1.1 + mouseInfluence) * 0.5 + 0.5;
-
-        vec3 col = mix(c1, c2, n1);
-        col = mix(col, c3, n2 * 0.45);
-        col = mix(col, c4, n3 * 0.25);
+        // Crazy rotation and distortion around mouse
+        vec2 toMouse = uv - uMouse;
+        float angle = atan(toMouse.y, toMouse.x);
+        float rotation = bubble * sin(uTime * 2.0) * 3.14159;
         
-        // Brighten area around mouse
-        col += vec3(circle * 0.3);
+        // Apply rotation to UV
+        vec2 rotatedUV = uv;
+        if (bubble > 0.01) {
+          float cosA = cos(rotation);
+          float sinA = sin(rotation);
+          vec2 centered = uv - uMouse;
+          rotatedUV = vec2(
+            centered.x * cosA - centered.y * sinA,
+            centered.x * sinA + centered.y * cosA
+          ) + uMouse;
+        }
+        
+        // Coffee-inspired colors
+        // Rich Dark Brown (espresso)
+        vec3 c1 = vec3(0.18, 0.10, 0.06);
+        // Medium Coffee Brown
+        vec3 c2 = vec3(0.45, 0.28, 0.18);
+        // Cream/Latte color
+        vec3 c3 = vec3(0.85, 0.75, 0.62);
+        
+        float t = uTime * 0.15;
+        
+        // Create diagonal gradient from bottom-left to top-right
+        // Each color covers 33% width
+        float diagonal = (rotatedUV.x + rotatedUV.y) * 0.5;
+        
+        // Add crazy noise movement
+        float n1 = smoothNoise(rotatedUV * 3.0 + vec2(t, -t * 0.5));
+        float n2 = smoothNoise(rotatedUV * 2.5 + vec2(-t * 0.7, t));
+        float n3 = smoothNoise(rotatedUV * 4.0 + vec2(t * 1.2, t * 0.8));
+        
+        // Add bubble distortion to noise
+        n1 += bubbleRipple * 2.0;
+        n2 += sin(angle * 5.0 + uTime * 3.0) * bubble;
+        n3 += cos(angle * 7.0 - uTime * 2.5) * bubble;
+        
+        // Mix colors based on diagonal position with noise
+        float pos1 = diagonal + n1 * 0.3;
+        float pos2 = diagonal + n2 * 0.3;
+        
+        vec3 col = c1;
+        col = mix(col, c2, smoothstep(0.2, 0.5, pos1));
+        col = mix(col, c3, smoothstep(0.5, 0.8, pos2));
+        
+        // Add swirling effect on hover
+        float swirl = sin(angle * 3.0 + uTime * 2.0 + dist * 10.0) * bubble;
+        col += vec3(swirl * 0.2);
+        
+        // Brighten and add energy around mouse
+        col += vec3(bubble * 0.15);
+        
+        // Add pulsing glow
+        float pulse = sin(uTime * 1.5) * 0.5 + 0.5;
+        col += vec3(bubble * pulse * 0.1);
 
         gl_FragColor = vec4(col, 1.0);
       }
