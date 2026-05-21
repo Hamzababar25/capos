@@ -9,6 +9,9 @@
 .c-footer-inner {
   padding-top: 85px;
   padding-bottom: 25px;
+  padding-left: 3.9vw;
+  padding-right: 3.9vw;
+  width: 100%;
 }
 
 .c-footer-head {
@@ -211,6 +214,8 @@
 
   .c-footer-inner {
     padding-top: 60px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
@@ -226,5 +231,10 @@
 
   .c-footer-bottom {
     margin-top: 60px;
+  }
+  
+  .c-footer-inner {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }

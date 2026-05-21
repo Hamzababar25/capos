@@ -9,7 +9,7 @@ export default function Footer() {
 
   return (
     <footer id="contact" className="c-footer">
-      <div className="c-footer-inner container">
+      <div className="c-footer-inner">
         {/* Head */}
         <div className="c-footer-head">
           <svg viewBox="0 0 36 18" width="36" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" className="c-footer-circles">
