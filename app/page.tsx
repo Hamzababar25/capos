@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import GradientHero from './components/GradientHero';
-import Navigation from './components/Navigation';
 import FeaturedProjects from './components/FeaturedProjects';
 import About from './components/About';
 import Footer from './components/Footer';
@@ -18,10 +17,9 @@ export default function Home() {
 
   return (
     <main className={`home-page${isPageReady ? ' is-ready' : ''}`}>
-      <Navigation />
       <GradientHero />
-      <FeaturedProjects />
       <About />
+      <FeaturedProjects />
       <Footer />
     </main>
   );

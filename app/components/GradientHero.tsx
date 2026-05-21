@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Navigation from './Navigation';
 import './hero.css';
 
 interface CoffeeBean {
@@ -449,6 +450,9 @@ export default function GradientHero() {
 
   return (
     <section className="pixi-intro" ref={sectionRef}>
+      {/* Navigation - part of hero */}
+      <Navigation />
+      
       {/* WebGL canvas */}
       <canvas ref={canvasRef} className="pixi-intro-canvas" />
 
@@ -505,7 +509,7 @@ export default function GradientHero() {
             transform: `translateY(${scrollProgress * 50}px)`,
           }}
         >
-          <div className="pixi-intro-foot-row container">
+          <div className="pixi-intro-foot-row">
             <div className="pixi-intro-foot-circles">
               <svg viewBox="0 0 54 18" width="54" height="18" fill="none">
                 <circle cx="9" cy="9" r="8.5" stroke="white" strokeOpacity="0.5" />

@@ -204,12 +204,16 @@
   animation: heroLineIn 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) 1s forwards;
   transition: opacity 0.1s ease-out, transform 0.1s ease-out;
   will-change: transform, opacity;
+  width: 100%;
 }
 
 .pixi-intro-foot-row {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  padding-left: 3.9vw;
+  padding-right: 3.9vw;
+  width: 100%;
 }
 
 .pixi-intro-foot-circles {
@@ -290,6 +294,16 @@
   .pixi-intro-title {
     padding: 0 24px;
   }
+  
+  .c-header-inner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  .pixi-intro-foot-row {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -319,5 +333,16 @@
   
   .coffee-beans-canvas {
     opacity: 0.5;
+  }
+  
+  .c-header-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+  }
+  
+  .pixi-intro-foot-row {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }

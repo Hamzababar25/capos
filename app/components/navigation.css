@@ -1,25 +1,25 @@
 .c-header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 100;
   color: #f5ede4;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
-  backdrop-filter: blur(10px);
-  transition: background 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .c-header.scrolled {
-  background: rgba(0, 0, 0, 0.95);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
 }
 
 .c-header-inner {
   display: flex;
   align-items: center;
   padding-top: 35px;
+  padding-left: 3.9vw;
+  padding-right: 3.9vw;
   gap: 0;
+  width: 100%;
 }
 
 .c-header-logo {
@@ -234,5 +234,7 @@
 @media only screen and (max-width: 767px) {
   .c-header-inner {
     padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }

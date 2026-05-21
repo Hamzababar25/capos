@@ -27,22 +27,12 @@ function useClock(timezone: string) {
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const londonTime = useClock('Europe/London');
   const tokyoTime = useClock('Asia/Tokyo');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <header className={`c-header${isMenuOpen ? ' is-open' : ''}${isScrolled ? ' scrolled' : ''}`}>
-      <div className="c-header-inner container">
+    <header className={`c-header${isMenuOpen ? ' is-open' : ''}`}>
+      <div className="c-header-inner">
         {/* Logo */}
         <a href="/" className="c-header-logo">
           <span className="c-header-logo-name">CAPOS</span>
