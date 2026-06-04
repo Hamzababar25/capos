@@ -1,0 +1,59 @@
+@media (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: #d9bf9e;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    width 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+    height 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background 0.3s ease;
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(217, 191, 158, 0.65);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    border-color 0.35s ease,
+    background 0.35s ease;
+  will-change: transform;
+}
+
+.cursor-dot.is-hovering {
+  width: 14px;
+  height: 14px;
+  background: #c9a96e;
+}
+
+.cursor-ring.is-hovering {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(201, 169, 110, 0.75);
+  background: rgba(201, 169, 110, 0.04);
+}

@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './about.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Slide {
   id: number;
@@ -44,14 +48,51 @@ export default function About() {
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    const section = ref.current;
+    if (!section) return;
+
+    // Reveal the section wrapper
+    section.classList.add('is-visible');
+
+    // Animate label, heading, description staggered
+    const label = section.querySelector('.c-about-label');
+    const title = section.querySelector('.c-about-slide-title');
+    const subtitle = section.querySelector('.c-about-slide-subtitle');
+    const description = section.querySelector('.c-about-slide-description');
+    const dots = section.querySelector('.c-about-dots');
+    const arrows = section.querySelector('.c-about-arrows');
+    const images = section.querySelector('.c-about-images');
+
+    const revealEls = [label, title, subtitle, description, dots, arrows].filter(Boolean);
+
+    gsap.set(revealEls, { y: 40, opacity: 0 });
+    gsap.set(images, { x: 60, opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        gsap.to(revealEls, {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: 'expo.out',
+        });
+        gsap.to(images, {
+          x: 0,
+          opacity: 1,
+          duration: 1.1,
+          ease: 'expo.out',
+          delay: 0.2,
+        });
       },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, []);
 
   // Scroll progress tracking
@@ -73,15 +114,6 @@ export default function About() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Auto-advance slider
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [currentSlide]);
-
   const nextSlide = () => {
     if (isAnimating) return;
     setIsAnimating(true);
@@ -102,6 +134,16 @@ export default function About() {
     setCurrentSlide(index);
     setTimeout(() => setIsAnimating(false), 800);
   };
+
+  // Auto-advance slider
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlide]);
 
   // Animated gradient canvas
   useEffect(() => {
@@ -285,10 +327,10 @@ export default function About() {
           {/* Navigation arrows */}
           <div className="c-about-arrows">
             <button className="c-about-arrow" onClick={prevSlide} aria-label="Previous slide">
-              ←
+              <span>←</span>
             </button>
             <button className="c-about-arrow" onClick={nextSlide} aria-label="Next slide">
-              →
+              <span>→</span>
             </button>
           </div>
         </div>

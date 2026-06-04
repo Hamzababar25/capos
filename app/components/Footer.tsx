@@ -1,14 +1,56 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './footer.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const footer = footerRef.current;
+    if (!footer) return;
+
+    const circles = footer.querySelector('.c-footer-circles');
+    const title = footer.querySelector('.c-footer-title');
+    const contact = footer.querySelector('.c-footer-col--contact');
+    const colsRight = footer.querySelector('.c-footer-cols-right');
+    const bottom = footer.querySelector('.c-footer-bottom');
+
+    const els = [circles, title, contact, colsRight, bottom].filter(Boolean);
+
+    gsap.set(els, { y: 50, opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: footer,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        gsap.to(els, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.12,
+          ease: 'expo.out',
+        });
+      },
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <footer id="contact" className="c-footer">
+    <footer id="contact" className="c-footer" ref={footerRef}>
       <div className="c-footer-inner">
         {/* Head */}
         <div className="c-footer-head">
@@ -61,7 +103,7 @@ export default function Footer() {
             {/* Nav */}
             <div className="c-footer-col">
               <ul className="c-footer-nav t-h6">
-                <li><a href="/" className="c-footer-nav-link">Home</a></li>
+                <li><Link href="/" className="c-footer-nav-link">Home</Link></li>
                 <li><a href="#work" className="c-footer-nav-link">Work</a></li>
                 <li><a href="#about" className="c-footer-nav-link">About</a></li>
                 <li><a href="#contact" className="c-footer-nav-link">Contact</a></li>

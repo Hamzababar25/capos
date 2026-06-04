@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Navigation from './Navigation';
 import './hero.css';
+import gsap from 'gsap';
 
 interface CoffeeBean {
   x: number;
@@ -319,6 +320,48 @@ export default function GradientHero() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  // GSAP cinematic text reveal on mount
+  useEffect(() => {
+    const lines = document.querySelectorAll('.pixi-intro-line');
+    const foot = document.querySelector('.pixi-intro-foot');
+    const nav = document.querySelector('.c-header');
+
+    gsap.set(lines, { y: 80, opacity: 0, clipPath: 'inset(0 0 100% 0)' });
+    gsap.set(foot, { y: 30, opacity: 0 });
+    gsap.set(nav, { y: -20, opacity: 0 });
+
+    const tl = gsap.timeline({ delay: 0.15 });
+
+    tl.to(nav, {
+      y: 0,
+      opacity: 1,
+      duration: 0.9,
+      ease: 'power3.out',
+    })
+      .to(
+        lines,
+        {
+          y: 0,
+          opacity: 1,
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.1,
+          stagger: 0.12,
+          ease: 'expo.out',
+        },
+        '-=0.5'
+      )
+      .to(
+        foot,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+        },
+        '-=0.4'
+      );
   }, []);
 
   // Coffee beans animation
