@@ -1,79 +1,79 @@
+/* ════════════════════════════════════════════════════
+   ABOUT SECTION — editorial, cinematic, majestic
+   ════════════════════════════════════════════════════ */
+
 .c-about {
   position: relative;
   background: #0a0906;
   color: #f0ede6;
-  padding: 0;
   overflow: hidden;
-  min-height: 100vh;
-  margin-top: -10vh;
+  padding: 0 0 80px;
+}
+
+/* ── Section header row ──────────────────────────── */
+.c-about-header {
   display: flex;
   align-items: center;
-}
-
-/* Gradient fade from hero */
-.c-about::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 18vh;
-  background: linear-gradient(180deg,
-    rgba(10, 9, 6, 0) 0%,
-    rgba(10, 9, 6, 0.5) 40%,
-    rgba(10, 9, 6, 1) 100%
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-
-.c-about.is-visible {
-  /* section always visible, GSAP handles reveals */
-}
-
-/* Canvas bg */
-.c-about-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.35;
-}
-
-/* ── Slider container ──────────────────────────────── */
-.c-about-slider {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 120px 3.9vw 140px;
-  display: grid;
-  grid-template-columns: 42% 58%;
-  gap: 5vw;
-  align-items: center;
-}
-
-/* ── Left — text ──────────────────────────────────── */
-.c-about-content {
-  position: relative;
-}
-
-.c-about-label {
-  color: #c8922a;
+  gap: 24px;
+  padding: 56px 3.9vw 0;
   margin-bottom: 48px;
-  display: block;
+}
+
+.c-about-eyebrow {
+  flex-shrink: 0;
+  color: #c8922a;
   letter-spacing: 0.22em;
+  opacity: 0; /* GSAP reveals */
 }
 
-.c-about-text-wrapper {
+.c-about-header-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200, 146, 42, 0.35) 0%, transparent 100%);
+}
+
+/* ── Two-column body ─────────────────────────────── */
+.c-about-body {
+  display: grid;
+  /* Left wider for text, right for image — both contained with padding */
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  padding: 0 3.9vw; /* <-- contains image within page, no edge bleed */
+  gap: 3vw;
+}
+
+/* ── LEFT — text panel ───────────────────────────── */
+.c-about-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 3vw 0 0;
+  opacity: 0; /* GSAP reveals */
+}
+
+/* Slide number indicator */
+.c-about-slide-num {
+  color: #c8922a;
+  letter-spacing: 0.18em;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.c-about-slide-num span {
+  opacity: 0.4;
+}
+
+/* Text panel — slides stack + crossfade */
+.c-about-text-panel {
   position: relative;
-  min-height: 400px;
+  /* Use aspect-ratio style min-height so it scales, not fixed px */
+  min-height: clamp(260px, 28vw, 380px);
+  margin-bottom: 36px;
 }
 
-.c-about-slide-text {
+.c-about-slide-content {
   position: absolute;
   top: 0;
   left: 0;
@@ -81,102 +81,87 @@
   opacity: 0;
   transform: translateY(24px);
   transition:
-    opacity   0.75s cubic-bezier(0.165, 0.84, 0.44, 1),
-    transform 0.75s cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity   0.85s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.85s cubic-bezier(0.165, 0.84, 0.44, 1);
   pointer-events: none;
 }
 
-.c-about-slide-text.active {
+.c-about-slide-content.is-active {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.c-about-slide-text.prev {
+.c-about-slide-content.is-prev {
   opacity: 0;
   transform: translateY(-20px);
 }
 
-.c-about-slide-text.next {
+.c-about-slide-content.is-next {
   opacity: 0;
   transform: translateY(24px);
 }
 
+/* Big title */
 .c-about-slide-title {
-  text-transform: uppercase;
-  margin-bottom: 18px;
+  font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
+  font-size: clamp(36px, 4vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
   color: #f0ede6;
-  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  white-space: pre-line;
+  text-transform: uppercase;
 }
 
-.c-about-slide-subtitle {
-  color: #c8922a;
-  margin-bottom: 24px;
-  opacity: 0.9;
-  letter-spacing: 0.16em;
-}
-
-.c-about-slide-description {
-  line-height: 1.75;
-  color: rgba(240, 237, 230, 0.7);
-  max-width: 480px;
-}
-
-/* ── Dots ──────────────────────────────────────────── */
-.c-about-dots {
-  display: flex;
-  gap: 10px;
-  margin-top: 40px;
-}
-
-.c-about-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(200, 146, 42, 0.5);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-
-.c-about-dot:hover {
-  border-color: #c8922a;
-  background: rgba(200, 146, 42, 0.3);
-}
-
-.c-about-dot.active {
+/* Amber accent bar above title */
+.c-about-slide-title::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
   background: #c8922a;
-  border-color: #c8922a;
-  transform: scale(1.2);
+  margin-bottom: 18px;
 }
 
-/* ── Arrows ────────────────────────────────────────── */
-.c-about-arrows {
+.c-about-slide-sub {
+  color: #c8922a;
+  letter-spacing: 0.16em;
+  margin-bottom: 16px;
+  display: block;
+  opacity: 0.85;
+}
+
+.c-about-slide-desc {
+  color: rgba(240, 237, 230, 0.58);
+  line-height: 1.8;
+  max-width: 400px;
+}
+
+/* ── Controls row ────────────────────────────────── */
+.c-about-controls {
   display: flex;
-  gap: 14px;
-  margin-top: 32px;
+  align-items: center;
+  gap: 10px;
 }
 
 .c-about-arrow {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(200, 146, 42, 0.35);
+  border: 1px solid rgba(200, 146, 42, 0.3);
   background: transparent;
   color: #c8922a;
-  font-size: 18px;
+  font-size: 15px;
   cursor: pointer;
-  transition:
-    background 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    color      0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    border-color 0.4s ease,
-    transform  0.35s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
+  transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 .c-about-arrow::before {
@@ -186,124 +171,227 @@
   border-radius: 50%;
   background: #c8922a;
   transform: scale(0);
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.c-about-arrow:hover::before { transform: scale(1); }
-.c-about-arrow:hover { color: #0a0906; border-color: #c8922a; transform: scale(1.06); }
+.c-about-arrow:hover::before   { transform: scale(1); }
+.c-about-arrow:hover           { color: #0a0906; border-color: #c8922a; transform: scale(1.05); }
+.c-about-arrow span            { position: relative; z-index: 1; }
 
-.c-about-arrow span { position: relative; z-index: 1; }
+.c-about-dots {
+  display: flex;
+  gap: 7px;
+  margin-left: 6px;
+}
 
-/* ── Right — images ────────────────────────────────── */
-.c-about-images {
+.c-about-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(200, 146, 42, 0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.c-about-dot.is-active {
+  background: #c8922a;
+  border-color: #c8922a;
+  transform: scale(1.25);
+}
+
+.c-about-dot:hover {
+  border-color: #c8922a;
+  background: rgba(200, 146, 42, 0.25);
+}
+
+/* ── RIGHT — image panel ─────────────────────────── */
+.c-about-right {
   position: relative;
-  height: 620px;
-}
-
-.c-about-slide-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transform: scale(0.96);
-  transition:
-    opacity   0.9s cubic-bezier(0.165, 0.84, 0.44, 1),
-    transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  opacity: 0; /* GSAP reveals */
+  min-height: 560px;
+  border-radius: 10px; /* contained, not edge-bleeding */
 }
 
-.c-about-slide-image.active {
+.c-about-image-track {
+  position: absolute;
+  inset: 0;
+}
+
+.c-about-image-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity   0.95s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.95s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.c-about-image-frame.is-active {
   opacity: 1;
   transform: scale(1);
   z-index: 2;
 }
 
-.c-about-slide-image.prev {
+.c-about-image-frame.is-prev {
   opacity: 0;
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
-.c-about-slide-image.next {
+.c-about-image-frame.is-next {
   opacity: 0;
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
-.c-about-slide-image img {
+.c-about-image-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 7s ease-out;
+  transition: transform 8s ease-out;
 }
 
-.c-about-slide-image.active img {
+.c-about-image-frame.is-active img {
   transform: scale(1.05);
 }
 
-/* Dark bottom gradient overlay on images */
-.c-about-slide-image::after {
-  content: '';
+/* Dark gradient overlay — bottom + left blend */
+.c-about-image-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 55%;
-  background: linear-gradient(
-    to top,
-    rgba(10, 9, 6, 0.85) 0%,
-    rgba(10, 9, 6, 0.35) 50%,
-    transparent 100%
-  );
-  pointer-events: none;
+  inset: 0;
+  background:
+    linear-gradient(to top,  rgba(10, 9, 6, 0.82) 0%, rgba(10, 9, 6, 0.25) 35%, transparent 62%),
+    linear-gradient(to right, rgba(10, 9, 6, 0.4) 0%, transparent 25%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 22px 24px;
   z-index: 1;
 }
 
-/* Hover amber glow on images */
-.c-about-slide-image:hover {
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(200, 146, 42, 0.12);
+/* Image tag badge */
+.c-about-image-tag {
+  background: rgba(200, 146, 42, 0.1);
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  color: #c8922a;
+  padding: 5px 12px;
+  letter-spacing: 0.18em;
+  border-radius: 2px;
+  font-size: max(0.677vw, 10px);
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-/* ── Responsive ────────────────────────────────────── */
-@media only screen and (max-width: 979px) {
+/* ── Progress bar ─────────────────────────────────── */
+.c-about-progress-wrap {
+  padding: 32px 3.9vw 0;
+  opacity: 0; /* GSAP reveals */
+}
+
+.c-about-progress-track {
+  height: 1px;
+  background: rgba(200, 146, 42, 0.1);
+  width: 100%;
+  max-width: 260px;
+  overflow: hidden;
+}
+
+.c-about-progress-bar {
+  height: 100%;
+  background: #c8922a;
+  width: 0%;
+}
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════ */
+
+/* ── Tablet (768px – 900px) ──────────────────────── */
+@media only screen and (max-width: 900px) {
   .c-about {
-    min-height: auto;
-    margin-top: -5vh;
+    padding-bottom: 64px;
   }
 
-  .c-about::before { height: 10vh; }
+  .c-about-header {
+    padding: 44px 24px 0;
+    margin-bottom: 36px;
+  }
 
-  .c-about-slider {
+  .c-about-body {
     grid-template-columns: 1fr;
-    gap: 60px;
-    padding: 100px 24px 120px;
+    padding: 0 24px;
+    gap: 32px;
   }
 
-  .c-about-images {
-    height: 400px;
-    order: -1;
+  .c-about-right {
+    min-height: 380px;
+    order: -1; /* image on top */
+    border-radius: 8px;
   }
 
-  .c-about-text-wrapper { min-height: 300px; }
+  .c-about-left {
+    padding: 0;
+  }
+
+  .c-about-text-panel {
+    min-height: clamp(220px, 38vw, 320px);
+    margin-bottom: 28px;
+  }
+
+  .c-about-progress-wrap {
+    padding: 28px 24px 0;
+  }
 }
 
-@media only screen and (max-width: 767px) {
+/* ── Mobile (< 600px) ────────────────────────────── */
+@media only screen and (max-width: 600px) {
   .c-about {
-    margin-top: 0;
+    padding-bottom: 56px;
   }
 
-  .c-about::before { height: 8vh; }
-
-  .c-about-slider {
-    padding: 80px 20px 100px;
-    gap: 40px;
+  .c-about-header {
+    padding: 36px 20px 0;
+    margin-bottom: 28px;
   }
 
-  .c-about-images { height: 300px; }
-  .c-about-text-wrapper { min-height: 350px; }
-  .c-about-slide-description { font-size: 14px; }
-  .c-about-arrow { width: 42px; height: 42px; font-size: 16px; }
+  .c-about-body {
+    padding: 0 20px;
+    gap: 24px;
+  }
+
+  .c-about-right {
+    min-height: 260px;
+    border-radius: 8px;
+  }
+
+  .c-about-slide-title {
+    font-size: clamp(30px, 8vw, 44px);
+  }
+
+  .c-about-text-panel {
+    min-height: clamp(240px, 55vw, 310px);
+    margin-bottom: 24px;
+  }
+
+  .c-about-slide-num {
+    margin-bottom: 20px;
+  }
+
+  .c-about-progress-wrap {
+    padding: 24px 20px 0;
+  }
+
+  .c-about-controls {
+    gap: 8px;
+  }
+
+  .c-about-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
 }

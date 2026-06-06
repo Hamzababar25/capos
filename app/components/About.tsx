@@ -9,344 +9,196 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface Slide {
   id: number;
+  num: string;
   title: string;
   subtitle: string;
   description: string;
   image: string;
+  tag: string;
 }
 
 const slides: Slide[] = [
   {
     id: 1,
-    title: 'Ethically Sourced',
+    num: '01',
+    title: 'Ethically\nSourced',
     subtitle: 'From Farm to Cup',
-    description: 'We work directly with farmers across the globe, ensuring fair trade practices and sustainable farming methods. Every bean tells a story of dedication and care.',
+    description:
+      'We work directly with farmers across the globe, ensuring fair-trade practices and sustainable farming. Every bean carries the story of the hands that grew it.',
     image: '/capos1.PNG',
+    tag: 'Origin',
   },
   {
     id: 2,
-    title: 'Small Batch Roasting',
+    num: '02',
+    title: 'Small Batch\nRoasting',
     subtitle: 'Crafted with Precision',
-    description: 'Our master roasters carefully develop each batch to bring out unique flavor profiles. Temperature, timing, and technique combine to create perfection in every cup.',
+    description:
+      'Our master roasters develop each batch to unlock singular flavour profiles. Temperature, timing, and silence — together they create perfection in every cup.',
     image: '/capos2.PNG',
+    tag: 'Roast',
   },
   {
     id: 3,
-    title: 'Artisanal Excellence',
+    num: '03',
+    title: 'Artisanal\nExcellence',
     subtitle: '15+ Years of Expertise',
-    description: 'Passion meets expertise in every roast. Our team brings decades of experience, constantly innovating while honoring traditional coffee craftsmanship.',
+    description:
+      'Passion meets craft in every roast. Decades of experience, constant innovation, deep respect for coffee tradition — this is what CAPOS is made of.',
     image: '/capos3.PNG',
+    tag: 'Craft',
   },
 ];
 
 export default function About() {
-  const ref = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Scroll-triggered entrance
   useEffect(() => {
-    const section = ref.current;
+    const section = sectionRef.current;
     if (!section) return;
 
-    // Reveal the section wrapper
-    section.classList.add('is-visible');
+    const eyebrow = section.querySelector('.c-about-eyebrow');
+    const content  = section.querySelector('.c-about-left');
+    const imagery  = section.querySelector('.c-about-right');
+    const progress = section.querySelector('.c-about-progress-wrap');
 
-    // Animate label, heading, description staggered
-    const label = section.querySelector('.c-about-label');
-    const title = section.querySelector('.c-about-slide-title');
-    const subtitle = section.querySelector('.c-about-slide-subtitle');
-    const description = section.querySelector('.c-about-slide-description');
-    const dots = section.querySelector('.c-about-dots');
-    const arrows = section.querySelector('.c-about-arrows');
-    const images = section.querySelector('.c-about-images');
-
-    const revealEls = [label, title, subtitle, description, dots, arrows].filter(Boolean);
-
-    gsap.set(revealEls, { y: 40, opacity: 0 });
-    gsap.set(images, { x: 60, opacity: 0 });
+    gsap.set([eyebrow, content, progress], { y: 50, opacity: 0 });
+    gsap.set(imagery, { x: 60, opacity: 0 });
 
     ScrollTrigger.create({
       trigger: section,
-      start: 'top 75%',
+      start: 'top 72%',
       once: true,
       onEnter: () => {
-        gsap.to(revealEls, {
-          y: 0,
-          opacity: 1,
-          duration: 0.9,
-          stagger: 0.1,
-          ease: 'expo.out',
-        });
-        gsap.to(images, {
-          x: 0,
-          opacity: 1,
-          duration: 1.1,
-          ease: 'expo.out',
-          delay: 0.2,
-        });
+        gsap.timeline()
+          .to(eyebrow,  { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' })
+          .to(content,  { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out' }, '-=0.5')
+          .to(imagery,  { x: 0, opacity: 1, duration: 1.1, ease: 'expo.out' }, '-=0.7')
+          .to(progress, { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' }, '-=0.5');
       },
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
-  // Scroll progress tracking
+  // Auto-advance with progress bar
+  const startInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      const progress = Math.max(0, Math.min(1, 
-        (windowHeight - rect.top) / (windowHeight + rect.height)
-      ));
-      
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    startInterval();
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, []);
 
-  const nextSlide = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setTimeout(() => setIsAnimating(false), 800);
-  };
+  // Animate progress bar width reset on slide change
+  useEffect(() => {
+    const bar = progressRef.current;
+    if (!bar) return;
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        bar.style.transition = 'width 5s linear';
+        bar.style.width = '100%';
+      });
+    });
+  }, [currentSlide]);
 
-  const prevSlide = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setTimeout(() => setIsAnimating(false), 800);
-  };
-
-  const goToSlide = (index: number) => {
+  const goTo = (index: number) => {
     if (isAnimating || index === currentSlide) return;
     setIsAnimating(true);
     setCurrentSlide(index);
-    setTimeout(() => setIsAnimating(false), 800);
+    startInterval();
+    setTimeout(() => setIsAnimating(false), 900);
   };
 
-  // Auto-advance slider
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
+  const prev = () => goTo((currentSlide - 1 + slides.length) % slides.length);
+  const next = () => goTo((currentSlide + 1) % slides.length);
 
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSlide]);
-
-  // Animated gradient canvas
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
-    if (!gl) return;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = canvas.offsetHeight;
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const vsSource = `
-      attribute vec2 a_position;
-      void main() {
-        gl_Position = vec4(a_position, 0.0, 1.0);
-      }
-    `;
-
-    const fsSource = `
-      precision highp float;
-      uniform float uTime;
-      uniform vec2 uResolution;
-      uniform float uProgress;
-
-      float hash(vec2 p) {
-        p = fract(p * vec2(123.34, 456.21));
-        p += dot(p, p + 45.32);
-        return fract(p.x * p.y);
-      }
-
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
-        
-        float a = hash(i);
-        float b = hash(i + vec2(1.0, 0.0));
-        float c = hash(i + vec2(0.0, 1.0));
-        float d = hash(i + vec2(1.0, 1.0));
-        
-        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-      }
-
-      float fbm(vec2 p) {
-        float value = 0.0;
-        float amplitude = 0.5;
-        for(int i = 0; i < 6; i++) {
-          value += amplitude * noise(p);
-          p *= 2.0;
-          amplitude *= 0.5;
-        }
-        return value;
-      }
-
-      void main() {
-        vec2 uv = gl_FragCoord.xy / uResolution;
-        
-        float t = uTime * 0.1;
-        
-        vec3 color1 = vec3(0.12, 0.06, 0.03);
-        vec3 color2 = vec3(0.28, 0.16, 0.10);
-        vec3 color3 = vec3(0.55, 0.32, 0.18);
-        vec3 color4 = vec3(0.75, 0.55, 0.40);
-        vec3 color5 = vec3(0.92, 0.82, 0.68);
-        
-        float n1 = fbm(uv * 2.5 + vec2(t * 0.2, -t * 0.15));
-        float n2 = fbm(uv * 3.2 + vec2(-t * 0.25, t * 0.2));
-        float n3 = fbm(uv * 1.8 + vec2(t * 0.15, t * 0.18));
-        
-        float diagonal = (uv.x + uv.y) * 0.5;
-        diagonal += sin(uv.x * 2.5 + t * 0.8) * 0.08;
-        diagonal += cos(uv.y * 2.0 - t * 0.6) * 0.08;
-        
-        vec3 col = mix(color1, color2, smoothstep(0.0, 0.35, diagonal + n1 * 0.35));
-        col = mix(col, color3, smoothstep(0.25, 0.55, diagonal + n2 * 0.3));
-        col = mix(col, color4, smoothstep(0.45, 0.75, diagonal + n3 * 0.25));
-        col = mix(col, color5, smoothstep(0.65, 1.0, n1 * 0.4 + n2 * 0.3));
-        
-        float shimmer = sin(uv.x * 8.0 + t * 1.5) * cos(uv.y * 8.0 - t * 1.2);
-        col += vec3(shimmer * 0.015);
-        
-        float vignette = smoothstep(1.2, 0.2, length(uv - 0.5));
-        col *= 0.65 + vignette * 0.35;
-        
-        float fadeTop = smoothstep(0.0, 0.15, uv.y);
-        col *= fadeTop;
-        
-        gl_FragColor = vec4(col, 1.0);
-      }
-    `;
-
-    function createShader(type: number, src: string) {
-      const s = gl!.createShader(type)!;
-      gl!.shaderSource(s, src);
-      gl!.compileShader(s);
-      return s;
-    }
-
-    const prog = gl.createProgram()!;
-    gl.attachShader(prog, createShader(gl.VERTEX_SHADER, vsSource));
-    gl.attachShader(prog, createShader(gl.FRAGMENT_SHADER, fsSource));
-    gl.linkProgram(prog);
-    gl.useProgram(prog);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
-      gl.STATIC_DRAW
-    );
-
-    const posLoc = gl.getAttribLocation(prog, 'a_position');
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const uTimeLoc = gl.getUniformLocation(prog, 'uTime');
-    const uResLoc = gl.getUniformLocation(prog, 'uResolution');
-    const uProgressLoc = gl.getUniformLocation(prog, 'uProgress');
-
-    let time = 0;
-    const render = () => {
-      time += 0.01;
-      gl!.uniform1f(uTimeLoc, time);
-      gl!.uniform2f(uResLoc, canvas.width, canvas.height);
-      gl!.uniform1f(uProgressLoc, scrollProgress);
-      gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
-      rafRef.current = requestAnimationFrame(render);
-    };
-    rafRef.current = requestAnimationFrame(render);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('resize', resize);
-      gl.deleteProgram(prog);
-    };
-  }, [scrollProgress]);
+  const slide = slides[currentSlide];
 
   return (
-    <section id="about" className="c-about" ref={ref}>
-      <canvas ref={canvasRef} className="c-about-canvas" />
-      
-      <div className="c-about-slider">
-        {/* Left side - Text content */}
-        <div className="c-about-content">
-          <p className="c-about-label t-h6">ABOUT CAPOS</p>
-          
-          <div className="c-about-text-wrapper">
-            {slides.map((slide, index) => (
+    <section id="about" className="c-about" ref={sectionRef}>
+      {/* Section header */}
+      <div className="c-about-header">
+        <span className="c-about-eyebrow t-h6">About CAPOS</span>
+        <div className="c-about-header-line" aria-hidden="true" />
+      </div>
+
+      {/* Main two-column layout */}
+      <div className="c-about-body">
+        {/* LEFT — text */}
+        <div className="c-about-left">
+          <div className="c-about-slide-num t-h6" aria-hidden="true">
+            {slide.num} <span>/ {slides.length.toString().padStart(2, '0')}</span>
+          </div>
+
+          <div className="c-about-text-panel">
+            {slides.map((s, i) => (
               <div
-                key={slide.id}
-                className={`c-about-slide-text ${
-                  index === currentSlide ? 'active' : ''
-                } ${index < currentSlide ? 'prev' : ''} ${index > currentSlide ? 'next' : ''}`}
+                key={s.id}
+                className={`c-about-slide-content ${i === currentSlide ? 'is-active' : i < currentSlide ? 'is-prev' : 'is-next'}`}
               >
-                <h2 className="c-about-slide-title t-h2">{slide.title}</h2>
-                <p className="c-about-slide-subtitle t-h6">{slide.subtitle}</p>
-                <p className="c-about-slide-description t-text-lg">{slide.description}</p>
+                <h2 className="c-about-slide-title">{s.title}</h2>
+                <p className="c-about-slide-sub t-h6">{s.subtitle}</p>
+                <p className="c-about-slide-desc t-text-lg">{s.description}</p>
               </div>
             ))}
           </div>
 
-          {/* Navigation dots */}
-          <div className="c-about-dots">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                className={`c-about-dot ${index === currentSlide ? 'active' : ''}`}
-                onClick={() => goToSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Navigation arrows */}
-          <div className="c-about-arrows">
-            <button className="c-about-arrow" onClick={prevSlide} aria-label="Previous slide">
+          {/* Controls */}
+          <div className="c-about-controls">
+            <button className="c-about-arrow" onClick={prev} aria-label="Previous">
               <span>←</span>
             </button>
-            <button className="c-about-arrow" onClick={nextSlide} aria-label="Next slide">
+            <button className="c-about-arrow" onClick={next} aria-label="Next">
               <span>→</span>
             </button>
+            <div className="c-about-dots">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  className={`c-about-dot${i === currentSlide ? ' is-active' : ''}`}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Right side - Images */}
-        <div className="c-about-images">
-          {slides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`c-about-slide-image ${
-                index === currentSlide ? 'active' : ''
-              } ${index < currentSlide ? 'prev' : ''} ${index > currentSlide ? 'next' : ''}`}
-            >
-              <img src={slide.image} alt={slide.title} loading="lazy" />
-            </div>
-          ))}
+        {/* RIGHT — image stack */}
+        <div className="c-about-right">
+          <div className="c-about-image-track">
+            {slides.map((s, i) => (
+              <div
+                key={s.id}
+                className={`c-about-image-frame ${i === currentSlide ? 'is-active' : i < currentSlide ? 'is-prev' : 'is-next'}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.image} alt={s.title} loading="lazy" />
+                <div className="c-about-image-overlay">
+                  <span className="c-about-image-tag t-h6">{s.tag}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="c-about-progress-wrap">
+        <div className="c-about-progress-track">
+          <div className="c-about-progress-bar" ref={progressRef} />
         </div>
       </div>
     </section>
