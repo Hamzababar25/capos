@@ -29,72 +29,44 @@ function useClock(timezone: string) {
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const londonTime = useClock('Europe/London');
-  const tokyoTime = useClock('Asia/Tokyo');
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const tokyoTime  = useClock('Asia/Tokyo');
+  const overlayRef   = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLLIElement[]>([]);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const tlRef        = useRef<gsap.core.Timeline | null>(null);
 
+  // Scroll-based nav background
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Cinematic menu open/close
   useEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
-
     const items = menuItemsRef.current.filter(Boolean);
 
     if (isMenuOpen) {
-      // Kill previous timeline
       tlRef.current?.kill();
-
       gsap.set(overlay, { display: 'flex' });
       gsap.set(items, { y: 60, opacity: 0 });
 
-      tlRef.current = gsap.timeline();
-      tlRef.current
-        .to(overlay, {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 0.7,
-          ease: 'expo.inOut',
-        })
-        .to(
-          items,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            stagger: 0.08,
-            ease: 'expo.out',
-          },
-          '-=0.3'
-        );
+      tlRef.current = gsap.timeline()
+        .to(overlay, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.65, ease: 'expo.inOut' })
+        .to(items,   { y: 0, opacity: 1, duration: 0.65, stagger: 0.08, ease: 'expo.out' }, '-=0.28');
     } else {
       tlRef.current?.kill();
-
       tlRef.current = gsap.timeline({
-        onComplete: () => {
-          gsap.set(overlay, { display: 'none' });
-        },
-      });
-      tlRef.current
-        .to(items, {
-          y: -30,
-          opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: 'power2.in',
-        })
-        .to(
-          overlay,
-          {
-            clipPath: 'inset(0% 0% 100% 0%)',
-            duration: 0.6,
-            ease: 'expo.inOut',
-          },
-          '-=0.15'
-        );
+        onComplete: () => gsap.set(overlay, { display: 'none' }),
+      })
+        .to(items,   { y: -30, opacity: 0, duration: 0.35, stagger: 0.05, ease: 'power2.in' })
+        .to(overlay, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.55, ease: 'expo.inOut' }, '-=0.12');
     }
   }, [isMenuOpen]);
 
-  // Initialize overlay state
   useEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
@@ -102,23 +74,23 @@ export default function Navigation() {
   }, []);
 
   const closeMenu = () => setIsMenuOpen(false);
+  const navLinks  = ['Work', 'About', 'Contact'];
 
   return (
-    <header className={`c-header${isMenuOpen ? ' is-open' : ''}`}>
+    <header className={`c-header${isMenuOpen ? ' is-open' : ''}${isScrolled ? ' is-scrolled' : ''}`}>
       <div className="c-header-inner">
+        {/* Logo */}
         <Link href="/" className="c-header-logo">
           <span className="c-header-logo-name">CAPOS</span>
           <span className="c-header-logo-city t-h6">London</span>
         </Link>
 
+        {/* Desktop nav */}
         <nav className="c-header-nav">
           <ul className="c-header-nav-list t-h6">
-            {['Home', 'Work', 'About', 'Contact'].map((item) => (
+            {navLinks.map((item) => (
               <li key={item}>
-                <Link
-                  href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
-                  className="c-header-nav-link"
-                >
+                <Link href={`#${item.toLowerCase()}`} className="c-header-nav-link">
                   <span className="c-header-nav-link-text">{item}</span>
                   <span className="c-header-nav-link-line" aria-hidden="true" />
                 </Link>
@@ -127,11 +99,18 @@ export default function Navigation() {
           </ul>
         </nav>
 
+        {/* Clocks */}
         <div className="c-header-clocks t-h6">
           <span className="c-header-clock is-active">{londonTime} LDN</span>
           <span className="c-header-clock">{tokyoTime} TKY</span>
         </div>
 
+        {/* Reserve CTA */}
+        <a href="#contact" className="c-header-cta btn-primary">
+          Reserve a Table
+        </a>
+
+        {/* Burger */}
         <button
           className="c-header-burger"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -147,16 +126,17 @@ export default function Navigation() {
         </button>
       </div>
 
-      {/* Mobile / Fullscreen overlay */}
+      {/* Fullscreen overlay */}
       <div className="c-header-overlay" ref={overlayRef}>
+        <div className="c-header-overlay-time t-h6">
+          {londonTime} LDN &nbsp;·&nbsp; {tokyoTime} TKY
+        </div>
         <nav className="c-header-overlay-nav">
           <ul>
-            {['Home', 'Work', 'About', 'Contact'].map((item, i) => (
+            {['Home', ...navLinks].map((item, i) => (
               <li
                 key={item}
-                ref={(el) => {
-                  if (el) menuItemsRef.current[i] = el;
-                }}
+                ref={(el) => { if (el) menuItemsRef.current[i] = el; }}
               >
                 <Link
                   href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
@@ -169,6 +149,9 @@ export default function Navigation() {
             ))}
           </ul>
         </nav>
+        <a href="#contact" className="c-header-overlay-cta btn-primary" onClick={closeMenu}>
+          Reserve a Table
+        </a>
       </div>
     </header>
   );

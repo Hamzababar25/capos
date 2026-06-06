@@ -1,10 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --black: #000;
-  --white: #fff;
-  --gray: #7f7f7f;
-  --accent: #e64f0f;
+  --bg:        #0a0906;
+  --bg-card:   #1e1a15;
+  --bg-raised: #2a2318;
+  --warm-white:#f0ede6;
+  --muted:     #8a7d6b;
+  --amber:     #c8922a;
+  --amber-dim: rgba(200, 146, 42, 0.15);
+  --border:    rgba(240, 237, 230, 0.08);
+
+  /* legacy aliases kept so existing components don't break */
+  --black: #0a0906;
+  --white: #f0ede6;
+  --gray:  #8a7d6b;
+  --accent:#c8922a;
 }
 
 *,
@@ -44,8 +54,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  color: var(--white);
-  background-color: var(--black);
+  color: var(--warm-white);
+  background-color: var(--bg);
   overflow-x: hidden;
   width: 100%;
 }
@@ -59,7 +69,7 @@ body::after {
   height: 400%;
   pointer-events: none;
   z-index: 9997;
-  opacity: 0.038;
+  opacity: 0.042;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 220px 220px;
   animation: grain 0.6s steps(1) infinite;
@@ -78,9 +88,7 @@ body::after {
   90%  { transform: translate(-10%, 10%); }
 }
 
-p {
-  margin: 0;
-}
+p  { margin: 0; }
 
 a {
   color: inherit;
@@ -90,12 +98,12 @@ a {
 
 a:focus,
 a:active {
-  outline: 2px solid #d9bf9e;
+  outline: 2px solid var(--amber);
   outline-offset: 2px;
 }
 
 button:focus {
-  outline: 2px solid #d9bf9e;
+  outline: 2px solid var(--amber);
   outline-offset: 2px;
 }
 
@@ -108,11 +116,6 @@ button {
   color: inherit;
 }
 
-button:focus {
-  outline: 2px solid #d9bf9e;
-  outline-offset: 2px;
-}
-
 img {
   display: block;
   max-width: 100%;
@@ -122,48 +125,54 @@ canvas {
   display: block;
 }
 
-/* Typography scale matching monopo */
+/* ─── Typography Scale ──────────────────────────────── */
+
+/* Hero display — big, tight */
 .t-h1 {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: max(5.989vw, 47px);
-  line-height: 0.934;
-  font-weight: 400;
+  font-size: clamp(64px, 8.5vw, 130px);
+  line-height: 0.92;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .t-h2 {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: max(3.125vw, 25px);
-  line-height: 1.087;
-  font-weight: 400;
+  font-size: clamp(32px, 3.8vw, 64px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .t-h3 {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: max(2.34375vw, 24px);
-  line-height: 1.2;
-  font-weight: 400;
+  font-size: clamp(22px, 2.5vw, 40px);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
+/* Tiny uppercase label */
 .t-h6 {
   display: block;
   margin: 0;
   font-weight: 700;
-  font-size: max(0.677vw, 12px);
+  font-size: max(0.677vw, 11px);
   line-height: 1.23;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
 }
 
 .t-text {
   font-size: max(0.833vw, 14px);
-  line-height: 1.4375;
+  line-height: 1.65;
   font-weight: 400;
 }
 
@@ -174,12 +183,21 @@ canvas {
 }
 
 .t-text-lg {
-  font-size: max(0.989vw, 17px);
-  line-height: 1.157;
+  font-size: max(1.04vw, 17px);
+  line-height: 1.6;
   font-weight: 400;
 }
 
-/* Layout */
+/* Display / editorial — Cormorant Garamond */
+.t-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Layout ─────────────────────────────────────────── */
 .container {
   padding: 0 3.9vw;
   width: 100%;
@@ -191,85 +209,79 @@ canvas {
   }
 }
 
-/* Animations */
+/* ─── Animations ──────────────────────────────────────── */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
-/* Primary button (pill, border) */
+/* ─── Primary Button — amber fill-from-left ──────────── */
 .btn-primary {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 14px 13px 24px;
-  color: #f5ede4;
+  padding: 13px 22px;
+  color: var(--warm-white);
   border-radius: 42px;
   text-transform: uppercase;
-  font-size: max(0.677vw, 12px);
+  font-size: max(0.677vw, 11px);
   font-weight: 700;
   font-family: inherit;
-  border: 1px solid #d9bf9e;
+  border: 1px solid var(--amber);
   overflow: hidden;
-  transition: color 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: color 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   cursor: pointer;
   background: transparent;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .btn-primary::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background: #d9bf9e;
-  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transform: translate(-150%, 50%) translateZ(0);
+  inset: 0;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border-radius: inherit;
 }
 
 .btn-primary:hover {
-  color: #000;
+  color: var(--bg);
 }
 
 .btn-primary:hover::before {
-  transform: translate(-50%, -50%) scale(4) translateZ(0);
+  transform: scaleX(1);
 }
 
-.btn-primary span {
+.btn-primary > * {
   position: relative;
+  z-index: 1;
 }
 
+/* ─── Mobile tweaks ───────────────────────────────────── */
 @media only screen and (max-width: 767px) {
   .t-h1 {
-    font-size: max(12.53vw, 47px);
+    font-size: clamp(52px, 13vw, 90px);
     line-height: 0.95;
   }
 
   .t-h2 {
-    font-size: max(6.667vw, 25px);
+    font-size: clamp(28px, 7vw, 48px);
   }
 
   .t-h3 {
-    font-size: max(6.4vw, 24px);
+    font-size: clamp(20px, 6vw, 32px);
   }
-  
+
   .t-text-lg {
-    font-size: max(1.1vw, 16px);
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.65;
   }
 }

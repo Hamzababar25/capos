@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import GradientHero from './components/GradientHero';
 import About from './components/About';
+import StatsSection from './components/StatsSection';
+import QuoteSection from './components/QuoteSection';
 import Footer from './components/Footer';
 import './styles/home.css';
 
@@ -18,6 +20,8 @@ export default function Home() {
     <main className={`home-page${isPageReady ? ' is-ready' : ''}`}>
       <GradientHero />
       <About />
+      <StatsSection />
+      <QuoteSection />
       <Footer />
     </main>
   );

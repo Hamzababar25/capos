@@ -324,44 +324,28 @@ export default function GradientHero() {
 
   // GSAP cinematic text reveal on mount
   useEffect(() => {
-    const lines = document.querySelectorAll('.pixi-intro-line');
-    const foot = document.querySelector('.pixi-intro-foot');
-    const nav = document.querySelector('.c-header');
+    const lines    = document.querySelectorAll('.pixi-intro-line');
+    const eyebrow  = document.querySelector('.pixi-intro-eyebrow');
+    const sub      = document.querySelector('.pixi-intro-sub');
+    const foot     = document.querySelector('.pixi-intro-foot');
+    const nav      = document.querySelector('.c-header');
 
-    gsap.set(lines, { y: 80, opacity: 0, clipPath: 'inset(0 0 100% 0)' });
-    gsap.set(foot, { y: 30, opacity: 0 });
-    gsap.set(nav, { y: -20, opacity: 0 });
+    gsap.set(nav,     { y: -20, opacity: 0 });
+    gsap.set(eyebrow, { y: 20, opacity: 0 });
+    gsap.set(lines,   { y: 80, opacity: 0, clipPath: 'inset(0 0 100% 0)' });
+    gsap.set(sub,     { y: 20, opacity: 0 });
+    gsap.set(foot,    { y: 30, opacity: 0 });
 
-    const tl = gsap.timeline({ delay: 0.15 });
+    const tl = gsap.timeline({ delay: 0.1 });
 
-    tl.to(nav, {
-      y: 0,
-      opacity: 1,
-      duration: 0.9,
-      ease: 'power3.out',
-    })
-      .to(
-        lines,
-        {
-          y: 0,
-          opacity: 1,
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.1,
-          stagger: 0.12,
-          ease: 'expo.out',
-        },
-        '-=0.5'
-      )
-      .to(
-        foot,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power3.out',
-        },
-        '-=0.4'
-      );
+    tl.to(nav, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' })
+      .to(eyebrow, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+      .to(lines,   {
+        y: 0, opacity: 1, clipPath: 'inset(0 0 0% 0)',
+        duration: 1.1, stagger: 0.11, ease: 'expo.out',
+      }, '-=0.35')
+      .to(sub,  { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.5')
+      .to(foot, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.55');
   }, []);
 
   // Coffee beans animation
@@ -521,28 +505,35 @@ export default function GradientHero() {
         }}
       >
         <div className="pixi-intro-center">
+          <div className="pixi-intro-eyebrow t-h6">
+            Single Origin · London · Est. 2009
+          </div>
           <h1 
             ref={titleRef}
             className="pixi-intro-title t-h1"
             style={{
-              transform: `scale(${1 + scrollProgress * 0.5})`,
+              transform: `scale(${1 + scrollProgress * 0.4})`,
               opacity: 1 - scrollProgress,
-              filter: isHoveringText ? 'blur(3px)' : 'blur(0px)',
+              filter: isHoveringText ? 'blur(4px)' : 'blur(0px)',
               transition: 'filter 0.3s ease-out',
             }}
             role="heading"
             aria-level={1}
           >
             <span className="pixi-intro-line pixi-intro-line--1">
-              We are a brand
+              Precisi<i>o</i>n.
             </span>
             <span className="pixi-intro-line pixi-intro-line--2">
-              of c<i>o</i>llective
+              <i>O</i>rigin.
             </span>
             <span className="pixi-intro-line pixi-intro-line--3">
-              creat<i>i</i>v<i>i</i>ty
+              Obsessi<i>o</i>n.
             </span>
           </h1>
+          <p className="pixi-intro-sub t-text-lg">
+            Ethically sourced, small-batch roasted.<br />
+            Where every cup is a ritual.
+          </p>
         </div>
 
         <div 
@@ -555,31 +546,31 @@ export default function GradientHero() {
           <div className="pixi-intro-foot-row">
             <div className="pixi-intro-foot-circles">
               <svg viewBox="0 0 54 18" width="54" height="18" fill="none">
-                <circle cx="9" cy="9" r="8.5" stroke="white" strokeOpacity="0.5" />
-                <circle cx="27" cy="9" r="8.5" stroke="white" strokeOpacity="0.5" />
-                <circle cx="45" cy="9" r="8.5" stroke="white" strokeOpacity="0.5" />
+                <circle cx="9" cy="9" r="8.5" stroke="white" strokeOpacity="0.3" />
+                <circle cx="27" cy="9" r="8.5" stroke="white" strokeOpacity="0.3" />
+                <circle cx="45" cy="9" r="8.5" stroke="white" strokeOpacity="0.3" />
               </svg>
             </div>
 
             <div className="pixi-intro-foot-items">
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Based in London</strong>
-                <span className="pixi-intro-foot-sub">Born in Tokyo</span>
+                <strong>London · Tokyo</strong>
+                <span className="pixi-intro-foot-sub">51.5074° N, 0.1278° W</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Design-driven</strong>
-                <span className="pixi-intro-foot-sub">creative agency</span>
+                <strong>12 Origins</strong>
+                <span className="pixi-intro-foot-sub">ethically sourced</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Branding, digital</strong>
-                <span className="pixi-intro-foot-sub">and communications</span>
+                <strong>Small batch</strong>
+                <span className="pixi-intro-foot-sub">roasted to order</span>
               </div>
             </div>
 
             <div className="pixi-intro-scroll-wrap">
               <svg viewBox="0 0 17 52" width="17" height="52" fill="none" aria-label="Scroll down indicator">
-                <line x1="8.5" y1="0" x2="8.5" y2="42" stroke="white" strokeOpacity="0.5" strokeWidth="1" />
-                <path d="M2 38 L8.5 52 L15 38" stroke="white" strokeOpacity="0.5" strokeWidth="1" fill="none" />
+                <line x1="8.5" y1="0" x2="8.5" y2="42" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
+                <path d="M2 38 L8.5 52 L15 38" stroke="white" strokeOpacity="0.4" strokeWidth="1" fill="none" />
               </svg>
             </div>
           </div>
