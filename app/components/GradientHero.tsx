@@ -537,7 +537,10 @@ export default function GradientHero() {
             Ethically sourced, small-batch roasted.<br />
             Where every cup is a ritual.
           </p>
-          <a href="#booking" className="pixi-intro-cta btn-primary">
+          <a
+            href="#booking"
+            className="pixi-intro-cta btn-primary pointer-events-auto px-7 py-3.5 text-xs tracking-[0.12em] opacity-0"
+          >
             Book Your Event →
           </a>
         </div>

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import './catering-form.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,25 +40,42 @@ const empty: FormState = {
   eventType: '', eventDate: '', venue: '', guests: '', notes: '',
 };
 
+// Exact pixel-match with the original CSS design
+const inputBase = [
+  'w-full',
+  'rounded-[4px]',
+  'border border-[rgba(200,146,42,0.18)]',
+  'bg-[rgba(10,9,6,0.6)]',
+  'px-4 py-[13px]',
+  'text-[14px] text-[#f0ede6]',
+  'font-[inherit]',
+  'outline-none',
+  'transition-[border-color,background]',
+  'placeholder:text-[rgba(138,125,107,0.5)]',
+  'focus:border-[#c8922a] focus:bg-[rgba(10,9,6,0.85)]',
+  'appearance-none',
+].join(' ');
+
+const selectArrow = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8922a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`;
+
 export default function CateringForm() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [form, setForm]         = useState<FormState>(empty);
+  const [form, setForm] = useState<FormState>(empty);
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors]       = useState<Partial<FormState>>({});
+  const [errors, setErrors] = useState<Partial<FormState>>({});
 
-  // Scroll-triggered reveal
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const left  = section.querySelector('.cf-left');
-    const right = section.querySelector('.cf-right');
-    const line  = section.querySelector('.cf-rule');
+    const left  = section.querySelector('[data-cf="left"]');
+    const right = section.querySelector('[data-cf="right"]');
+    const line  = section.querySelector('[data-cf="rule"]');
 
     gsap.set([line, left, right], { opacity: 0, y: 50 });
     gsap.set(line, { scaleX: 0, transformOrigin: 'left center', opacity: 1 });
 
-    ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       trigger: section,
       start: 'top 75%',
       once: true,
@@ -71,7 +87,7 @@ export default function CateringForm() {
       },
     });
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    return () => trigger.kill();
   }, []);
 
   const set = (field: keyof FormState) =>
@@ -82,14 +98,14 @@ export default function CateringForm() {
 
   const validate = (): boolean => {
     const e: Partial<FormState> = {};
-    if (!form.name.trim())      e.name      = 'Required';
-    if (!form.email.trim())     e.email     = 'Required';
+    if (!form.name.trim())     e.name      = 'Required';
+    if (!form.email.trim())    e.email     = 'Required';
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Invalid email';
-    if (!form.phone.trim())     e.phone     = 'Required';
-    if (!form.eventType)        e.eventType = 'Required';
-    if (!form.eventDate)        e.eventDate = 'Required';
-    if (!form.venue.trim())     e.venue     = 'Required';
-    if (!form.guests)           e.guests    = 'Required';
+    if (!form.phone.trim())    e.phone     = 'Required';
+    if (!form.eventType)       e.eventType = 'Required';
+    if (!form.eventDate)       e.eventDate = 'Required';
+    if (!form.venue.trim())    e.venue     = 'Required';
+    if (!form.guests)          e.guests    = 'Required';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -99,180 +115,320 @@ export default function CateringForm() {
     if (validate()) setSubmitted(true);
   };
 
+  const errorBorder = 'border-[rgba(220,80,60,0.6)]';
+
   return (
-    <section id="booking" className="cf-section" ref={sectionRef}>
-      {/* Top rule */}
-      <div className="cf-rule" aria-hidden="true" />
+    <section
+      id="booking"
+      ref={sectionRef}
+      className="relative overflow-hidden bg-[#1e1a15] pb-14 sm:pb-[72px] lg:pb-[100px] pr-12"
+    >
+      {/* Subtle radial glow */}
+      <div
+        className="pointer-events-none absolute -right-[20%] top-0 h-[60vw] w-[60vw]"
+        style={{ background: 'radial-gradient(circle, rgba(200,146,42,0.045) 0%, transparent 65%)' }}
+        aria-hidden
+      />
 
-      <div className="cf-inner">
-        {/* ── LEFT — info ── */}
-        <div className="cf-left">
-          <span className="cf-eyebrow t-h6">Catering Enquiries</span>
+      {/* Animated amber rule — GSAP scaleX reveal */}
+      <div
+        data-cf="rule"
+        className="h-px w-full"
+        style={{ background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.12) 100%)', marginBottom: '80px' }}
+        aria-hidden
+      />
 
-          <h2 className="cf-heading">
+      <div
+        className="relative z-10 grid grid-cols-1 gap-12 px-5 sm:px-6 md:grid-cols-[40%_60%] md:gap-[6vw] md:px-[3.9vw]"
+      >
+        {/* ── LEFT — info panel ── */}
+        <div data-cf="left" className="flex flex-col opacity-0">
+
+          <span
+            className="mb-7 block font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+            style={{ fontSize: 'max(0.677vw, 11px)' }}
+          >
+            Catering Enquiries
+          </span>
+
+          <h2
+            className="mb-7 font-bold uppercase leading-none tracking-[-0.03em] text-[#f0ede6]"
+            style={{ fontSize: 'clamp(38px, 4.2vw, 68px)' }}
+          >
             Bring<br />
-            <span className="cf-heading-accent">CAPOS</span><br />
+            <span className="text-[#c8922a]">CAPOS</span><br />
             to your event.
           </h2>
 
-          <p className="cf-desc t-text-lg">
+          <p
+            className="mb-10 max-w-[380px] leading-[1.75] text-[rgba(240,237,230,0.6)]"
+            style={{ fontSize: 'max(1.04vw, 17px)' }}
+          >
             We set up our specialty coffee station at your venue — from intimate
             corporate breakfasts to large-scale festivals. Every cup, crafted on-site.
           </p>
 
-          <ul className="cf-contact-list">
-            <li className="cf-contact-item">
-              <span className="cf-contact-icon" aria-hidden="true">✉</span>
-              <a href="mailto:hello@capos.coffee" className="cf-contact-link">
+          <ul className="mb-9 flex list-none flex-col gap-[14px] p-0">
+            <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
+              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✉</span>
+              <a href="mailto:hello@capos.coffee" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
                 hello@capos.coffee
               </a>
             </li>
-            <li className="cf-contact-item">
-              <span className="cf-contact-icon" aria-hidden="true">✆</span>
-              <a href="tel:+442079460958" className="cf-contact-link">
+            <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
+              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✆</span>
+              <a href="tel:+442079460958" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
                 +44 20 7946 0958
               </a>
             </li>
-            <li className="cf-contact-item cf-contact-note">
-              <span className="cf-contact-icon" aria-hidden="true">◷</span>
+            <li className="flex items-center gap-3 tracking-[0.06em] text-[rgba(240,237,230,0.55)]" style={{ fontSize: 'max(0.677vw, 11px)' }}>
+              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>◷</span>
               We respond within 24 hours.
             </li>
           </ul>
 
-          <div className="cf-tags">
+          <div className="mt-auto flex flex-wrap gap-2 pt-2">
             {['Corporate', 'Weddings', 'Festivals', 'Private Events'].map((t) => (
-              <span key={t} className="cf-tag t-h6">{t}</span>
+              <span
+                key={t}
+                className="rounded-sm border border-[rgba(200,146,42,0.28)] px-[14px] py-[6px] tracking-[0.14em] text-[rgba(200,146,42,0.75)]"
+                style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase' }}
+              >
+                {t}
+              </span>
             ))}
           </div>
         </div>
 
         {/* ── RIGHT — form ── */}
-        <div className="cf-right">
+        <div data-cf="right" className="opacity-0">
           {submitted ? (
-            <div className="cf-success">
-              <span className="cf-success-icon" aria-hidden="true">✓</span>
-              <h3 className="cf-success-title">Enquiry received.</h3>
-              <p className="cf-success-body t-text-lg">
+            <div className="flex flex-col gap-5 rounded-md border border-[rgba(200,146,42,0.2)] bg-[rgba(10,9,6,0.4)] p-8 sm:p-10">
+              <span
+                className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-[#c8922a] text-xl text-[#c8922a]"
+                aria-hidden
+              >
+                ✓
+              </span>
+              <h3
+                className="m-0 font-bold tracking-[-0.02em] text-[#f0ede6]"
+                style={{ fontSize: 'clamp(22px, 2.5vw, 36px)' }}
+              >
+                Enquiry received.
+              </h3>
+              <p
+                className="m-0 max-w-[420px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
+                style={{ fontSize: 'max(1.04vw, 17px)' }}
+              >
                 Thank you, {form.name.split(' ')[0]}. Our team will be in touch
                 within 24 hours to discuss your event.
               </p>
               <button
-                className="btn-primary cf-reset-btn"
+                type="button"
+                className="btn-primary mt-2 self-start"
+                style={{ fontSize: 'max(0.677vw, 11px)', padding: '12px 24px', letterSpacing: '0.1em' }}
                 onClick={() => { setForm(empty); setSubmitted(false); }}
               >
                 Submit another enquiry
               </button>
             </div>
           ) : (
-            <form className="cf-form" onSubmit={handleSubmit} noValidate>
-              {/* Row 1 */}
-              <div className="cf-row cf-row--2">
-                <div className={`cf-field${errors.name ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-name">Full Name</label>
+            <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate>
+
+              {/* Row — Name + Phone */}
+              <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-name"
+                  >
+                    Full Name
+                  </label>
                   <input
-                    id="cf-name" type="text" className="cf-input"
+                    id="cf-name" type="text"
+                    className={`${inputBase}${errors.name ? ` ${errorBorder}` : ''}`}
                     placeholder="Ali Hassan"
                     value={form.name} onChange={set('name')}
                     autoComplete="name"
                   />
-                  {errors.name && <span className="cf-error">{errors.name}</span>}
+                  {errors.name && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.name}</span>
+                  )}
                 </div>
 
-                <div className={`cf-field${errors.phone ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-phone">Phone</label>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-phone"
+                  >
+                    Phone
+                  </label>
                   <input
-                    id="cf-phone" type="tel" className="cf-input"
+                    id="cf-phone" type="tel"
+                    className={`${inputBase}${errors.phone ? ` ${errorBorder}` : ''}`}
                     placeholder="+44 7700 000000"
                     value={form.phone} onChange={set('phone')}
                     autoComplete="tel"
                   />
-                  {errors.phone && <span className="cf-error">{errors.phone}</span>}
+                  {errors.phone && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.phone}</span>
+                  )}
                 </div>
               </div>
 
-              {/* Row 2 */}
-              <div className="cf-row">
-                <div className={`cf-field${errors.email ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-email">Email Address</label>
-                  <input
-                    id="cf-email" type="email" className="cf-input"
-                    placeholder="you@example.com"
-                    value={form.email} onChange={set('email')}
-                    autoComplete="email"
-                  />
-                  {errors.email && <span className="cf-error">{errors.email}</span>}
-                </div>
+              {/* Row — Email */}
+              <div className="flex flex-col gap-2">
+                <label
+                  className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                  style={{ fontSize: 'max(0.677vw, 11px)' }}
+                  htmlFor="cf-email"
+                >
+                  Email Address
+                </label>
+                <input
+                  id="cf-email" type="email"
+                  className={`${inputBase}${errors.email ? ` ${errorBorder}` : ''}`}
+                  placeholder="you@example.com"
+                  value={form.email} onChange={set('email')}
+                  autoComplete="email"
+                />
+                {errors.email && (
+                  <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.email}</span>
+                )}
               </div>
 
-              {/* Row 3 */}
-              <div className="cf-row cf-row--2">
-                <div className={`cf-field${errors.eventType ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-type">Event Type</label>
+              {/* Row — Event Type + Guests */}
+              <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-type"
+                  >
+                    Event Type
+                  </label>
                   <select
-                    id="cf-type" className="cf-input cf-select"
+                    id="cf-type"
+                    className={`${inputBase} cursor-pointer pr-10${errors.eventType ? ` ${errorBorder}` : ''}`}
+                    style={{
+                      backgroundImage: selectArrow,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 14px center',
+                      backgroundSize: '12px 8px',
+                    }}
                     value={form.eventType} onChange={set('eventType')}
                   >
-                    <option value="">Select type</option>
-                    {eventTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                    <option value="" style={{ background: '#1e1a15', color: '#f0ede6' }}>Select type</option>
+                    {eventTypes.map((t) => (
+                      <option key={t} value={t} style={{ background: '#1e1a15', color: '#f0ede6' }}>{t}</option>
+                    ))}
                   </select>
-                  {errors.eventType && <span className="cf-error">{errors.eventType}</span>}
+                  {errors.eventType && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.eventType}</span>
+                  )}
                 </div>
 
-                <div className={`cf-field${errors.guests ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-guests">Expected Guests</label>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-guests"
+                  >
+                    Expected Guests
+                  </label>
                   <select
-                    id="cf-guests" className="cf-input cf-select"
+                    id="cf-guests"
+                    className={`${inputBase} cursor-pointer pr-10${errors.guests ? ` ${errorBorder}` : ''}`}
+                    style={{
+                      backgroundImage: selectArrow,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 14px center',
+                      backgroundSize: '12px 8px',
+                    }}
                     value={form.guests} onChange={set('guests')}
                   >
-                    <option value="">Select range</option>
-                    {guestCounts.map((g) => <option key={g} value={g}>{g}</option>)}
+                    <option value="" style={{ background: '#1e1a15', color: '#f0ede6' }}>Select range</option>
+                    {guestCounts.map((g) => (
+                      <option key={g} value={g} style={{ background: '#1e1a15', color: '#f0ede6' }}>{g}</option>
+                    ))}
                   </select>
-                  {errors.guests && <span className="cf-error">{errors.guests}</span>}
+                  {errors.guests && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.guests}</span>
+                  )}
                 </div>
               </div>
 
-              {/* Row 4 */}
-              <div className="cf-row cf-row--2">
-                <div className={`cf-field${errors.eventDate ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-date">Event Date</label>
+              {/* Row — Date + Venue */}
+              <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-date"
+                  >
+                    Event Date
+                  </label>
                   <input
-                    id="cf-date" type="date" className="cf-input cf-date"
+                    id="cf-date" type="date"
+                    className={`${inputBase} [color-scheme:dark]${errors.eventDate ? ` ${errorBorder}` : ''}`}
                     value={form.eventDate} onChange={set('eventDate')}
                     min={new Date().toISOString().split('T')[0]}
                   />
-                  {errors.eventDate && <span className="cf-error">{errors.eventDate}</span>}
+                  {errors.eventDate && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.eventDate}</span>
+                  )}
                 </div>
 
-                <div className={`cf-field${errors.venue ? ' has-error' : ''}`}>
-                  <label className="cf-label t-h6" htmlFor="cf-venue">Venue / City</label>
+                <div className="flex flex-1 flex-col gap-2">
+                  <label
+                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    style={{ fontSize: 'max(0.677vw, 11px)' }}
+                    htmlFor="cf-venue"
+                  >
+                    Venue / City
+                  </label>
                   <input
-                    id="cf-venue" type="text" className="cf-input"
+                    id="cf-venue" type="text"
+                    className={`${inputBase}${errors.venue ? ` ${errorBorder}` : ''}`}
                     placeholder="e.g. London, Manchester"
                     value={form.venue} onChange={set('venue')}
                   />
-                  {errors.venue && <span className="cf-error">{errors.venue}</span>}
+                  {errors.venue && (
+                    <span className="text-[11px] tracking-[0.06em] text-[rgba(220,100,80,0.9)]">{errors.venue}</span>
+                  )}
                 </div>
               </div>
 
-              {/* Notes */}
-              <div className="cf-row">
-                <div className="cf-field">
-                  <label className="cf-label t-h6" htmlFor="cf-notes">
-                    Additional Details <span className="cf-optional">(optional)</span>
-                  </label>
-                  <textarea
-                    id="cf-notes" className="cf-input cf-textarea"
-                    placeholder="Tell us about your event, specific requirements, or any questions…"
-                    rows={4}
-                    value={form.notes} onChange={set('notes')}
-                  />
-                </div>
+              {/* Row — Notes */}
+              <div className="flex flex-col gap-2">
+                <label
+                  className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                  style={{ fontSize: 'max(0.677vw, 11px)' }}
+                  htmlFor="cf-notes"
+                >
+                  Additional Details{' '}
+                  <span className="font-normal normal-case tracking-normal text-[rgba(138,125,107,0.5)]">(optional)</span>
+                </label>
+                <textarea
+                  id="cf-notes"
+                  className={`${inputBase} min-h-[110px] resize-y leading-[1.6]`}
+                  placeholder="Tell us about your event, specific requirements, or any questions…"
+                  rows={4}
+                  value={form.notes} onChange={set('notes')}
+                />
               </div>
 
               {/* Submit */}
-              <button type="submit" className="cf-submit btn-primary">
+              <button
+                type="submit"
+                className="btn-primary mt-2 self-start"
+                style={{ padding: '14px 32px', fontSize: 'max(0.677vw, 12px)', letterSpacing: '0.12em' }}
+              >
                 Send Enquiry →
               </button>
+
             </form>
           )}
         </div>

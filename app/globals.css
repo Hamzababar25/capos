@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg: #0a0906;
+  --color-bg-card: #1e1a15;
+  --color-bg-raised: #2a2318;
+  --color-warm-white: #f0ede6;
+  --color-muted: #8a7d6b;
+  --color-amber: #c8922a;
+}
+
 :root {
   --bg:        #0a0906;
   --bg-card:   #1e1a15;
