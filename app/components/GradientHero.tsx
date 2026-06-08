@@ -327,6 +327,7 @@ export default function GradientHero() {
     const lines    = document.querySelectorAll('.pixi-intro-line');
     const eyebrow  = document.querySelector('.pixi-intro-eyebrow');
     const sub      = document.querySelector('.pixi-intro-sub');
+    const cta      = document.querySelector('.pixi-intro-cta');
     const foot     = document.querySelector('.pixi-intro-foot');
     const nav      = document.querySelector('.c-header');
 
@@ -334,6 +335,7 @@ export default function GradientHero() {
     gsap.set(eyebrow, { y: 20, opacity: 0 });
     gsap.set(lines,   { y: 80, opacity: 0, clipPath: 'inset(0 0 100% 0)' });
     gsap.set(sub,     { y: 20, opacity: 0 });
+    gsap.set(cta,     { y: 20, opacity: 0 });
     gsap.set(foot,    { y: 30, opacity: 0 });
 
     const tl = gsap.timeline({ delay: 0.1 });
@@ -345,6 +347,7 @@ export default function GradientHero() {
         duration: 1.1, stagger: 0.11, ease: 'expo.out',
       }, '-=0.35')
       .to(sub,  { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.5')
+      .to(cta,  { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.6')
       .to(foot, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.55');
   }, []);
 
@@ -534,6 +537,9 @@ export default function GradientHero() {
             Ethically sourced, small-batch roasted.<br />
             Where every cup is a ritual.
           </p>
+          <a href="#booking" className="pixi-intro-cta btn-primary">
+            Book Your Event →
+          </a>
         </div>
 
         <div 

@@ -105,9 +105,9 @@ export default function Navigation() {
           <span className="c-header-clock">{tokyoTime} TKY</span>
         </div>
 
-        {/* Reserve CTA */}
-        <a href="#contact" className="c-header-cta btn-primary">
-          Reserve a Table
+        {/* Booking CTA */}
+        <a href="#booking" className="c-header-cta btn-primary">
+          Book Your Event
         </a>
 
         {/* Burger */}
@@ -149,8 +149,8 @@ export default function Navigation() {
             ))}
           </ul>
         </nav>
-        <a href="#contact" className="c-header-overlay-cta btn-primary" onClick={closeMenu}>
-          Reserve a Table
+        <a href="#booking" className="c-header-overlay-cta btn-primary" onClick={closeMenu}>
+          Book Your Event
         </a>
       </div>
     </header>

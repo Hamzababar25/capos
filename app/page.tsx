@@ -5,6 +5,7 @@ import GradientHero from './components/GradientHero';
 import About from './components/About';
 import StatsSection from './components/StatsSection';
 import QuoteSection from './components/QuoteSection';
+import CateringForm from './components/CateringForm';
 import Footer from './components/Footer';
 import './styles/home.css';
 
@@ -22,6 +23,7 @@ export default function Home() {
       <About />
       <StatsSection />
       <QuoteSection />
+      <CateringForm />
       <Footer />
     </main>
   );

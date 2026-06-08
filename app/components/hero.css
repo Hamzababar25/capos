@@ -150,6 +150,15 @@
   line-height: 1.65;
 }
 
+/* Hero CTA button */
+.pixi-intro-cta {
+  opacity: 0;
+  pointer-events: auto;
+  font-size: max(0.75vw, 12px);
+  padding: 14px 28px;
+  letter-spacing: 0.12em;
+}
+
 /* Bottom veil removed — no background overlay at foot strip */
 
 /* ── Bottom strip ──────────────────────────────────── */
