@@ -5,32 +5,17 @@ import Navigation from './Navigation';
 import './hero.css';
 import gsap from 'gsap';
 
-interface CoffeeBean {
-  x: number;
-  y: number;
-  rotation: number;
-  speed: number;
-  rotationSpeed: number;
-  size: number;
-  opacity: number;
-  sway: number;
-  swaySpeed: number;
-}
 
 export default function GradientHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const beansCanvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
-  const beansRafRef = useRef<number>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
-  const [isHoveringText, setIsHoveringText] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const currentMousePos = useRef({ x: 0.5, y: 0.5 });
   const targetMousePos = useRef({ x: 0.5, y: 0.5 });
-  const beansRef = useRef<CoffeeBean[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -280,23 +265,6 @@ export default function GradientHero() {
     section.addEventListener('mouseenter', handleMouseEnter);
     section.addEventListener('mouseleave', handleMouseLeave);
 
-    // Text hover detection
-    if (title) {
-      const handleTextEnter = () => setIsHoveringText(true);
-      const handleTextLeave = () => setIsHoveringText(false);
-      
-      title.addEventListener('mouseenter', handleTextEnter);
-      title.addEventListener('mouseleave', handleTextLeave);
-
-      return () => {
-        section.removeEventListener('mousemove', handleMouseMove);
-        section.removeEventListener('mouseenter', handleMouseEnter);
-        section.removeEventListener('mouseleave', handleMouseLeave);
-        title.removeEventListener('mouseenter', handleTextEnter);
-        title.removeEventListener('mouseleave', handleTextLeave);
-      };
-    }
-
     return () => {
       section.removeEventListener('mousemove', handleMouseMove);
       section.removeEventListener('mouseenter', handleMouseEnter);
@@ -351,132 +319,6 @@ export default function GradientHero() {
       .to(foot, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.55');
   }, []);
 
-  // Coffee beans animation
-  useEffect(() => {
-    const canvas = beansCanvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Initialize beans
-    const createBean = (fromLeft: boolean): CoffeeBean => ({
-      x: fromLeft ? Math.random() * (canvas.width * 0.15) : canvas.width - Math.random() * (canvas.width * 0.15),
-      y: -20,
-      rotation: Math.random() * Math.PI * 2,
-      speed: 1 + Math.random() * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.1,
-      size: 8 + Math.random() * 8,
-      opacity: 0.3 + Math.random() * 0.4,
-      sway: Math.random() * 40 - 20,
-      swaySpeed: 0.02 + Math.random() * 0.03,
-    });
-
-    // Add beans periodically
-    const addBeans = () => {
-      if (beansRef.current.length < 50) {
-        beansRef.current.push(createBean(Math.random() > 0.5));
-      }
-    };
-
-    const beanInterval = setInterval(addBeans, 300);
-
-    // Draw coffee bean shape
-    const drawBean = (bean: CoffeeBean) => {
-      ctx.save();
-      ctx.translate(bean.x, bean.y);
-      ctx.rotate(bean.rotation);
-      ctx.globalAlpha = bean.opacity;
-
-      // Very dark, almost black coffee bean colors
-      const darkBrown = '#1a0f08';
-      const mediumBrown = '#2d1810';
-      const lightBrown = '#3d2415';
-
-      // Bean body (more elongated oval for realistic shape)
-      ctx.fillStyle = '#0f0805';
-      ctx.beginPath();
-      ctx.ellipse(0, 0, bean.size * 0.7, bean.size * 1.2, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Add gradient for 3D effect
-      const gradient = ctx.createRadialGradient(
-        -bean.size * 0.2, -bean.size * 0.3, 0,
-        0, 0, bean.size * 1.2
-      );
-      gradient.addColorStop(0, mediumBrown);
-      gradient.addColorStop(0.6, darkBrown);
-      gradient.addColorStop(1, '#0a0503');
-      
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, bean.size * 0.7, bean.size * 1.2, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Bean crack (center line) - very dark
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = bean.size * 0.12;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      // S-shaped crack
-      ctx.moveTo(0, -bean.size * 0.7);
-      ctx.quadraticCurveTo(bean.size * 0.15, -bean.size * 0.2, 0, bean.size * 0.1);
-      ctx.quadraticCurveTo(-bean.size * 0.15, bean.size * 0.4, 0, bean.size * 0.8);
-      ctx.stroke();
-
-      // Very subtle highlight for shine
-      ctx.fillStyle = 'rgba(61, 36, 21, 0.2)';
-      ctx.beginPath();
-      ctx.ellipse(-bean.size * 0.25, -bean.size * 0.4, bean.size * 0.3, bean.size * 0.5, -0.4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Edge shadow for depth - very dark
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
-      ctx.lineWidth = bean.size * 0.08;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, bean.size * 0.65, bean.size * 1.15, 0, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.restore();
-    };
-
-    // Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      beansRef.current = beansRef.current.filter(bean => {
-        // Update position
-        bean.y += bean.speed;
-        bean.x += Math.sin(bean.y * bean.swaySpeed) * 0.5;
-        bean.rotation += bean.rotationSpeed;
-
-        // Remove if off screen
-        if (bean.y > canvas.height + 50) {
-          return false;
-        }
-
-        drawBean(bean);
-        return true;
-      });
-
-      beansRafRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      cancelAnimationFrame(beansRafRef.current);
-      clearInterval(beanInterval);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
 
   return (
     <section className="pixi-intro" ref={sectionRef}>
@@ -486,8 +328,20 @@ export default function GradientHero() {
       {/* WebGL canvas */}
       <canvas ref={canvasRef} className="pixi-intro-canvas" />
 
-      {/* Coffee beans canvas */}
-      <canvas ref={beansCanvasRef} className="coffee-beans-canvas" />
+      {/* Floating circles */}
+      <div className="hero-circles" aria-hidden="true">
+        {/* Left side */}
+        <span className="hero-circle hero-circle--a" style={{ width: 280, height: 280, left: -60,   top: '15%',  animationDuration: '38s', animationDelay: '0s'   }} />
+        <span className="hero-circle hero-circle--b" style={{ width: 130, height: 130, left: 60,    top: '55%',  animationDuration: '27s', animationDelay: '-8s'  }} />
+        <span className="hero-circle hero-circle--a" style={{ width: 72,  height: 72,  left: 160,   top: '28%',  animationDuration: '21s', animationDelay: '-14s' }} />
+        {/* Right side */}
+        <span className="hero-circle hero-circle--b" style={{ width: 320, height: 320, right: -80,  top: '22%',  animationDuration: '45s', animationDelay: '-20s' }} />
+        <span className="hero-circle hero-circle--a" style={{ width: 95,  height: 95,  right: 80,   top: '60%',  animationDuration: '31s', animationDelay: '-5s'  }} />
+        <span className="hero-circle hero-circle--b" style={{ width: 180, height: 180, right: 120,  top: '8%',   animationDuration: '34s', animationDelay: '-17s' }} />
+        {/* Bottom accent */}
+        <span className="hero-circle hero-circle--a" style={{ width: 50,  height: 50,  left: '38%', top: '82%',  animationDuration: '24s', animationDelay: '-6s'  }} />
+        <span className="hero-circle hero-circle--b" style={{ width: 110, height: 110, right: '30%', top: '70%', animationDuration: '30s', animationDelay: '-12s' }} />
+      </div>
 
       {/* Interactive cursor circle */}
       <div 
@@ -509,33 +363,50 @@ export default function GradientHero() {
       >
         <div className="pixi-intro-center">
           <div className="pixi-intro-eyebrow t-h6">
-            Single Origin · London · Est. 2009
+            Coffee Cart · Tri-State Area · Est. 2025
           </div>
-          <h1 
+          <h1
             ref={titleRef}
             className="pixi-intro-title t-h1"
             style={{
               transform: `scale(${1 + scrollProgress * 0.4})`,
               opacity: 1 - scrollProgress,
-              filter: isHoveringText ? 'blur(4px)' : 'blur(0px)',
-              transition: 'filter 0.3s ease-out',
             }}
             role="heading"
             aria-level={1}
           >
+            {/* Line 1 — hover reveals: WELCOME */}
             <span className="pixi-intro-line pixi-intro-line--1">
-              Precisi<i>o</i>n.
+              <span className="hero-flip">
+                <span className="hero-flip-default">CAPOS</span>
+                <span className="hero-flip-hover hero-flip-hover--en" aria-hidden="true">
+                  WELCOME
+                </span>
+              </span>
             </span>
+
+            {/* Line 2 — hover reveals: مرحباً (Arabic) */}
             <span className="pixi-intro-line pixi-intro-line--2">
-              <i>O</i>rigin.
+              <span className="hero-flip">
+                <span className="hero-flip-default">COFFEE</span>
+                <span className="hero-flip-hover hero-flip-hover--ar" lang="ar" dir="rtl" aria-hidden="true">
+                  مرحباً
+                </span>
+              </span>
             </span>
+
+            {/* Line 3 — hover reveals: خوش آمدید (Urdu) */}
             <span className="pixi-intro-line pixi-intro-line--3">
-              Obsessi<i>o</i>n.
+              <span className="hero-flip">
+                <span className="hero-flip-default">EST. 2025</span>
+                <span className="hero-flip-hover hero-flip-hover--ur" lang="ur" aria-hidden="true">
+                  خوش آمدید
+                </span>
+              </span>
             </span>
           </h1>
           <p className="pixi-intro-sub t-text-lg">
-            Ethically sourced, small-batch roasted.<br />
-            Where every cup is a ritual.
+            A marriage of cultures,<br />one unforgettable cup at a time.
           </p>
           <a
             href="#booking"

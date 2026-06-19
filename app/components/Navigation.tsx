@@ -74,7 +74,8 @@ export default function Navigation() {
   }, []);
 
   const closeMenu = () => setIsMenuOpen(false);
-  const navLinks  = ['Work', 'About', 'Contact'];
+  const navLinks  = ['Menu', 'About', 'Contact'];
+  const navHref   = (item: string) => item === 'Menu' ? '/menu' : `#${item.toLowerCase()}`;
 
   return (
     <header className={`c-header${isMenuOpen ? ' is-open' : ''}${isScrolled ? ' is-scrolled' : ''}`}>
@@ -90,7 +91,7 @@ export default function Navigation() {
           <ul className="c-header-nav-list t-h6">
             {navLinks.map((item) => (
               <li key={item}>
-                <Link href={`#${item.toLowerCase()}`} className="c-header-nav-link">
+                <Link href={navHref(item)} className="c-header-nav-link">
                   <span className="c-header-nav-link-text">{item}</span>
                   <span className="c-header-nav-link-line" aria-hidden="true" />
                 </Link>
@@ -139,7 +140,7 @@ export default function Navigation() {
                 ref={(el) => { if (el) menuItemsRef.current[i] = el; }}
               >
                 <Link
-                  href={item === 'Home' ? '/' : `#${item.toLowerCase()}`}
+                  href={item === 'Home' ? '/' : navHref(item)}
                   onClick={closeMenu}
                 >
                   <span className="c-header-overlay-number">0{i + 1}</span>
