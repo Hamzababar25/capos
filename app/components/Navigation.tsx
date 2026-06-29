@@ -11,7 +11,7 @@ function useClock(timezone: string) {
   useEffect(() => {
     const update = () => {
       setTime(
-        new Date().toLocaleTimeString('en-GB', {
+        new Date().toLocaleTimeString('en-US', {
           timeZone: timezone,
           hour: '2-digit',
           minute: '2-digit',
@@ -30,8 +30,8 @@ function useClock(timezone: string) {
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const londonTime = useClock('Europe/London');
-  const tokyoTime  = useClock('Asia/Tokyo');
+  const londonTime = useClock('America/New_York');
+  const tokyoTime  = useClock('Asia/Karachi');
   const overlayRef   = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLLIElement[]>([]);
   const tlRef        = useRef<gsap.core.Timeline | null>(null);
@@ -102,8 +102,8 @@ export default function Navigation() {
 
         {/* Clocks */}
         <div className="c-header-clocks t-h6">
-          <span className="c-header-clock is-active">{londonTime} LDN</span>
-          <span className="c-header-clock">{tokyoTime} TKY</span>
+          <span className="c-header-clock is-active">{londonTime} NYC</span>
+          <span className="c-header-clock">{tokyoTime} KHI</span>
         </div>
 
         {/* Booking CTA */}
@@ -130,7 +130,7 @@ export default function Navigation() {
       {/* Fullscreen overlay */}
       <div className="c-header-overlay" ref={overlayRef}>
         <div className="c-header-overlay-time t-h6">
-          {londonTime} LDN &nbsp;·&nbsp; {tokyoTime} TKY
+          {londonTime} NYC &nbsp;·&nbsp; {tokyoTime} KHI
         </div>
         <nav className="c-header-overlay-nav">
           <ul>

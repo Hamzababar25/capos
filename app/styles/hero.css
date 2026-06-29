@@ -21,6 +21,7 @@
   height: 100%;
 }
 
+
 .hero-content {
   position: absolute;
   top: 50%;
@@ -33,6 +34,7 @@
   padding: 0 24px;
   animation: fadeInUp 1.2s ease-out 0.4s both;
 }
+
 
 .hero-title {
   font-size: clamp(2.5rem, 8vw, 5.5rem);
@@ -116,6 +118,12 @@
   }
 }
 
+/* ADDED: allows font-size (and other type styles) on stat labels to be overridden here */
+.stat p {
+  font-size: 0.75rem;
+  color: inherit;
+}
+
 @media (max-width: 768px) {
   .hero-container {
     height: 80vh;
@@ -134,3 +142,4 @@
     margin-top: 24px;
   }
 }
+

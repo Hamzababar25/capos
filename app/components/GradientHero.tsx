@@ -380,7 +380,7 @@ export default function GradientHero() {
               <span className="hero-flip">
                 <span className="hero-flip-default">CAPOS</span>
                 <span className="hero-flip-hover hero-flip-hover--en" aria-hidden="true">
-                  WELCOME
+                  Ciao
                 </span>
               </span>
             </span>
@@ -400,8 +400,9 @@ export default function GradientHero() {
               <span className="hero-flip">
                 <span className="hero-flip-default">EST. 2025</span>
                 <span className="hero-flip-hover hero-flip-hover--ur" lang="ur" aria-hidden="true">
-                  خوش آمدید
-                </span>
+                olá
+                
+               </span>
               </span>
             </span>
           </h1>
@@ -434,15 +435,15 @@ export default function GradientHero() {
 
             <div className="pixi-intro-foot-items">
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>London · Tokyo</strong>
-                <span className="pixi-intro-foot-sub">51.5074° N, 0.1278° W</span>
+                <strong>New York</strong>
+                <span className="pixi-intro-foot-sub">40.7375° N, 0.1278° W</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>12 Origins</strong>
+                <strong>Arabic Beans</strong>
                 <span className="pixi-intro-foot-sub">ethically sourced</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Small batch</strong>
+                <strong>Italian Touch</strong>
                 <span className="pixi-intro-foot-sub">roasted to order</span>
               </div>
             </div>

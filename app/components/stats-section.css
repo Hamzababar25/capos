@@ -1,10 +1,12 @@
 .stats-section {
+  /* ADDED: change this one value to recolor all stat numbers */
+  --stats-value-color: #f0ede6;
+  -webkit-text-stroke: 2px #c8922a;
   background: #0a0906;
   padding: 120px 3.9vw 130px;
   border-top: 1px solid rgba(240, 237, 230, 0.06);
   border-bottom: 1px solid rgba(240, 237, 230, 0.06);
 }
-
 .stats-eyebrow {
   color: #c8922a;
   margin-bottom: 64px;
@@ -46,7 +48,7 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: #f0ede6;
+  color: var(--stats-value-color); /* CHANGED: now controlled by --stats-value-color above */
   /* Amber glow on the number */
   text-shadow: 0 0 80px rgba(200, 146, 42, 0.08);
 }

@@ -8,6 +8,7 @@ import QuoteSection from './components/QuoteSection';
 import CateringForm from './components/CateringForm';
 import Footer from './components/Footer';
 import './styles/home.css';
+import './styles/hero.css'; // ADDED: loads .stat p rules without rendering Hero component
 
 export default function Home() {
   const [isPageReady, setIsPageReady] = useState(false);

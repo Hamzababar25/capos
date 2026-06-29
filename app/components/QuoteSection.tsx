@@ -49,7 +49,7 @@ export default function QuoteSection() {
           and ritual over routine.&rdquo;
         </blockquote>
         <div className="quote-attribution t-h6">
-          — Ali Hassan, Founder · CAPOS Coffee, London 2009
+          — Arbaz Qureshi, Founder · CAPOS Coffee, New York 2025
         </div>
       </div>
     </section>

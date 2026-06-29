@@ -125,4 +125,7 @@
   .navigation.is-open .nav-toggle span:last-child {
     transform: rotate(-45deg) translateY(-10px);
   }
+  .c-header-clock{
+    -webkit-text-stroke: 8px black
+  }
 }
