@@ -259,6 +259,8 @@ canvas {
   transform-origin: left center;
   transition: transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
   border-radius: inherit;
+  /* -1 inside an isolated context = above the button's own bg but BELOW text */
+  z-index: -1;
 }
 
 .btn-primary:hover {
@@ -269,9 +271,10 @@ canvas {
   transform: scaleX(1);
 }
 
-.btn-primary > * {
-  position: relative;
-  z-index: 1;
+/* isolation: isolate makes z-index: -1 on ::before relative to this element,
+   not to the page — so text nodes always render above the amber fill */
+.btn-primary {
+  isolation: isolate;
 }
 
 /* ─── Mobile tweaks ───────────────────────────────────── */

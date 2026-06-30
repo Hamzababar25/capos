@@ -202,26 +202,27 @@
 }
 
 /* WELCOME — italic, warm white */
+/* WELCOME — warm white italic */
 .hero-flip-hover--en {
-  color: #c8922a;
-  -webkit-text-stroke: 0.3px black;
+  color: #f0ede6;
   font-style: italic;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 /* مرحباً — brand amber */
 .hero-flip-hover--ar {
   color: #c8922a;
-  -webkit-text-stroke: 0.3px black;
   letter-spacing: 0.02em;
   font-weight: 400;
 }
 
-/* خوش آمدید — soft gold, distinct from amber */
-.hero-flip-hover--ur {
-  color: #c8922a;
-  letter-spacing: 0.02em;
-  -webkit-text-stroke: 0.3px black;
+/* BENVENUTO — Cormorant Garamond, champagne gold italic */
+.hero-flip-hover--it {
+  color: #e8d0a0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.06em;
 }
 
 /* Trigger — pure crossfade, no layout shift */
@@ -242,18 +243,17 @@
 .pixi-intro-line--2 {}
 .pixi-intro-line--3 {}
 
-/* Hero CTA — needs dark bg to pop on the golden gradient */
+/* Hero CTA — dark glass bg so it pops on the golden gradient */
 .pixi-intro-cta {
   background: rgba(10, 9, 6, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-color: rgba(240, 237, 230, 0.50) !important;
+  border-color: rgba(240, 237, 230, 0.5) !important;
 }
+/* On hover the ::before amber fill takes over — clear the static bg so
+   the amber sweep is visible and text reads dark on amber (globals.css) */
 .pixi-intro-cta:hover {
-  color: #0a0906 !important;
-}
-.pixi-intro-cta::before {
-  background: #f0ede6 !important;
+  background: transparent !important;
 }
 
 /* Subtext below headline */

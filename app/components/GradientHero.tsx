@@ -395,14 +395,13 @@ export default function GradientHero() {
               </span>
             </span>
 
-            {/* Line 3 — hover reveals: خوش آمدید (Urdu) */}
+            {/* Line 3 — hover reveals: BENVENUTO (Italian) */}
             <span className="pixi-intro-line pixi-intro-line--3">
               <span className="hero-flip">
                 <span className="hero-flip-default">EST. 2025</span>
-                <span className="hero-flip-hover hero-flip-hover--ur" lang="ur" aria-hidden="true">
-                olá
-                
-               </span>
+                <span className="hero-flip-hover hero-flip-hover--it" lang="it" aria-hidden="true">
+                  BENVENUTO
+                </span>
               </span>
             </span>
           </h1>

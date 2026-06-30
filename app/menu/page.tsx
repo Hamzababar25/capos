@@ -112,8 +112,8 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DrinkCard({ name, desc, tag, price }: {
-  name: string; desc: string; tag?: string | null; price?: string;
+function DrinkCard({ name, desc, tag }: {
+  name: string; desc: string; tag?: string | null;
 }) {
   return (
     <div
@@ -127,24 +127,14 @@ function DrinkCard({ name, desc, tag, price }: {
         >
           {name}
         </h3>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          {price && (
-            <span
-              className="font-bold tracking-[0.04em] text-[#c8922a]"
-              style={{ fontSize: 'clamp(15px, 1.2vw, 20px)' }}
-            >
-              {price}
-            </span>
-          )}
-          {tag && (
-            <span
-              className="rounded-sm border border-[rgba(200,146,42,0.35)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(200,146,42,0.85)]"
-              style={{ fontSize: 'max(0.677vw, 10px)' }}
-            >
-              {tag}
-            </span>
-          )}
-        </div>
+        {tag && (
+          <span
+            className="rounded-sm border border-[rgba(200,146,42,0.35)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(200,146,42,0.85)]"
+            style={{ fontSize: 'max(0.677vw, 10px)' }}
+          >
+            {tag}
+          </span>
+        )}
       </div>
       <p
         className="m-0 leading-[1.7] text-[rgba(240,237,230,0.55)]"
@@ -292,41 +282,33 @@ export default function MenuPage() {
 
           <div className="flex flex-col justify-center gap-8">
             <div
-              className="flex items-start justify-between gap-6 border-b border-[rgba(200,146,42,0.12)] pb-8"
+              className="flex flex-col gap-4 border-b border-[rgba(200,146,42,0.12)] pb-8"
               data-reveal
             >
-              <div className="flex flex-col gap-3">
-                <h3
-                  className="m-0 font-semibold tracking-[-0.01em] text-[#f0ede6]"
-                  style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
-                >
-                  Iced Latte
-                </h3>
-                <p
-                  className="m-0 leading-[1.65] text-[rgba(240,237,230,0.55)]"
-                  style={{ fontSize: 'max(0.9vw, 14px)' }}
-                >
-                  Chilled espresso over ice with your choice of classic syrups
-                  for a refreshing caffeine fix.
-                </p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {essentialFlavors.map((f) => (
-                    <span
-                      key={f}
-                      className="rounded-sm border border-[rgba(200,146,42,0.20)] px-3 py-1 text-[rgba(200,146,42,0.70)]"
-                      style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
-                    >
-                      {f}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <span
-                className="shrink-0 font-bold tracking-[0.04em] text-[#c8922a]"
+              <h3
+                className="m-0 font-semibold tracking-[-0.01em] text-[#f0ede6]"
                 style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
               >
-                $5.50
-              </span>
+                Iced Latte
+              </h3>
+              <p
+                className="m-0 leading-[1.65] text-[rgba(240,237,230,0.55)]"
+                style={{ fontSize: 'max(0.9vw, 14px)' }}
+              >
+                Chilled espresso over ice with your choice of classic syrups
+                for a refreshing caffeine fix.
+              </p>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {essentialFlavors.map((f) => (
+                  <span
+                    key={f}
+                    className="rounded-sm border border-[rgba(200,146,42,0.20)] px-3 py-1 text-[rgba(200,146,42,0.70)]"
+                    style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <p

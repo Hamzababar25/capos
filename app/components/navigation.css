@@ -140,17 +140,15 @@
   padding: 10px 18px;
   letter-spacing: 0.12em;
   pointer-events: auto;
-  /* Solid dark bg so button is legible on the golden gradient */
+  /* Dark glass bg so button is legible on the golden gradient */
   background: rgba(10, 9, 6, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-color: rgba(240, 237, 230, 0.55) !important;
+  border-color: rgba(240, 237, 230, 0.5) !important;
 }
+/* On hover the ::before amber fill takes over — let globals.css handle the rest */
 .c-header-cta:hover {
-  color: #0a0906 !important;
-}
-.c-header-cta::before {
-  background: #f0ede6 !important;
+  background: transparent !important;
 }
 
 @media (min-width: 900px) {
@@ -277,6 +275,25 @@
 
 .c-header-overlay-nav ul li a:hover { color: #c8922a; }
 
+/* "Book Your Event" — same big type, amber so it reads as primary CTA */
+.c-header-overlay-nav ul li.is-cta-item a {
+  color: #c8922a;
+  font-weight: 700;
+  /* Slightly tighter size so the long label stays on one line */
+  font-size: clamp(1.8rem, 7.5vw, 5rem);
+  letter-spacing: 0.06em;
+}
+.c-header-overlay-nav ul li.is-cta-item a:hover {
+  color: #f0ede6;
+}
+
+/* Thin top rule separates the CTA from the navigation links above */
+.c-header-overlay-nav ul li.is-cta-item {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(200, 146, 42, 0.18);
+}
+
 .c-header-overlay-number {
   font-size: max(0.677vw, 10px);
   font-weight: 700;
@@ -285,11 +302,6 @@
   align-self: flex-start;
   margin-top: 12px;
   color: #c8922a;
-}
-
-.c-header-overlay-cta {
-  font-size: max(0.677vw, 11px);
-  letter-spacing: 0.12em;
 }
 
 /* ── Mobile ──────────────────────────────────────────── */

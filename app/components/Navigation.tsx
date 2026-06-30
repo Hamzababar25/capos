@@ -77,9 +77,21 @@ export default function Navigation() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // "Catering" replaces the confusing duplicate "Menu" label
+  // Desktop nav links (compact header bar)
   const navLinks = ['Catering', 'About', 'Contact'];
-  const navHref  = (item: string) => item === 'Catering' ? '/menu' : `#${item.toLowerCase()}`;
+  const navHref  = (item: string) => {
+    if (item === 'Catering') return '/menu';
+    if (item === 'Book Your Event') return '#booking';
+    return `#${item.toLowerCase()}`;
+  };
+
+  // Overlay items — "Contact" replaced by the primary CTA
+  const overlayItems = [
+    { label: 'Home',            href: '/'         },
+    { label: 'Catering',        href: '/menu'      },
+    { label: 'About',           href: '#about'     },
+    { label: 'Book Your Event', href: '#booking'   },
+  ];
 
   return (
     <header className={`c-header${isMenuOpen ? ' is-open' : ''}${isScrolled ? ' is-scrolled' : ''}`}>
@@ -142,26 +154,20 @@ export default function Navigation() {
 
         <nav className="c-header-overlay-nav">
           <ul>
-            {['Home', 'Catering', 'About', 'Contact'].map((item, i) => (
+            {overlayItems.map(({ label, href }, i) => (
               <li
-                key={item}
+                key={label}
                 ref={(el) => { if (el) menuItemsRef.current[i] = el; }}
+                className={label === 'Book Your Event' ? 'is-cta-item' : ''}
               >
-                <Link
-                  href={item === 'Home' ? '/' : navHref(item)}
-                  onClick={closeMenu}
-                >
+                <Link href={href} onClick={closeMenu}>
                   <span className="c-header-overlay-number">0{i + 1}</span>
-                  {item}
+                  {label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-
-        <a href="#booking" className="c-header-overlay-cta btn-primary" onClick={closeMenu}>
-          Book Your Event
-        </a>
       </div>
     </header>
   );
