@@ -30,20 +30,22 @@ function useClock(timezone: string) {
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const londonTime = useClock('America/New_York');
-  const tokyoTime  = useClock('Asia/Karachi');
+
+  const ldnTime = useClock('Europe/London');
+  const nyTime  = useClock('America/New_York');
+  const khiTime = useClock('Asia/Karachi');
+  const tkyTime = useClock('Asia/Tokyo');
+
   const overlayRef   = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLLIElement[]>([]);
   const tlRef        = useRef<gsap.core.Timeline | null>(null);
 
-  // Scroll-based nav background
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 60);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Cinematic menu open/close
   useEffect(() => {
     const overlay = overlayRef.current;
     if (!overlay) return;
@@ -74,8 +76,10 @@ export default function Navigation() {
   }, []);
 
   const closeMenu = () => setIsMenuOpen(false);
-  const navLinks  = ['Menu', 'About', 'Contact'];
-  const navHref   = (item: string) => item === 'Menu' ? '/menu' : `#${item.toLowerCase()}`;
+
+  // "Catering" replaces the confusing duplicate "Menu" label
+  const navLinks = ['Catering', 'About', 'Contact'];
+  const navHref  = (item: string) => item === 'Catering' ? '/menu' : `#${item.toLowerCase()}`;
 
   return (
     <header className={`c-header${isMenuOpen ? ' is-open' : ''}${isScrolled ? ' is-scrolled' : ''}`}>
@@ -83,7 +87,7 @@ export default function Navigation() {
         {/* Logo */}
         <Link href="/" className="c-header-logo">
           <span className="c-header-logo-name">CAPOS</span>
-          <span className="c-header-logo-city t-h6">London</span>
+          <span className="c-header-logo-city t-h6">Coffee</span>
         </Link>
 
         {/* Desktop nav */}
@@ -100,10 +104,10 @@ export default function Navigation() {
           </ul>
         </nav>
 
-        {/* Clocks */}
+        {/* 4-city clocks — compact in header */}
         <div className="c-header-clocks t-h6">
-          <span className="c-header-clock is-active">{londonTime} NYC</span>
-          <span className="c-header-clock">{tokyoTime} KHI</span>
+          <span className="c-header-clock is-active">{nyTime} <em>NYC</em></span>
+          <span className="c-header-clock">{khiTime} <em>KHI</em></span>
         </div>
 
         {/* Booking CTA */}
@@ -111,14 +115,16 @@ export default function Navigation() {
           Book Your Event
         </a>
 
-        {/* Burger */}
+        {/* Burger — label changed so it doesn't clash with "Catering" nav link */}
         <button
           className="c-header-burger"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
-          <span className="c-header-burger-label t-h6">Menu</span>
+          <span className="c-header-burger-label t-h6">
+            {isMenuOpen ? 'Close' : 'Open'}
+          </span>
           <span className="c-header-burger-icon">
             <span className="c-header-burger-line" />
             <span className="c-header-burger-line" />
@@ -129,12 +135,14 @@ export default function Navigation() {
 
       {/* Fullscreen overlay */}
       <div className="c-header-overlay" ref={overlayRef}>
+        {/* All 4 cities */}
         <div className="c-header-overlay-time t-h6">
-          {londonTime} NYC &nbsp;·&nbsp; {tokyoTime} KHI
+          {ldnTime} LDN &nbsp;·&nbsp; {nyTime} NYC &nbsp;·&nbsp; {khiTime} KHI &nbsp;·&nbsp; {tkyTime} TKY
         </div>
+
         <nav className="c-header-overlay-nav">
           <ul>
-            {['Home', ...navLinks].map((item, i) => (
+            {['Home', 'Catering', 'About', 'Contact'].map((item, i) => (
               <li
                 key={item}
                 ref={(el) => { if (el) menuItemsRef.current[i] = el; }}
@@ -150,6 +158,7 @@ export default function Navigation() {
             ))}
           </ul>
         </nav>
+
         <a href="#booking" className="c-header-overlay-cta btn-primary" onClick={closeMenu}>
           Book Your Event
         </a>

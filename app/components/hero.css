@@ -242,6 +242,20 @@
 .pixi-intro-line--2 {}
 .pixi-intro-line--3 {}
 
+/* Hero CTA — needs dark bg to pop on the golden gradient */
+.pixi-intro-cta {
+  background: rgba(10, 9, 6, 0.55) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(240, 237, 230, 0.50) !important;
+}
+.pixi-intro-cta:hover {
+  color: #0a0906 !important;
+}
+.pixi-intro-cta::before {
+  background: #f0ede6 !important;
+}
+
 /* Subtext below headline */
 .pixi-intro-sub {
   opacity: 0;
@@ -250,7 +264,18 @@
   line-height: 1.65;
 }
 
-/* Bottom veil removed — no background overlay at foot strip */
+/* Bottom veil — dark gradient so footer strip text is readable */
+.pixi-intro::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(to top, rgba(10, 9, 6, 0.72) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
 
 /* ── Bottom strip ──────────────────────────────────── */
 .pixi-intro-foot {
@@ -299,13 +324,14 @@
 
 .pixi-intro-foot-item strong {
   font-weight: 600;
-  font-size: max(0.85vw, 13px);
+  font-size: max(1vw, 14px);
   color: #f0ede6;
+  letter-spacing: 0.08em;
 }
 
 .pixi-intro-foot-sub {
   display: block;
-  opacity: 0.4;
+  opacity: 0.75;
   margin-top: 4px;
   font-size: max(0.677vw, 10px);
   text-transform: uppercase;
