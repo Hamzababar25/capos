@@ -62,6 +62,8 @@ export default function CateringForm() {
   const sectionRef = useRef<HTMLElement>(null);
   const [form, setForm] = useState<FormState>(empty);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
   const [errors, setErrors] = useState<Partial<FormState>>({});
 
   useEffect(() => {
@@ -110,9 +112,25 @@ export default function CateringForm() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) return;
+
+    setSending(true);
+    setSendError('');
+    try {
+      const res = await fetch('/api/catering', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('Server error');
+      setSubmitted(true);
+    } catch {
+      setSendError('Something went wrong. Please try again or email us directly at hello@capos.coffee');
+    } finally {
+      setSending(false);
+    }
   };
 
   const errorBorder = 'border-[rgba(220,80,60,0.6)]';
@@ -423,11 +441,18 @@ export default function CateringForm() {
               {/* Submit */}
               <button
                 type="submit"
+                disabled={sending}
                 className="btn-primary mt-2 self-start"
-                style={{ padding: '14px 32px', fontSize: 'max(0.677vw, 12px)', letterSpacing: '0.12em' }}
+                style={{ padding: '14px 32px', fontSize: 'max(0.677vw, 12px)', letterSpacing: '0.12em', opacity: sending ? 0.6 : 1 }}
               >
-                Send Enquiry →
+                {sending ? 'Sending…' : 'Send Enquiry →'}
               </button>
+
+              {sendError && (
+                <p style={{ marginTop: 12, fontSize: 13, color: 'rgba(220,80,60,0.9)', lineHeight: 1.6 }}>
+                  {sendError}
+                </p>
+              )}
 
             </form>
           )}

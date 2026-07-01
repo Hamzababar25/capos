@@ -12,14 +12,30 @@ export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim()) return;
+
+    setSending(true);
+    setSendError('');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error('Server error');
       setSubmitted(true);
       setEmail('');
+    } catch {
+      setSendError('Something went wrong. Please try again.');
+    } finally {
+      setSending(false);
     }
   };
 
@@ -123,20 +139,33 @@ export default function Footer() {
               Thank you. We&apos;ll be in touch.
             </p>
           ) : (
-            <form className="c-footer-signup-form" onSubmit={handleSubmit}>
-              <input
-                type="email"
-                className="c-footer-signup-input t-text"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                aria-label="Email address"
-              />
-              <button type="submit" className="c-footer-signup-btn btn-primary">
-                Subscribe
-              </button>
-            </form>
+            <>
+              <form className="c-footer-signup-form" onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  className="c-footer-signup-input t-text"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={sending}
+                  aria-label="Email address"
+                />
+                <button
+                  type="submit"
+                  className="c-footer-signup-btn btn-primary"
+                  disabled={sending}
+                  style={{ opacity: sending ? 0.6 : 1 }}
+                >
+                  {sending ? '…' : 'Subscribe'}
+                </button>
+              </form>
+              {sendError && (
+                <p style={{ marginTop: 8, fontSize: 12, color: 'rgba(220,80,60,0.85)' }}>
+                  {sendError}
+                </p>
+              )}
+            </>
           )}
         </div>
 
