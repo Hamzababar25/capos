@@ -100,7 +100,7 @@ export default function LoadingScreen() {
           opacity: 0,
         }}
       >
-        CAPOS
+        MEMBERS ONLY
       </div>
 
       {/* Tagline */}
@@ -117,7 +117,7 @@ export default function LoadingScreen() {
           opacity: 0,
         }}
       >
-        A Marriage of Cultures
+      CAPO'S COFFEE
       </p>
     </div>
   );

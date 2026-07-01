@@ -118,7 +118,7 @@ export default function Navigation() {
 
         {/* 4-city clocks — compact in header */}
         <div className="c-header-clocks t-h6">
-          <span className="c-header-clock is-active">{nyTime} <em>NYC</em></span>
+          <span className="c-header-clock is-active">{nyTime} <em>NJ</em></span>
           <span className="c-header-clock">{khiTime} <em>KHI</em></span>
         </div>
 
@@ -149,7 +149,7 @@ export default function Navigation() {
       <div className="c-header-overlay" ref={overlayRef}>
         {/* All 4 cities */}
         <div className="c-header-overlay-time t-h6">
-          {ldnTime} LDN &nbsp;·&nbsp; {nyTime} NYC &nbsp;·&nbsp; {khiTime} KHI &nbsp;·&nbsp; {tkyTime} TKY
+           {nyTime} NJ &nbsp;·&nbsp; {khiTime} KHI &nbsp;·&nbsp; 
         </div>
 
         <nav className="c-header-overlay-nav">

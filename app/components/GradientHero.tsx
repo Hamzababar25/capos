@@ -378,9 +378,9 @@ export default function GradientHero() {
             {/* Line 1 — hover reveals: WELCOME */}
             <span className="pixi-intro-line pixi-intro-line--1">
               <span className="hero-flip">
-                <span className="hero-flip-default">CAPOS</span>
+                <span className="hero-flip-default">CAPO'S</span>
                 <span className="hero-flip-hover hero-flip-hover--en" aria-hidden="true">
-                  Ciao
+                  WELCOME
                 </span>
               </span>
             </span>
@@ -406,7 +406,10 @@ export default function GradientHero() {
             </span>
           </h1>
           <p className="pixi-intro-sub t-text-lg">
-            A marriage of cultures,<br />one unforgettable cup at a time.
+          HANDCRAFTED ESPRESSO EXPERIENCES,  
+            <br />
+
+           TAILORED TO EVERY OCCASION          
           </p>
           <a
             href="#booking"
@@ -434,11 +437,11 @@ export default function GradientHero() {
 
             <div className="pixi-intro-foot-items">
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>New York</strong>
+                <strong>New Jersey</strong>
                 <span className="pixi-intro-foot-sub">40.7375° N, 0.1278° W</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Arabic Beans</strong>
+                <strong>Sumatran Beans</strong>
                 <span className="pixi-intro-foot-sub">ethically sourced</span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">

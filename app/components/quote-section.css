@@ -25,8 +25,23 @@
   margin-bottom: 64px;
 }
 
+.quote-layout {
+  display: flex;
+  align-items: stretch;
+  gap: 5vw;
+}
+
 .quote-inner {
-  max-width: 900px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.quote-image {
+  flex: 0 0 38%;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  min-height: 240px;
 }
 
 .quote-deco {
@@ -39,7 +54,7 @@
 .quote-text {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: clamp(28px, 3.4vw, 56px);
+  font-size: clamp(14px, 3.4vw, 40px);
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -57,6 +72,16 @@
 @media only screen and (max-width: 767px) {
   .quote-section {
     padding: 80px 20px 90px;
+  }
+
+  .quote-layout {
+    flex-direction: column;
+  }
+
+  .quote-image {
+    flex: none;
+    width: 100%;
+    min-height: 250px;
   }
 
   .quote-text {
