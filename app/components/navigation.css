@@ -36,6 +36,12 @@
   margin-right: auto;
 }
 
+.c-header-logo-mark {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
 .c-header-logo-name {
   font-size: 18px;
   font-weight: 700;

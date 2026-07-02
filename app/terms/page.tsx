@@ -84,7 +84,6 @@ export default function TermsPage() {
         lastUpdated={LAST_UPDATED}
         meta={[
           { value: '11',  label: 'Sections' },
-          { value: 'NY',  label: 'Governed by' },
           { value: '30d', label: 'Cancellation window' },
         ]}
       />

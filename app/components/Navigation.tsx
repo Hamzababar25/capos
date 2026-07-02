@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import './navigation.css';
@@ -111,6 +112,14 @@ export default function Navigation() {
       <div className="c-header-inner">
         {/* Logo */}
         <Link href="/" className="c-header-logo">
+          <Image
+            src="/logo.png"
+            alt="Capos logo"
+            width={596}
+            height={627}
+            className="c-header-logo-mark"
+            priority
+          />
           <span className="c-header-logo-name">CAPOS</span>
           <span className="c-header-logo-city t-h6">Coffee</span>
         </Link>
