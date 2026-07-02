@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Navigation from '../components/Navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -149,6 +150,14 @@ function DrinkCard({ name, desc, tag }: {
 /* ─── Page ──────────────────────────────────────────── */
 
 export default function MenuPage() {
+  const router = useRouter();
+
+  const goToBooking = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    sessionStorage.setItem('scrollTo', 'booking');
+    router.push('/');
+  }, [router]);
+
   const heroRef      = useRef<HTMLElement>(null);
   const sigRef       = useRef<HTMLElement>(null);
   const essRef       = useRef<HTMLElement>(null);
@@ -220,9 +229,9 @@ export default function MenuPage() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4" data-hero>
-            <Link href="#booking" className="btn-primary" style={{ padding: '13px 28px', fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.12em' }}>
+            <a href="#" className="btn-primary" style={{ padding: '13px 28px', fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.12em' }} onClick={goToBooking}>
               Book Your Event →
-            </Link>
+            </a>
             <Link
               href="/"
               className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#c8922a]"
@@ -470,13 +479,14 @@ export default function MenuPage() {
             +44 20 7946 0958
           </a>
           <span className="text-[rgba(240,237,230,0.20)]" aria-hidden>·</span>
-          <Link
-            href="/#booking"
+          <a
+            href="#"
             className="btn-primary"
             style={{ padding: '10px 20px', fontSize: 'max(0.677vw, 10px)', letterSpacing: '0.12em' }}
+            onClick={goToBooking}
           >
             Book Your Event →
-          </Link>
+          </a>
         </div>
       </footer>
     </div>

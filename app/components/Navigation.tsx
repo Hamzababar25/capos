@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import './navigation.css';
 
@@ -30,6 +31,25 @@ function useClock(timezone: string) {
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const router   = useRouter();
+  const pathname = usePathname();
+
+  /**
+   * Navigate to a section on the home page.
+   * - If already on home → smooth scroll, no URL change
+   * - If on another page → store target in sessionStorage, navigate to /
+   *   (ScrollToSection component on home page picks it up)
+   */
+  const scrollToSection = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    if (pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      sessionStorage.setItem('scrollTo', sectionId);
+      router.push('/');
+    }
+  };
 
   const ldnTime = useClock('Europe/London');
   const nyTime  = useClock('America/New_York');
@@ -77,20 +97,13 @@ export default function Navigation() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Desktop nav links (compact header bar)
   const navLinks = ['Catering', 'About', 'Contact'];
-  const navHref  = (item: string) => {
-    if (item === 'Catering') return '/menu';
-    if (item === 'Book Your Event') return '#booking';
-    return `#${item.toLowerCase()}`;
-  };
 
-  // Overlay items — "Contact" replaced by the primary CTA
-  const overlayItems = [
-    { label: 'Home',            href: '/'         },
-    { label: 'Catering',        href: '/menu'      },
-    { label: 'About',           href: '#about'     },
-    { label: 'Book Your Event', href: '#booking'   },
+  const overlayItems: { label: string; href?: string; section?: string }[] = [
+    { label: 'Home',            href: '/'          },
+    { label: 'Catering',        href: '/catering'  },
+    { label: 'About',           section: 'about'   },
+    { label: 'Book Your Event', section: 'booking' },
   ];
 
   return (
@@ -107,10 +120,21 @@ export default function Navigation() {
           <ul className="c-header-nav-list t-h6">
             {navLinks.map((item) => (
               <li key={item}>
-                <Link href={navHref(item)} className="c-header-nav-link">
-                  <span className="c-header-nav-link-text">{item}</span>
-                  <span className="c-header-nav-link-line" aria-hidden="true" />
-                </Link>
+                {item === 'Catering' ? (
+                  <Link href="/catering" className="c-header-nav-link">
+                    <span className="c-header-nav-link-text">{item}</span>
+                    <span className="c-header-nav-link-line" aria-hidden="true" />
+                  </Link>
+                ) : (
+                  <a
+                    href="#"
+                    className="c-header-nav-link"
+                    onClick={scrollToSection(item.toLowerCase())}
+                  >
+                    <span className="c-header-nav-link-text">{item}</span>
+                    <span className="c-header-nav-link-line" aria-hidden="true" />
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -118,12 +142,16 @@ export default function Navigation() {
 
         {/* 4-city clocks — compact in header */}
         <div className="c-header-clocks t-h6">
-          <span className="c-header-clock is-active">{nyTime} <em>NJ</em></span>
+          <span className="c-header-clock is-active">{nyTime} <em>NYC</em></span>
           <span className="c-header-clock">{khiTime} <em>KHI</em></span>
         </div>
 
         {/* Booking CTA */}
-        <a href="#booking" className="c-header-cta btn-primary">
+        <a
+          href="#"
+          className="c-header-cta btn-primary"
+          onClick={scrollToSection('booking')}
+        >
           Book Your Event
         </a>
 
@@ -154,16 +182,23 @@ export default function Navigation() {
 
         <nav className="c-header-overlay-nav">
           <ul>
-            {overlayItems.map(({ label, href }, i) => (
+            {overlayItems.map(({ label, href, section }, i) => (
               <li
                 key={label}
                 ref={(el) => { if (el) menuItemsRef.current[i] = el; }}
                 className={label === 'Book Your Event' ? 'is-cta-item' : ''}
               >
-                <Link href={href} onClick={closeMenu}>
-                  <span className="c-header-overlay-number">0{i + 1}</span>
-                  {label}
-                </Link>
+                {section ? (
+                  <a href="#" onClick={scrollToSection(section)}>
+                    <span className="c-header-overlay-number">0{i + 1}</span>
+                    {label}
+                  </a>
+                ) : (
+                  <Link href={href!} onClick={closeMenu}>
+                    <span className="c-header-overlay-number">0{i + 1}</span>
+                    {label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

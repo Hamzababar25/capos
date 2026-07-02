@@ -231,7 +231,7 @@ export default function FAQPage() {
             CAPOS Coffee
           </span>
           <div className="flex flex-wrap gap-6">
-            {[['Home', '/'], ['Menu', '/menu'], ['Terms', '/terms'], ['Privacy', '/privacy']].map(([label, href]) => (
+            {[['Home', '/'], ['Catering', '/catering'], ['Terms', '/terms'], ['Privacy', '/privacy']].map(([label, href]) => (
               <Link
                 key={label}
                 href={href}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './footer.css';
@@ -10,6 +11,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  const router   = useRouter();
+  const pathname = usePathname();
+
+  const scrollToSection = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      sessionStorage.setItem('scrollTo', sectionId);
+      router.push('/');
+    }
+  };
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -123,9 +136,9 @@ export default function Footer() {
               <h5 className="c-footer-col-title t-h6">Navigate</h5>
               <ul className="c-footer-nav t-h6">
                 <li><Link href="/"       className="c-footer-nav-link">Home</Link></li>
-                <li><Link href="/menu"   className="c-footer-nav-link">Menu</Link></li>
-                <li><a   href="#about"   className="c-footer-nav-link">About</a></li>
-                <li><a   href="#booking" className="c-footer-nav-link">Book Event</a></li>
+                <li><Link href="/catering" className="c-footer-nav-link">Catering</Link></li>
+                <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('about')}>About</a></li>
+                <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('booking')}>Book Event</a></li>
               </ul>
             </div>
 
