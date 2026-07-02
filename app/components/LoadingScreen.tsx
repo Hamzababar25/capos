@@ -4,58 +4,97 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 export default function LoadingScreen() {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const lineRef    = useRef<HTMLDivElement>(null);
-  const logoRef    = useRef<HTMLDivElement>(null);
-  const tagRef     = useRef<HTMLParagraphElement>(null);
+  const overlayRef  = useRef<HTMLDivElement>(null);
+  const canvasRef   = useRef<HTMLCanvasElement>(null);
+  const eyebrowRef  = useRef<HTMLParagraphElement>(null);
+  const logoRef     = useRef<HTMLDivElement>(null);
+  const lineRef     = useRef<HTMLDivElement>(null);
+  const tagRef      = useRef<HTMLParagraphElement>(null);
+  const rafRef      = useRef<number>(0);
 
   useEffect(() => {
     const overlay = overlayRef.current;
-    if (!overlay) return;
+    const canvas  = canvasRef.current;
+    if (!overlay || !canvas) return;
 
-    // Lock scroll while loading
     document.body.style.overflow = 'hidden';
 
+    /* ── CRT static ─────────────────────────────────── */
+    const ctx = canvas.getContext('2d')!;
+    const drawStatic = () => {
+      // quarter-res for a chunky, vintage pixel look
+      const w = Math.ceil(window.innerWidth  / 3);
+      const h = Math.ceil(window.innerHeight / 3);
+      canvas.width  = w;
+      canvas.height = h;
+
+      const img  = ctx.createImageData(w, h);
+      const data = img.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const v      = Math.random() * 200;
+        data[i]     = v * 0.85;   // R — warm
+        data[i + 1] = v * 0.52;   // G
+        data[i + 2] = v * 0.18;   // B — amber tint
+        data[i + 3] = Math.random() < 0.04 ? 160 : 18; // occasional bright flicker
+      }
+      ctx.putImageData(img, 0, 0);
+      rafRef.current = requestAnimationFrame(drawStatic);
+    };
+    drawStatic();
+
+    /* ── GSAP timeline ──────────────────────────────── */
     const tl = gsap.timeline({
       onComplete: () => {
+        cancelAnimationFrame(rafRef.current);
         document.body.style.overflow = '';
         gsap.set(overlay, { display: 'none' });
       },
     });
 
-    tl.fromTo(
-        lineRef.current,
+    tl
+      // eyebrow fades in
+      .fromTo(eyebrowRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
+      )
+      // main logo rises up
+      .fromTo(logoRef.current,
+        { opacity: 0, y: 36 },
+        { opacity: 1, y: 0, duration: 0.75, ease: 'expo.out' },
+        '-=0.2'
+      )
+      // amber line sweeps left → right beneath the logo
+      .fromTo(lineRef.current,
         { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.75, ease: 'expo.out' }
+        { scaleX: 1, duration: 0.9, ease: 'expo.inOut' },
+        '-=0.3'
       )
-      .fromTo(
-        logoRef.current,
-        { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
-        '-=0.35'
+      // tagline
+      .fromTo(tagRef.current,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+        '-=0.45'
       )
-      .fromTo(
-        tagRef.current,
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' },
-        '-=0.25'
-      )
-      // Pause so the user can read it
-      .to({}, { duration: 0.6 })
-      // Fade content out
-      .to([logoRef.current, tagRef.current, lineRef.current], {
-        opacity: 0,
-        y: -18,
-        duration: 0.45,
+      // hold
+      .to({}, { duration: 0.7 })
+      // fade everything out
+      .to([eyebrowRef.current, logoRef.current, lineRef.current, tagRef.current], {
+        opacity: 0, y: -16,
+        duration: 0.4,
         stagger: 0.04,
         ease: 'power3.in',
       })
-      // Wipe the overlay upward
+      // wipe overlay upward
       .to(overlay, {
         yPercent: -100,
-        duration: 0.85,
+        duration: 0.9,
         ease: 'expo.inOut',
       }, '-=0.1');
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      tl.kill();
+    };
   }, []);
 
   return (
@@ -70,55 +109,89 @@ export default function LoadingScreen() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 0,
         pointerEvents: 'all',
+        overflow: 'hidden',
       }}
     >
-      {/* Amber accent line */}
-      <div
-        ref={lineRef}
+      {/* CRT static canvas — full screen, behind content */}
+      <canvas
+        ref={canvasRef}
         style={{
-          width: 64,
-          height: 1,
-          background: '#c8922a',
-          marginBottom: 22,
-          alignSelf: 'center',
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          imageRendering: 'pixelated',
+          pointerEvents: 'none',
+          mixBlendMode: 'screen',
         }}
       />
 
-      {/* Brand name */}
-      <div
-        ref={logoRef}
-        style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 'clamp(52px, 9vw, 110px)',
-          fontWeight: 700,
-          letterSpacing: '0.28em',
-          color: '#f0ede6',
-          textTransform: 'uppercase',
-          lineHeight: 1,
-          opacity: 0,
-        }}
-      >
-        MEMBERS ONLY
-      </div>
+      {/* Content block */}
+      <div style={{ position: 'relative', textAlign: 'center' }}>
 
-      {/* Tagline */}
-      <p
-        ref={tagRef}
-        style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 'max(0.72vw, 11px)',
-          fontWeight: 600,
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color: '#c8922a',
-          marginTop: 18,
-          opacity: 0,
-        }}
-      >
-      CAPO'S COFFEE
-      </p>
+        {/* Eyebrow */}
+        <p
+          ref={eyebrowRef}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'max(0.65vw, 10px)',
+            fontWeight: 600,
+            letterSpacing: '0.32em',
+            textTransform: 'uppercase',
+            color: 'rgba(200, 146, 42, 0.7)',
+            marginBottom: 20,
+            opacity: 0,
+          }}
+        >
+          Est. 2025 · Tri-State Area
+        </p>
+
+        {/* Brand name */}
+        <div
+          ref={logoRef}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(64px, 11vw, 140px)',
+            fontWeight: 800,
+            letterSpacing: '0.24em',
+            color: '#f0ede6',
+            textTransform: 'uppercase',
+            lineHeight: 1,
+            opacity: 0,
+          }}
+        >
+          CAPO&apos;S
+        </div>
+
+        {/* Amber sweep line — below the heading */}
+        <div
+          ref={lineRef}
+          style={{
+            height: 2,
+            background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.35) 100%)',
+            marginTop: 14,
+            borderRadius: 2,
+          }}
+        />
+
+        {/* Tagline */}
+        <p
+          ref={tagRef}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'max(0.72vw, 11px)',
+            fontWeight: 600,
+            letterSpacing: '0.38em',
+            textTransform: 'uppercase',
+            color: 'rgba(240, 237, 230, 0.45)',
+            marginTop: 16,
+            opacity: 0,
+          }}
+        >
+          COFFEE
+        </p>
+      </div>
     </div>
   );
 }
