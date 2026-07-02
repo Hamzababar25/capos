@@ -122,10 +122,20 @@ export default function Footer() {
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Navigate</h5>
               <ul className="c-footer-nav t-h6">
-                <li><Link href="/"        className="c-footer-nav-link">Home</Link></li>
-                <li><a   href="#work"     className="c-footer-nav-link">Work</a></li>
-                <li><a   href="#about"    className="c-footer-nav-link">About</a></li>
-                <li><a   href="#contact"  className="c-footer-nav-link">Contact</a></li>
+                <li><Link href="/"       className="c-footer-nav-link">Home</Link></li>
+                <li><Link href="/menu"   className="c-footer-nav-link">Menu</Link></li>
+                <li><a   href="#about"   className="c-footer-nav-link">About</a></li>
+                <li><a   href="#booking" className="c-footer-nav-link">Book Event</a></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div className="c-footer-col">
+              <h5 className="c-footer-col-title t-h6">Legal</h5>
+              <ul className="c-footer-nav t-h6">
+                <li><Link href="/faq"     className="c-footer-nav-link">FAQ</Link></li>
+                <li><Link href="/terms"   className="c-footer-nav-link">Terms</Link></li>
+                <li><Link href="/privacy" className="c-footer-nav-link">Privacy</Link></li>
               </ul>
             </div>
           </div>
@@ -172,7 +182,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="c-footer-bottom">
           <span className="c-footer-muted t-text-sm">
-            © CAPOS COFFEE 2024 · All rights reserved
+            © CAPOS COFFEE 2025 · All rights reserved
           </span>
           <button className="c-footer-top-btn t-text-sm" onClick={scrollToTop}>
             Back to top ↑
