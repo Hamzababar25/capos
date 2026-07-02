@@ -141,20 +141,20 @@ export default function GradientHero() {
         float chaos = sin(angle * 8.0 + uTime * 4.0) * cos(radius * 20.0 - uTime * 5.0);
         diagonal += chaos * bubble * 0.3;
         
-        // Enhanced color mixing
+        // Enhanced color mixing — dark zone extended to cover center text area
         vec3 col = c1;
-        col = mix(col, c2, smoothstep(0.15, 0.45, diagonal + n1 * 0.4));
-        col = mix(col, c3, smoothstep(0.45, 0.85, diagonal + n2 * 0.4));
+        col = mix(col, c2, smoothstep(0.35, 0.62, diagonal + n1 * 0.4));
+        col = mix(col, c3, smoothstep(0.62, 1.05, diagonal + n2 * 0.4));
         col = mix(col, accent, n3 * 0.3 * bubble);
         
         // Chromatic aberration on hover
         if (bubble > 0.1) {
           vec2 offset = normalize(toMouse) * bubble * 0.02;
-          float r = mix(c1.r, c2.r, smoothstep(0.15, 0.45, diagonal + n1 * 0.4 + offset.x));
-          r = mix(r, c3.r, smoothstep(0.45, 0.85, diagonal + n2 * 0.4 + offset.x));
+          float r = mix(c1.r, c2.r, smoothstep(0.35, 0.62, diagonal + n1 * 0.4 + offset.x));
+          r = mix(r, c3.r, smoothstep(0.62, 1.05, diagonal + n2 * 0.4 + offset.x));
           
-          float b = mix(c1.b, c2.b, smoothstep(0.15, 0.45, diagonal + n1 * 0.4 - offset.x));
-          b = mix(b, c3.b, smoothstep(0.45, 0.85, diagonal + n2 * 0.4 - offset.x));
+          float b = mix(c1.b, c2.b, smoothstep(0.35, 0.62, diagonal + n1 * 0.4 - offset.x));
+          b = mix(b, c3.b, smoothstep(0.62, 1.05, diagonal + n2 * 0.4 - offset.x));
           
           col.r = mix(col.r, r, bubble * 0.7);
           col.b = mix(col.b, b, bubble * 0.7);
