@@ -49,13 +49,15 @@ export default function QuoteSection() {
         <div className="quote-inner">
           <span className="quote-deco t-h6">Founder&apos;s Note</span>
           <blockquote className="quote-text t-display">
-            &ldquo;At Capo’s, it’s more than just what’s in your cup. We pride ourselves in serving you a marriage of cultures and heritage. Our team is inspired by the rich traditions we come from, and we’re passionate about presenting you with the ultimate cup.
+            &ldquo;At Capo’s, <br/> it’s more than just what’s in your cup. We pride ourselves in serving you a marriage of cultures and heritage. Our team is inspired by the rich traditions we come from, and we’re passionate about presenting you with the ultimate cup.
           We pride ourselves on putting quality and uniqueness first, offering a blend of bold South Asian flavors, authentic Yemeni style coffee, and timeless Italian recipes. Whether it’s an intimate gathering or a grand celebration, Capo’s Coffee brings a one of a kind experience straight to you - at your service.
         With love,<br/>
-  - Capo&rdquo;
+  &rdquo;
+  - Capo
           </blockquote>
           <div className="quote-attribution t-h6">
-            — Arbaz Qureshi, Founder · CAPOS Coffee, New York 2025
+            — Arbaz Qureshi, <br/>Founder · CAPOS Coffee, 
+            <br/> New York 2025
           </div>
         </div>
         <div className="quote-image">

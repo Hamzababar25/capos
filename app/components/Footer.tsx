@@ -92,7 +92,8 @@ export default function Footer() {
             <circle cx="27" cy="9" r="8.5" stroke="currentColor" strokeOpacity="0.3"/>
           </svg>
           <h2 className="c-footer-title t-h2">
-            We w<i>o</i>uld l<i>o</i>ve t<i>o</i>&nbsp;hear fr<i>o</i>m you.
+            Your moments.<br/> <i>Capo’s way</i>
+            {/* We w<i>o</i>uld l<i>o</i>ve t<i>o</i>&nbsp;hear fr<i>o</i>m you. */}
           </h2>
         </div>
 
@@ -101,10 +102,11 @@ export default function Footer() {
           {/* Left — contact */}
           <div className="c-footer-col c-footer-col--contact">
             <p className="c-footer-muted t-text">
-              Reach out for collaborations, wholesale enquiries, or simply a great cup of conversation.
+              Reach out for collaborations, wholesale enquiries, <br/>
+              or simply a great cup of conversation.
             </p>
             <a href="mailto:hello@capos.coffee" className="c-footer-email">
-              hello@capos.coffee
+              info@capos.com
               <span className="c-footer-arrow">→</span>
             </a>
           </div>
@@ -116,7 +118,7 @@ export default function Footer() {
               <h5 className="c-footer-col-title t-h6">Our Address</h5>
               <address className="c-footer-address c-footer-muted t-text">
                 CAPOS Coffee<br />
-                London, United Kingdom<br />
+                New Jersy, USA<br />
                 <span className="c-footer-coords">51.5074° N, 0.1278° W</span>
               </address>
             </div>
@@ -125,7 +127,7 @@ export default function Footer() {
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Follow</h5>
               <ul className="c-footer-socials">
-                <li><a href="#" className="c-footer-social-link t-text">Instagram</a></li>
+                <li><a href="https://www.instagram.com/caposcoffee/" target='_blank' className="c-footer-social-link t-text">Instagram</a></li>
                 <li><a href="#" className="c-footer-social-link t-text">Twitter</a></li>
                 <li><a href="#" className="c-footer-social-link t-text">Facebook</a></li>
               </ul>

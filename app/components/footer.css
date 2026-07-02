@@ -27,7 +27,7 @@
 .c-footer-inner {
   position: relative;
   z-index: 1;
-  padding: 90px 3.9vw 30px;
+  padding: 118px 3.9vw 30px;
   width: 100%;
 }
 
@@ -46,7 +46,7 @@
   text-transform: uppercase;
   margin-top: 8px;
   max-width: 700px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .c-footer-title i {
@@ -62,7 +62,7 @@
 }
 
 .c-footer-col--contact {
-  flex: 0 0 33%;
+  flex: 0 0 25%;
 }
 
 .c-footer-cols-right {
@@ -217,7 +217,7 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(240, 237, 230, 0.06);
-  padding-top: 20px;
+  padding-top: 5px;
 }
 
 .c-footer-top-btn {
@@ -225,7 +225,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 18px;
+  padding: 5px 15px;
   border-radius: 42px;
   border: 1px solid rgba(200, 146, 42, 0.3);
   color: #8a7d6b;

@@ -182,26 +182,27 @@ export default function CateringForm() {
             className="mb-10 max-w-[380px] leading-[1.75] text-[rgba(240,237,230,0.6)]"
             style={{ fontSize: 'max(1.04vw, 17px)' }}
           >
-            We set up our specialty coffee station at your venue — from intimate
-            corporate breakfasts to large-scale festivals. Every cup, crafted on-site.
+            We set up our specialty coffee station at your venue, from intimate
+            corporate breakfasts to large-scale festivals.
+            <br/> Every cup, crafted on-site.
           </p>
 
           <ul className="mb-9 flex list-none flex-col gap-[14px] p-0">
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
               <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✉</span>
-              <a href="mailto:hello@capos.coffee" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
-                hello@capos.coffee
+              <a href="mailto:info@capos.com" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
+                info@capos.com
               </a>
             </li>
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
               <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✆</span>
               <a href="tel:+442079460958" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
-                +44 20 7946 0958
+                +1 (732) 789-4792
               </a>
             </li>
             <li className="flex items-center gap-3 tracking-[0.06em] text-[rgba(240,237,230,0.55)]" style={{ fontSize: 'max(0.677vw, 11px)' }}>
-              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>◷</span>
-              We respond within 24 hours.
+              <span className="w-[16px] shrink-0 text-[#c8922a]" aria-hidden>◷</span>
+              We will get to you as soon as possible.
             </li>
           </ul>
 
@@ -266,7 +267,7 @@ export default function CateringForm() {
                   <input
                     id="cf-name" type="text"
                     className={`${inputBase}${errors.name ? ` ${errorBorder}` : ''}`}
-                    placeholder="Ali Hassan"
+                    placeholder="John Doe"
                     value={form.name} onChange={set('name')}
                     autoComplete="name"
                   />
@@ -286,7 +287,7 @@ export default function CateringForm() {
                   <input
                     id="cf-phone" type="tel"
                     className={`${inputBase}${errors.phone ? ` ${errorBorder}` : ''}`}
-                    placeholder="+44 7700 000000"
+                    placeholder="+11 12 44622"
                     value={form.phone} onChange={set('phone')}
                     autoComplete="tel"
                   />
@@ -308,7 +309,7 @@ export default function CateringForm() {
                 <input
                   id="cf-email" type="email"
                   className={`${inputBase}${errors.email ? ` ${errorBorder}` : ''}`}
-                  placeholder="you@example.com"
+                  placeholder="your@example.com"
                   value={form.email} onChange={set('email')}
                   autoComplete="email"
                 />
@@ -410,7 +411,7 @@ export default function CateringForm() {
                   <input
                     id="cf-venue" type="text"
                     className={`${inputBase}${errors.venue ? ` ${errorBorder}` : ''}`}
-                    placeholder="e.g. London, Manchester"
+                    placeholder="e.g. Brooklyn, NY"
                     value={form.venue} onChange={set('venue')}
                   />
                   {errors.venue && (
