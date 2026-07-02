@@ -328,20 +328,6 @@ export default function GradientHero() {
       {/* WebGL canvas */}
       <canvas ref={canvasRef} className="pixi-intro-canvas" />
 
-      {/* Floating circles */}
-      <div className="hero-circles" aria-hidden="true">
-        {/* Left side */}
-        <span className="hero-circle hero-circle--a" style={{ width: 280, height: 280, left: -60,   top: '15%',  animationDuration: '38s', animationDelay: '0s'   }} />
-        <span className="hero-circle hero-circle--b" style={{ width: 130, height: 130, left: 60,    top: '55%',  animationDuration: '27s', animationDelay: '-8s'  }} />
-        <span className="hero-circle hero-circle--a" style={{ width: 72,  height: 72,  left: 160,   top: '28%',  animationDuration: '21s', animationDelay: '-14s' }} />
-        {/* Right side */}
-        <span className="hero-circle hero-circle--b" style={{ width: 320, height: 320, right: -80,  top: '22%',  animationDuration: '45s', animationDelay: '-20s' }} />
-        <span className="hero-circle hero-circle--a" style={{ width: 95,  height: 95,  right: 80,   top: '60%',  animationDuration: '31s', animationDelay: '-5s'  }} />
-        <span className="hero-circle hero-circle--b" style={{ width: 180, height: 180, right: 120,  top: '8%',   animationDuration: '34s', animationDelay: '-17s' }} />
-        {/* Bottom accent */}
-        <span className="hero-circle hero-circle--a" style={{ width: 50,  height: 50,  left: '38%', top: '82%',  animationDuration: '24s', animationDelay: '-6s'  }} />
-        <span className="hero-circle hero-circle--b" style={{ width: 110, height: 110, right: '30%', top: '70%', animationDuration: '30s', animationDelay: '-12s' }} />
-      </div>
 
       {/* Interactive cursor circle */}
       <div 
