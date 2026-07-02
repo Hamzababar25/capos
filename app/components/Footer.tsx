@@ -128,8 +128,8 @@ export default function Footer() {
               <h5 className="c-footer-col-title t-h6">Follow</h5>
               <ul className="c-footer-socials">
                 <li><a href="https://www.instagram.com/caposcoffee/" target='_blank' className="c-footer-social-link t-text">Instagram</a></li>
-                <li><a href="#" className="c-footer-social-link t-text">Twitter</a></li>
-                <li><a href="#" className="c-footer-social-link t-text">Facebook</a></li>
+                <li><a href="https://www.linkedin.com/company/capos-coffee/" target='_blank' className="c-footer-social-link t-text">LinkedIn</a></li>
+                <li><a href="https://www.facebook.com/profile.php?id=61591468595806&mibextid=wwXIfr&rdid=zgEGCIoXfJSvlWoV&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F192bp3AKa6%2F%3Fmibextid%3DwwXIfr#" target='_blank' className="c-footer-social-link t-text">Facebook</a></li>
               </ul>
             </div>
 

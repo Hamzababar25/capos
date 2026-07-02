@@ -161,7 +161,7 @@ export default function LoadingScreen() {
             opacity: 0,
           }}
         >
-          CAPO&apos;S
+          MEMBERS&apos;S
         </div>
 
         {/* Amber sweep line — below the heading */}
@@ -180,7 +180,7 @@ export default function LoadingScreen() {
           ref={tagRef}
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'max(0.72vw, 11px)',
+            fontSize: 'max(4vw, 11px)',
             fontWeight: 600,
             letterSpacing: '0.38em',
             textTransform: 'uppercase',
@@ -189,7 +189,7 @@ export default function LoadingScreen() {
             opacity: 0,
           }}
         >
-          COFFEE
+          CAPO'S
         </p>
       </div>
     </div>
