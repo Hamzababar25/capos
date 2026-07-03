@@ -47,7 +47,7 @@ export default function LegalHero({
         {/* Subtle ambient */}
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: 'radial-gradient(ellipse 70% 60% at 100% 0%, rgba(200,146,42,0.05) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(ellipse 70% 60% at 100% 0%, rgba(151,29,19,0.05) 0%, transparent 60%)' }}
           aria-hidden
         />
 
@@ -109,7 +109,7 @@ export default function LegalHero({
             {/* Line extends across remaining space */}
             <div
               className="mb-[0.12em] h-[1.5px] flex-1"
-              style={{ background: 'linear-gradient(90deg, rgba(200,146,42,0.50) 0%, rgba(200,146,42,0.06) 100%)' }}
+              style={{ background: 'linear-gradient(90deg, rgba(151,29,19,0.50) 0%, rgba(151,29,19,0.06) 100%)' }}
             />
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function LegalHero({
           ref={ruleRef}
           className="mt-10 h-px w-full"
           style={{
-            background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)',
+            background: 'linear-gradient(90deg, #971d13 0%, rgba(151,29,19,0.10) 100%)',
             transformOrigin: 'left center',
           }}
         />

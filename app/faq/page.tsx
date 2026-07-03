@@ -99,7 +99,7 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
 
   return (
     <div
-      className="border-b border-[rgba(200,146,42,0.12)] cursor-pointer"
+      className="border-b border-[rgba(151,29,19,0.12)] cursor-pointer"
       onClick={() => setOpen(!open)}
       data-reveal
     >
@@ -111,7 +111,7 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
           {q}
         </p>
         <span
-          className="shrink-0 w-7 h-7 rounded-full border border-[rgba(200,146,42,0.35)] flex items-center justify-center text-[#971d13] transition-transform duration-300"
+          className="shrink-0 w-7 h-7 rounded-full border border-[rgba(151,29,19,0.35)] flex items-center justify-center text-[#971d13] transition-transform duration-300"
           style={{ fontSize: 18, transform: open ? 'rotate(45deg)' : 'rotate(0deg)' }}
           aria-hidden
         >
@@ -175,7 +175,7 @@ export default function FAQPage() {
                 >
                   {cat.label}
                 </span>
-                <div className="h-px flex-1 bg-[rgba(200,146,42,0.12)]" />
+                <div className="h-px flex-1 bg-[rgba(151,29,19,0.12)]" />
               </div>
 
               {/* Accordion items */}
@@ -189,7 +189,7 @@ export default function FAQPage() {
 
           {/* Still have questions */}
           <div
-            className="mt-20 rounded-[6px] border border-[rgba(200,146,42,0.15)] bg-[#0d1410] p-8 text-center md:p-12"
+            className="mt-20 rounded-[6px] border border-[rgba(151,29,19,0.15)] bg-[#0d1410] p-8 text-center md:p-12"
             data-reveal
           >
             <p
@@ -222,7 +222,7 @@ export default function FAQPage() {
       </section>
 
       {/* Footer strip */}
-      <div className="border-t border-[rgba(200,146,42,0.10)] px-5 py-8 sm:px-6 md:px-[3.9vw]">
+      <div className="border-t border-[rgba(151,29,19,0.10)] px-5 py-8 sm:px-6 md:px-[3.9vw]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <span
             className="font-bold uppercase tracking-[0.18em] text-[rgba(240,237,230,0.25)]"

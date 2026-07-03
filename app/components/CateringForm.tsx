@@ -44,15 +44,15 @@ const empty: FormState = {
 const inputBase = [
   'w-full',
   'rounded-[4px]',
-  'border border-[rgba(200,146,42,0.18)]',
-  'bg-[rgba(10,9,6,0.6)]',
+  'border border-[rgba(151,29,19,0.18)]',
+  'bg-[rgba(8,13,10,0.6)]',
   'px-4 py-[13px]',
   'text-[14px] text-[#ffffff]',
   'font-[inherit]',
   'outline-none',
   'transition-[border-color,background]',
   'placeholder:text-[rgba(138,125,107,0.5)]',
-  'focus:border-[#971d13] focus:bg-[rgba(10,9,6,0.85)]',
+  'focus:border-[#971d13] focus:bg-[rgba(8,13,10,0.85)]',
   'appearance-none',
 ].join(' ');
 
@@ -144,7 +144,7 @@ export default function CateringForm() {
       {/* Subtle radial glow */}
       <div
         className="pointer-events-none absolute -right-[20%] top-0 h-[60vw] w-[60vw]"
-        style={{ background: 'radial-gradient(circle, rgba(200,146,42,0.045) 0%, transparent 65%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(151,29,19,0.045) 0%, transparent 65%)' }}
         aria-hidden
       />
 
@@ -152,7 +152,7 @@ export default function CateringForm() {
       <div
         data-cf="rule"
         className="h-px w-full"
-        style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.12) 100%)', marginBottom: '80px' }}
+        style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(151,29,19,0.12) 100%)', marginBottom: '80px' }}
         aria-hidden
       />
 
@@ -210,7 +210,7 @@ export default function CateringForm() {
             {['Corporate', 'Weddings', 'Festivals', 'Private Events'].map((t) => (
               <span
                 key={t}
-                className="rounded-sm border border-[rgba(200,146,42,0.28)] px-[14px] py-[6px] tracking-[0.14em] text-[rgba(200,146,42,0.75)]"
+                className="rounded-sm border border-[rgba(151,29,19,0.28)] px-[14px] py-[6px] tracking-[0.14em] text-[rgba(151,29,19,0.75)]"
                 style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase' }}
               >
                 {t}
@@ -222,7 +222,7 @@ export default function CateringForm() {
         {/* ── RIGHT — form ── */}
         <div data-cf="right" className="opacity-0">
           {submitted ? (
-            <div className="flex flex-col gap-5 rounded-md border border-[rgba(200,146,42,0.2)] bg-[rgba(10,9,6,0.4)] p-8 sm:p-10">
+            <div className="flex flex-col gap-5 rounded-md border border-[rgba(151,29,19,0.2)] bg-[rgba(8,13,10,0.4)] p-8 sm:p-10">
               <span
                 className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-[#971d13] text-xl text-[#971d13]"
                 aria-hidden

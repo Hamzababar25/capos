@@ -83,7 +83,7 @@ function Rule() {
   return (
     <div
       className="my-0 h-px w-full"
-      style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)' }}
+      style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(151,29,19,0.10) 100%)' }}
       aria-hidden
     />
   );
@@ -118,7 +118,7 @@ function DrinkCard({ name, desc, tag }: {
 }) {
   return (
     <div
-      className="flex flex-col gap-4 rounded-[4px] border border-[rgba(200,146,42,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(200,146,42,0.30)]"
+      className="flex flex-col gap-4 rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(151,29,19,0.30)]"
       data-reveal
     >
       <div className="flex items-start justify-between gap-4">
@@ -130,7 +130,7 @@ function DrinkCard({ name, desc, tag }: {
         </h3>
         {tag && (
           <span
-            className="rounded-sm border border-[rgba(200,146,42,0.35)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(200,146,42,0.85)]"
+            className="rounded-sm border border-[rgba(151,29,19,0.35)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.85)]"
             style={{ fontSize: 'max(0.677vw, 10px)' }}
           >
             {tag}
@@ -196,7 +196,7 @@ export default function MenuPage() {
         {/* Ambient glow */}
         <div
           className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-w-[900px]"
-          style={{ background: 'radial-gradient(circle at 80% 20%, rgba(200,146,42,0.055) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(circle at 80% 20%, rgba(151,29,19,0.055) 0%, transparent 60%)' }}
           aria-hidden
         />
 
@@ -245,7 +245,7 @@ export default function MenuPage() {
         {/* Bottom rule */}
         <div
           className="absolute bottom-0 left-0 w-full"
-          style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)', height: '1px' }}
+          style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(151,29,19,0.10) 100%)', height: '1px' }}
           aria-hidden
         />
       </section>
@@ -291,7 +291,7 @@ export default function MenuPage() {
 
           <div className="flex flex-col justify-center gap-8">
             <div
-              className="flex flex-col gap-4 border-b border-[rgba(200,146,42,0.12)] pb-8"
+              className="flex flex-col gap-4 border-b border-[rgba(151,29,19,0.12)] pb-8"
               data-reveal
             >
               <h3
@@ -311,7 +311,7 @@ export default function MenuPage() {
                 {essentialFlavors.map((f) => (
                   <span
                     key={f}
-                    className="rounded-sm border border-[rgba(200,146,42,0.20)] px-3 py-1 text-[rgba(200,146,42,0.70)]"
+                    className="rounded-sm border border-[rgba(151,29,19,0.20)] px-3 py-1 text-[rgba(151,29,19,0.70)]"
                     style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
                   >
                     {f}
@@ -340,7 +340,7 @@ export default function MenuPage() {
       >
         {/* Collab header block */}
         <div
-          className="mb-14 rounded-[4px] border border-[rgba(200,146,42,0.15)] bg-[#0d1410] p-8 md:p-10"
+          className="mb-14 rounded-[4px] border border-[rgba(151,29,19,0.15)] bg-[#0d1410] p-8 md:p-10"
           data-reveal
         >
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -367,7 +367,7 @@ export default function MenuPage() {
             <div className="flex flex-col gap-2 md:items-end">
               <div className="flex items-center gap-3">
                 <span
-                  className="rounded-sm border border-[rgba(200,146,42,0.30)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(200,146,42,0.80)]"
+                  className="rounded-sm border border-[rgba(151,29,19,0.30)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.80)]"
                   style={{ fontSize: 'max(0.677vw, 10px)' }}
                 >
                   Cars N&apos; Coffee
@@ -424,11 +424,11 @@ export default function MenuPage() {
             {addOns.map((item, i) => (
               <li
                 key={item}
-                className="flex items-center gap-4 border-b border-[rgba(200,146,42,0.10)] py-5 transition-colors duration-300 last:border-0 hover:border-[rgba(200,146,42,0.25)]"
+                className="flex items-center gap-4 border-b border-[rgba(151,29,19,0.10)] py-5 transition-colors duration-300 last:border-0 hover:border-[rgba(151,29,19,0.25)]"
                 data-reveal
               >
                 <span
-                  className="shrink-0 font-bold text-[rgba(200,146,42,0.40)]"
+                  className="shrink-0 font-bold text-[rgba(151,29,19,0.40)]"
                   style={{ fontSize: 'max(0.677vw, 11px)', width: '1.8em' }}
                 >
                   0{i + 1}

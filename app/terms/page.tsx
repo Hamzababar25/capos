@@ -110,7 +110,7 @@ export default function TermsPage() {
             >
               <div className="mb-5 flex items-baseline gap-5">
                 <span
-                  className="shrink-0 font-bold tabular-nums text-[rgba(200,146,42,0.40)]"
+                  className="shrink-0 font-bold tabular-nums text-[rgba(151,29,19,0.40)]"
                   style={{ fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.14em' }}
                 >
                   {String(i + 1).padStart(2, '0')}
@@ -122,7 +122,7 @@ export default function TermsPage() {
                   {s.title}
                 </h2>
               </div>
-              <div className="border-l-2 border-[rgba(200,146,42,0.18)] pl-6 md:pl-10">
+              <div className="border-l-2 border-[rgba(151,29,19,0.18)] pl-6 md:pl-10">
                 {s.body.split('\n\n').map((para, j) => (
                   <p
                     key={j}
@@ -139,7 +139,7 @@ export default function TermsPage() {
       </section>
 
       {/* Footer strip */}
-      <div className="border-t border-[rgba(200,146,42,0.10)] px-5 py-8 sm:px-6 md:px-[3.9vw]">
+      <div className="border-t border-[rgba(151,29,19,0.10)] px-5 py-8 sm:px-6 md:px-[3.9vw]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <span
             className="font-bold uppercase tracking-[0.18em] text-[rgba(240,237,230,0.25)]"
