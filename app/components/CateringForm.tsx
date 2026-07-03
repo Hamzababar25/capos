@@ -47,16 +47,16 @@ const inputBase = [
   'border border-[rgba(200,146,42,0.18)]',
   'bg-[rgba(10,9,6,0.6)]',
   'px-4 py-[13px]',
-  'text-[14px] text-[#f0ede6]',
+  'text-[14px] text-[#ffffff]',
   'font-[inherit]',
   'outline-none',
   'transition-[border-color,background]',
   'placeholder:text-[rgba(138,125,107,0.5)]',
-  'focus:border-[#c8922a] focus:bg-[rgba(10,9,6,0.85)]',
+  'focus:border-[#971d13] focus:bg-[rgba(10,9,6,0.85)]',
   'appearance-none',
 ].join(' ');
 
-const selectArrow = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8922a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`;
+const selectArrow = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23971d13' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`;
 
 export default function CateringForm() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -139,7 +139,7 @@ export default function CateringForm() {
     <section
       id="booking"
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#1e1a15] pb-14 sm:pb-[72px] lg:pb-[100px] pr-12"
+      className="relative overflow-hidden bg-[#0d1410] pb-14 sm:pb-[72px] lg:pb-[100px] pr-12"
     >
       {/* Subtle radial glow */}
       <div
@@ -152,7 +152,7 @@ export default function CateringForm() {
       <div
         data-cf="rule"
         className="h-px w-full"
-        style={{ background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.12) 100%)', marginBottom: '80px' }}
+        style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.12) 100%)', marginBottom: '80px' }}
         aria-hidden
       />
 
@@ -163,18 +163,18 @@ export default function CateringForm() {
         <div data-cf="left" className="flex flex-col opacity-0">
 
           <span
-            className="mb-7 block font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+            className="mb-7 block font-bold uppercase tracking-[0.22em] text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
             Catering Enquiries
           </span>
 
           <h2
-            className="mb-7 font-bold uppercase leading-none tracking-[-0.03em] text-[#f0ede6]"
+            className="mb-7 font-bold uppercase leading-none tracking-[-0.03em] text-[#ffffff]"
             style={{ fontSize: 'clamp(38px, 4.2vw, 68px)' }}
           >
             Bring<br />
-            <span className="text-[#c8922a]">CAPOS</span><br />
+            <span className="text-[#971d13]">CAPOS</span><br />
             to your event.
           </h2>
 
@@ -189,19 +189,19 @@ export default function CateringForm() {
 
           <ul className="mb-9 flex list-none flex-col gap-[14px] p-0">
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
-              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✉</span>
-              <a href="mailto:info@capos.com" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
+              <span className="w-[18px] shrink-0 text-[#971d13]" aria-hidden>✉</span>
+              <a href="mailto:info@capos.com" className="text-[#ffffff] transition-colors duration-300 hover:text-[#971d13]">
                 info@capos.com
               </a>
             </li>
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
-              <span className="w-[18px] shrink-0 text-[#c8922a]" aria-hidden>✆</span>
-              <a href="tel:+442079460958" className="text-[#f0ede6] transition-colors duration-300 hover:text-[#c8922a]">
+              <span className="w-[18px] shrink-0 text-[#971d13]" aria-hidden>✆</span>
+              <a href="tel:+442079460958" className="text-[#ffffff] transition-colors duration-300 hover:text-[#971d13]">
                 +1 (732) 789-4792
               </a>
             </li>
             <li className="flex items-center gap-3 tracking-[0.06em] text-[rgba(240,237,230,0.55)]" style={{ fontSize: 'max(0.677vw, 11px)' }}>
-              <span className="w-[16px] shrink-0 text-[#c8922a]" aria-hidden>◷</span>
+              <span className="w-[16px] shrink-0 text-[#971d13]" aria-hidden>◷</span>
               We will get to you as soon as possible.
             </li>
           </ul>
@@ -224,13 +224,13 @@ export default function CateringForm() {
           {submitted ? (
             <div className="flex flex-col gap-5 rounded-md border border-[rgba(200,146,42,0.2)] bg-[rgba(10,9,6,0.4)] p-8 sm:p-10">
               <span
-                className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-[#c8922a] text-xl text-[#c8922a]"
+                className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-[#971d13] text-xl text-[#971d13]"
                 aria-hidden
               >
                 ✓
               </span>
               <h3
-                className="m-0 font-bold tracking-[-0.02em] text-[#f0ede6]"
+                className="m-0 font-bold tracking-[-0.02em] text-[#ffffff]"
                 style={{ fontSize: 'clamp(22px, 2.5vw, 36px)' }}
               >
                 Enquiry received.
@@ -258,7 +258,7 @@ export default function CateringForm() {
               <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-name"
                   >
@@ -278,7 +278,7 @@ export default function CateringForm() {
 
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-phone"
                   >
@@ -300,7 +300,7 @@ export default function CateringForm() {
               {/* Row — Email */}
               <div className="flex flex-col gap-2">
                 <label
-                  className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                  className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                   style={{ fontSize: 'max(0.677vw, 11px)' }}
                   htmlFor="cf-email"
                 >
@@ -322,7 +322,7 @@ export default function CateringForm() {
               <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-type"
                   >
@@ -339,9 +339,9 @@ export default function CateringForm() {
                     }}
                     value={form.eventType} onChange={set('eventType')}
                   >
-                    <option value="" style={{ background: '#1e1a15', color: '#f0ede6' }}>Select type</option>
+                    <option value="" style={{ background: '#0d1410', color: '#ffffff' }}>Select type</option>
                     {eventTypes.map((t) => (
-                      <option key={t} value={t} style={{ background: '#1e1a15', color: '#f0ede6' }}>{t}</option>
+                      <option key={t} value={t} style={{ background: '#0d1410', color: '#ffffff' }}>{t}</option>
                     ))}
                   </select>
                   {errors.eventType && (
@@ -351,7 +351,7 @@ export default function CateringForm() {
 
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-guests"
                   >
@@ -368,9 +368,9 @@ export default function CateringForm() {
                     }}
                     value={form.guests} onChange={set('guests')}
                   >
-                    <option value="" style={{ background: '#1e1a15', color: '#f0ede6' }}>Select range</option>
+                    <option value="" style={{ background: '#0d1410', color: '#ffffff' }}>Select range</option>
                     {guestCounts.map((g) => (
-                      <option key={g} value={g} style={{ background: '#1e1a15', color: '#f0ede6' }}>{g}</option>
+                      <option key={g} value={g} style={{ background: '#0d1410', color: '#ffffff' }}>{g}</option>
                     ))}
                   </select>
                   {errors.guests && (
@@ -383,7 +383,7 @@ export default function CateringForm() {
               <div className="flex flex-col gap-5 sm:flex-row sm:gap-4">
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-date"
                   >
@@ -402,7 +402,7 @@ export default function CateringForm() {
 
                 <div className="flex flex-1 flex-col gap-2">
                   <label
-                    className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                    className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                     style={{ fontSize: 'max(0.677vw, 11px)' }}
                     htmlFor="cf-venue"
                   >
@@ -423,7 +423,7 @@ export default function CateringForm() {
               {/* Row — Notes */}
               <div className="flex flex-col gap-2">
                 <label
-                  className="block font-bold uppercase tracking-[0.16em] text-[#8a7d6b]"
+                  className="block font-bold uppercase tracking-[0.16em] text-[#7a8a84]"
                   style={{ fontSize: 'max(0.677vw, 11px)' }}
                   htmlFor="cf-notes"
                 >

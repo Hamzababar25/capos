@@ -3,7 +3,7 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  color: #f0ede6;
+  color: #ffffff;
   cursor: none;
   margin: 0;
   padding: 0;
@@ -45,7 +45,7 @@
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  border: 1.5px solid rgba(200, 146, 42, 0.25);
+  border: 1.5px solid rgba(151, 29, 19, 0.25);
   pointer-events: none;
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease;
@@ -53,12 +53,12 @@
   backdrop-filter: blur(2px) saturate(1.2);
   background: radial-gradient(
     circle at 30% 30%,
-    rgba(200, 146, 42, 0.08) 0%,
+    rgba(151, 29, 19, 0.08) 0%,
     transparent 70%
   );
   box-shadow: 
-    0 0 60px rgba(200, 146, 42, 0.12),
-    inset 0 0 40px rgba(200, 146, 42, 0.06);
+    0 0 60px rgba(151, 29, 19, 0.12),
+    inset 0 0 40px rgba(151, 29, 19, 0.06);
   animation: bubblePulse 3s ease-in-out infinite;
 }
 
@@ -98,7 +98,7 @@
 
 /* Eyebrow label */
 .pixi-intro-eyebrow {
-  color: #c8922a;
+  color: #971d13;
   opacity: 0;
   letter-spacing: 0.22em;
 }
@@ -160,21 +160,21 @@
 /* WELCOME — italic, warm white */
 /* WELCOME — warm white italic */
 .hero-flip-hover--en {
-  color: #e8d0a0;
+  color: #ffffff;
   font-style: italic;
   letter-spacing: 0.06em;
 }
 
 /* مرحباً — brand amber */
 .hero-flip-hover--ar {
-  color: #c8922a;
+  color: #971d13;
   letter-spacing: 0.02em;
   font-weight: 400;
 }
 
 /* BENVENUTO — Cormorant Garamond, champagne gold italic */
 .hero-flip-hover--it {
-  color: #e8d0a0;
+  color: #ffffff;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-weight: 500;
@@ -192,7 +192,7 @@
 
 .pixi-intro-line i {
   font-style: italic;
-  color: #c8922a;
+  color: #971d13;
 }
 
 .pixi-intro-line--1 {}
@@ -201,10 +201,10 @@
 
 /* Hero CTA — dark glass bg so it pops on the golden gradient */
 .pixi-intro-cta {
-  background: rgba(10, 9, 6, 0.55) !important;
+  background: rgba(8, 13, 10, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-color: rgba(240, 237, 230, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
 }
 /* On hover the ::before amber fill takes over — clear the static bg so
    the amber sweep is visible and text reads dark on amber (globals.css) */
@@ -215,7 +215,7 @@
 /* Subtext below headline */
 .pixi-intro-sub {
   opacity: 0;
-  color: rgba(240, 237, 230, 0.65);
+  color: rgba(255, 255, 255, 0.65);
   max-width: 420px;
   line-height: 1.65;
 }
@@ -228,7 +228,7 @@
   left: 0;
   width: 100%;
   height: 220px;
-  background: linear-gradient(to top, rgba(10, 9, 6, 0.72) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(8, 13, 10, 0.72) 0%, transparent 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -251,18 +251,18 @@
   padding-left: 3.9vw;
   padding-right: 3.9vw;
   width: 100%;
-  border-top: 1px solid rgba(200, 146, 42, 0.1);
+  border-top: 1px solid rgba(151, 29, 19, 0.1);
   padding-top: 20px;
 }
 
 .pixi-intro-foot-circles {
   flex-shrink: 0;
   margin-bottom: 2px;
-  filter: drop-shadow(0 0 6px rgba(200, 146, 42, 0.15));
+  filter: drop-shadow(0 0 6px rgba(151, 29, 19, 0.15));
 }
 
 .pixi-intro-foot-circles circle {
-  stroke: #c8922a;
+  stroke: #971d13;
   stroke-opacity: 0.3;
 }
 
@@ -281,7 +281,7 @@
 .pixi-intro-foot-item strong {
   font-weight: 600;
   font-size: max(1vw, 14px);
-  color: #f0ede6;
+  color: #ffffff;
   letter-spacing: 0.08em;
 }
 
@@ -292,7 +292,7 @@
   font-size: max(0.677vw, 10px);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #c8922a;
+  color: #971d13;
 }
 
 .pixi-intro-scroll-wrap {
@@ -305,7 +305,7 @@
 
 .pixi-intro-scroll-wrap svg line,
 .pixi-intro-scroll-wrap svg path {
-  stroke: #c8922a;
+  stroke: #971d13;
   stroke-opacity: 0.65;
 }
 

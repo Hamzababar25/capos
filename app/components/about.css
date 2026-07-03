@@ -4,8 +4,8 @@
 
 .c-about {
   position: relative;
-  background: #0a0906;
-  color: #f0ede6;
+  background: #080d0a;
+  color: #ffffff;
   overflow: hidden;
   padding: 0 0 80px;
 }
@@ -21,7 +21,7 @@
 
 .c-about-eyebrow {
   flex-shrink: 0;
-  color: #c8922a;
+  color: #971d13;
   letter-spacing: 0.22em;
   opacity: 0; /* GSAP reveals */
 }
@@ -29,7 +29,7 @@
 .c-about-header-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(200, 146, 42, 0.35) 0%, transparent 100%);
+  background: linear-gradient(90deg, rgba(151, 29, 19, 0.35) 0%, transparent 100%);
 }
 
 /* ── Two-column body ─────────────────────────────── */
@@ -53,7 +53,7 @@
 
 /* Slide number indicator */
 .c-about-slide-num {
-  color: #c8922a;
+  color: #971d13;
   letter-spacing: 0.18em;
   margin-bottom: 28px;
   display: flex;
@@ -109,7 +109,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.95;
-  color: #f0ede6;
+  color: #ffffff;
   margin: 0 0 18px;
   white-space: pre-line;
   text-transform: uppercase;
@@ -121,12 +121,12 @@
   display: block;
   width: 28px;
   height: 2px;
-  background: #c8922a;
+  background: #971d13;
   margin-bottom: 18px;
 }
 
 .c-about-slide-sub {
-  color: #c8922a;
+  color: #971d13;
   letter-spacing: 0.16em;
   margin-bottom: 16px;
   display: block;
@@ -134,7 +134,7 @@
 }
 
 .c-about-slide-desc {
-  color: rgba(240, 237, 230, 0.58);
+  color: rgba(255, 255, 255, 0.58);
   line-height: 1.8;
   max-width: 400px;
 }
@@ -150,9 +150,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(200, 146, 42, 0.3);
+  border: 1px solid rgba(151, 29, 19, 0.3);
   background: transparent;
-  color: #c8922a;
+  color: #971d13;
   font-size: 15px;
   cursor: pointer;
   display: flex;
@@ -169,13 +169,13 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #c8922a;
+  background: #971d13;
   transform: scale(0);
   transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .c-about-arrow:hover::before   { transform: scale(1); }
-.c-about-arrow:hover           { color: #0a0906; border-color: #c8922a; transform: scale(1.05); }
+.c-about-arrow:hover           { color: #080d0a; border-color: #971d13; transform: scale(1.05); }
 .c-about-arrow span            { position: relative; z-index: 1; }
 
 .c-about-dots {
@@ -188,7 +188,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: 1.5px solid rgba(200, 146, 42, 0.4);
+  border: 1.5px solid rgba(151, 29, 19, 0.4);
   background: transparent;
   cursor: pointer;
   padding: 0;
@@ -197,14 +197,14 @@
 }
 
 .c-about-dot.is-active {
-  background: #c8922a;
-  border-color: #c8922a;
+  background: #971d13;
+  border-color: #971d13;
   transform: scale(1.25);
 }
 
 .c-about-dot:hover {
-  border-color: #c8922a;
-  background: rgba(200, 146, 42, 0.25);
+  border-color: #971d13;
+  background: rgba(151, 29, 19, 0.25);
 }
 
 /* ── RIGHT — image panel ─────────────────────────── */
@@ -251,7 +251,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: #0a0906;
+  background: #080d0a;
   display: block;
   transition: transform 8s ease-out;
 }
@@ -265,8 +265,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top,  rgba(10, 9, 6, 0.82) 0%, rgba(10, 9, 6, 0.25) 35%, transparent 62%),
-    linear-gradient(to right, rgba(10, 9, 6, 0.4) 0%, transparent 25%);
+    linear-gradient(to top,  rgba(8, 13, 10, 0.82) 0%, rgba(8, 13, 10, 0.25) 35%, transparent 62%),
+    linear-gradient(to right, rgba(8, 13, 10, 0.4) 0%, transparent 25%);
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -276,9 +276,9 @@
 
 /* Image tag badge */
 .c-about-image-tag {
-  background: rgba(200, 146, 42, 0.1);
-  border: 1px solid rgba(200, 146, 42, 0.3);
-  color: #c8922a;
+  background: rgba(151, 29, 19, 0.1);
+  border: 1px solid rgba(151, 29, 19, 0.3);
+  color: #971d13;
   padding: 5px 12px;
   letter-spacing: 0.18em;
   border-radius: 2px;
@@ -295,7 +295,7 @@
 
 .c-about-progress-track {
   height: 1px;
-  background: rgba(200, 146, 42, 0.1);
+  background: rgba(151, 29, 19, 0.1);
   width: 100%;
   max-width: 260px;
   overflow: hidden;
@@ -303,7 +303,7 @@
 
 .c-about-progress-bar {
   height: 100%;
-  background: #c8922a;
+  background: #971d13;
   width: 0%;
 }
 

@@ -83,7 +83,7 @@ function Rule() {
   return (
     <div
       className="my-0 h-px w-full"
-      style={{ background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.10) 100%)' }}
+      style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)' }}
       aria-hidden
     />
   );
@@ -92,7 +92,7 @@ function Rule() {
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="mb-5 block font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+      className="mb-5 block font-bold uppercase tracking-[0.22em] text-[#971d13]"
       style={{ fontSize: 'max(0.677vw, 11px)' }}
       data-reveal
     >
@@ -104,7 +104,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2
-      className="m-0 font-bold uppercase leading-none tracking-[-0.03em] text-[#f0ede6]"
+      className="m-0 font-bold uppercase leading-none tracking-[-0.03em] text-[#ffffff]"
       style={{ fontSize: 'clamp(36px, 5vw, 80px)' }}
       data-reveal
     >
@@ -118,12 +118,12 @@ function DrinkCard({ name, desc, tag }: {
 }) {
   return (
     <div
-      className="flex flex-col gap-4 rounded-[4px] border border-[rgba(200,146,42,0.12)] bg-[#1e1a15] p-7 transition-[border-color] duration-500 hover:border-[rgba(200,146,42,0.30)]"
+      className="flex flex-col gap-4 rounded-[4px] border border-[rgba(200,146,42,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(200,146,42,0.30)]"
       data-reveal
     >
       <div className="flex items-start justify-between gap-4">
         <h3
-          className="m-0 leading-tight tracking-[-0.01em] text-[#f0ede6]"
+          className="m-0 leading-tight tracking-[-0.01em] text-[#ffffff]"
           style={{ fontSize: 'clamp(18px, 1.6vw, 26px)', fontWeight: 600 }}
         >
           {name}
@@ -185,7 +185,7 @@ export default function MenuPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0906] text-[#f0ede6]">
+    <div className="min-h-screen bg-[#080d0a] text-[#ffffff]">
       <Navigation />
 
       {/* ── HERO ──────────────────────────────────────────── */}
@@ -202,20 +202,20 @@ export default function MenuPage() {
 
         <div className="relative z-10 max-w-[900px]">
           <span
-            className="mb-6 block font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+            className="mb-6 block font-bold uppercase tracking-[0.22em] text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
             data-hero
           >
-            Coffee Cart · Tri-State Area · Est. 2023
+            Coffee Cart · Tri-State Area · Est. 2025
           </span>
 
           <h1
-            className="m-0 mb-8 font-bold uppercase leading-none tracking-[-0.04em] text-[#f0ede6]"
+            className="m-0 mb-8 font-bold uppercase leading-none tracking-[-0.04em] text-[#ffffff]"
             style={{ fontSize: 'clamp(52px, 9vw, 140px)' }}
             data-hero
           >
             The<br />
-            <span style={{ color: '#c8922a' }}>Menu.</span>
+            <span style={{ color: '#971d13' }}>Menu.</span>
           </h1>
 
           <p
@@ -234,7 +234,7 @@ export default function MenuPage() {
             </a>
             <Link
               href="/"
-              className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#c8922a]"
+              className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
               style={{ fontSize: 'max(0.677vw, 11px)' }}
             >
               ← Back to Home
@@ -245,7 +245,7 @@ export default function MenuPage() {
         {/* Bottom rule */}
         <div
           className="absolute bottom-0 left-0 w-full"
-          style={{ background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.10) 100%)', height: '1px' }}
+          style={{ background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)', height: '1px' }}
           aria-hidden
         />
       </section>
@@ -295,7 +295,7 @@ export default function MenuPage() {
               data-reveal
             >
               <h3
-                className="m-0 font-semibold tracking-[-0.01em] text-[#f0ede6]"
+                className="m-0 font-semibold tracking-[-0.01em] text-[#ffffff]"
                 style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
               >
                 Iced Latte
@@ -340,22 +340,22 @@ export default function MenuPage() {
       >
         {/* Collab header block */}
         <div
-          className="mb-14 rounded-[4px] border border-[rgba(200,146,42,0.15)] bg-[#1e1a15] p-8 md:p-10"
+          className="mb-14 rounded-[4px] border border-[rgba(200,146,42,0.15)] bg-[#0d1410] p-8 md:p-10"
           data-reveal
         >
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-3">
               <span
-                className="font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+                className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
                 Collaboration Menu
               </span>
               <p
-                className="m-0 font-semibold text-[#f0ede6]"
+                className="m-0 font-semibold text-[#ffffff]"
                 style={{ fontSize: 'clamp(16px, 1.3vw, 20px)' }}
               >
-                In collaboration with <span className="text-[#c8922a]">Namkeen</span>
+                In collaboration with <span className="text-[#971d13]">Namkeen</span>
               </p>
               <p
                 className="m-0 text-[rgba(240,237,230,0.45)]"
@@ -434,7 +434,7 @@ export default function MenuPage() {
                   0{i + 1}
                 </span>
                 <span
-                  className="font-medium text-[#f0ede6]"
+                  className="font-medium text-[#ffffff]"
                   style={{ fontSize: 'clamp(15px, 1.3vw, 20px)' }}
                 >
                   {item}
@@ -465,7 +465,7 @@ export default function MenuPage() {
         <div className="flex flex-wrap items-center justify-center gap-6">
           <a
             href="mailto:hello@capos.coffee"
-            className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#c8922a]"
+            className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
             hello@capos.coffee
@@ -473,7 +473,7 @@ export default function MenuPage() {
           <span className="text-[rgba(240,237,230,0.20)]" aria-hidden>·</span>
           <a
             href="tel:+442079460958"
-            className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#c8922a]"
+            className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
             +44 20 7946 0958

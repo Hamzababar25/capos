@@ -31,11 +31,11 @@ export default function LoadingScreen() {
       const img  = ctx.createImageData(w, h);
       const data = img.data;
       for (let i = 0; i < data.length; i += 4) {
-        const v      = Math.random() * 200;
-        data[i]     = v * 0.85;   // R — warm
-        data[i + 1] = v * 0.52;   // G
-        data[i + 2] = v * 0.18;   // B — amber tint
-        data[i + 3] = Math.random() < 0.04 ? 160 : 18; // occasional bright flicker
+        const v      = Math.random() * 220;
+        data[i]     = v;           // R
+        data[i + 1] = v;           // G — pure white noise
+        data[i + 2] = v;           // B
+        data[i + 3] = Math.random() < 0.04 ? 180 : 16; // occasional bright flicker
       }
       ctx.putImageData(img, 0, 0);
       rafRef.current = requestAnimationFrame(drawStatic);
@@ -139,7 +139,7 @@ export default function LoadingScreen() {
             fontWeight: 600,
             letterSpacing: '0.32em',
             textTransform: 'uppercase',
-            color: 'rgba(200, 146, 42, 0.7)',
+            color: 'rgba(255, 255, 255, 0.35)',
             marginBottom: 20,
             opacity: 0,
           }}
@@ -155,23 +155,23 @@ export default function LoadingScreen() {
             fontSize: 'clamp(64px, 11vw, 140px)',
             fontWeight: 800,
             letterSpacing: '0.24em',
-            color: '#f0ede6',
+            color: '#ffffff',
             textTransform: 'uppercase',
             lineHeight: 1,
             opacity: 0,
           }}
         >
-          MEMBERS ONLY
+          CAPO&apos;S
         </div>
 
-        {/* Amber sweep line — below the heading */}
+        {/* White sweep line — below the heading */}
         <div
           ref={lineRef}
           style={{
-            height: 2,
-            background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.35) 100%)',
+            height: 1,
+            background: 'linear-gradient(90deg, #ffffff 0%, rgba(255,255,255,0.1) 100%)',
             marginTop: 14,
-            borderRadius: 2,
+            borderRadius: 1,
           }}
         />
 
@@ -180,16 +180,16 @@ export default function LoadingScreen() {
           ref={tagRef}
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'max(4vw, 11px)',
+            fontSize: 'max(0.72vw, 11px)',
             fontWeight: 600,
             letterSpacing: '0.38em',
             textTransform: 'uppercase',
-            color: 'rgba(240, 237, 230, 0.45)',
+            color: 'rgba(255, 255, 255, 0.35)',
             marginTop: 16,
             opacity: 0,
           }}
         >
-          
+          COFFEE
         </p>
       </div>
     </div>

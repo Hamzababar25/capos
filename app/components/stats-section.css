@@ -3,8 +3,8 @@
   position: relative;
   z-index: 1;
   padding: 110px 6vw 120px;
-  border-top: 1px solid rgba(200, 146, 42, 0.12);
-  border-bottom: 1px solid rgba(200, 146, 42, 0.12);
+  border-top: 1px solid rgba(151, 29, 19, 0.12);
+  border-bottom: 1px solid rgba(151, 29, 19, 0.12);
   overflow: hidden;
 }
 
@@ -13,12 +13,12 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(200, 146, 42, 0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(151, 29, 19, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .stats-eyebrow {
-  color: #c8922a;
+  color: #971d13;
   margin-bottom: 72px;
   letter-spacing: 0.22em;
 }
@@ -44,7 +44,7 @@
   top: 8px;
   bottom: 8px;
   width: 1px;
-  background: rgba(240, 237, 230, 0.10);
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .stats-item:not(:first-child) {
@@ -58,13 +58,13 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: #f0ede6;
+  color: #ffffff;
   -webkit-text-stroke: 0;
 }
 
 .stats-label {
   display: block;
-  color: rgba(240, 237, 230, 0.45);
+  color: rgba(255, 255, 255, 0.45);
   white-space: pre-line;
   line-height: 1.6;
   letter-spacing: 0.18em;
@@ -89,7 +89,7 @@
     padding-left: 0;
     padding-top: 52px;
     margin-top: 52px;
-    border-top: 1px solid rgba(240, 237, 230, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .stats-eyebrow {

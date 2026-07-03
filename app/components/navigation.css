@@ -5,16 +5,16 @@
   left: 0;
   width: 100%;
   z-index: 100;
-  color: #f0ede6;
+  color: #ffffff;
   transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
 }
 
 .c-header.is-scrolled {
   position: fixed;
-  background: rgba(10, 9, 6, 0.82);
+  background: rgba(8, 13, 10, 0.82);
   backdrop-filter: blur(14px) saturate(1.4);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: 0 1px 0 rgba(200, 146, 42, 0.12);
+  box-shadow: 0 1px 0 rgba(151, 29, 19, 0.12);
 }
 
 .c-header-inner {
@@ -95,7 +95,7 @@
 
 .c-header-nav-link:hover {
   opacity: 1;
-  color: #c8922a;
+  color: #971d13;
 }
 
 .c-header-nav-link-line {
@@ -104,7 +104,7 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background: #c8922a;
+  background: #971d13;
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -135,7 +135,7 @@
 
 .c-header-clock.is-active {
   opacity: 0.85;
-  color: #c8922a;
+  color: #971d13;
 }
 
 /* ── Reserve CTA ─────────────────────────────────────── */
@@ -147,10 +147,10 @@
   letter-spacing: 0.12em;
   pointer-events: auto;
   /* Dark glass bg so button is legible on the golden gradient */
-  background: rgba(10, 9, 6, 0.55) !important;
+  background: rgba(8, 13, 10, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-color: rgba(240, 237, 230, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
 }
 /* On hover the ::before amber fill takes over — let globals.css handle the rest */
 .c-header-cta:hover {
@@ -231,7 +231,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(145deg, #0a0906 0%, #1e1a15 60%, #0a0906 100%);
+  background: linear-gradient(145deg, #080d0a 0%, #0d1410 60%, #080d0a 100%);
   display: none;
   flex-direction: column;
   align-items: center;
@@ -247,7 +247,7 @@
   left: 50%;
   transform: translateX(-50%);
   opacity: 0.35;
-  color: #c8922a;
+  color: #971d13;
   letter-spacing: 0.2em;
 }
 
@@ -271,7 +271,7 @@
   gap: 18px;
   font-size: clamp(2.5rem, 10vw, 6rem);
   font-weight: 300;
-  color: #f0ede6;
+  color: #ffffff;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -279,25 +279,25 @@
   transition: color 0.3s ease;
 }
 
-.c-header-overlay-nav ul li a:hover { color: #c8922a; }
+.c-header-overlay-nav ul li a:hover { color: #971d13; }
 
 /* "Book Your Event" — same big type, amber so it reads as primary CTA */
 .c-header-overlay-nav ul li.is-cta-item a {
-  color: #c8922a;
+  color: #971d13;
   font-weight: 700;
   /* Slightly tighter size so the long label stays on one line */
   font-size: clamp(1.8rem, 7.5vw, 5rem);
   letter-spacing: 0.06em;
 }
 .c-header-overlay-nav ul li.is-cta-item a:hover {
-  color: #f0ede6;
+  color: #ffffff;
 }
 
 /* Thin top rule separates the CTA from the navigation links above */
 .c-header-overlay-nav ul li.is-cta-item {
   margin-top: 24px;
   padding-top: 24px;
-  border-top: 1px solid rgba(200, 146, 42, 0.18);
+  border-top: 1px solid rgba(151, 29, 19, 0.18);
 }
 
 .c-header-overlay-number {
@@ -307,7 +307,7 @@
   opacity: 0.4;
   align-self: flex-start;
   margin-top: 12px;
-  color: #c8922a;
+  color: #971d13;
 }
 
 /* ── Mobile ──────────────────────────────────────────── */

@@ -1,9 +1,9 @@
 .c-footer {
-  background: #0a0906;
-  color: #f0ede6;
+  background: #080d0a;
+  color: #ffffff;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid rgba(200, 146, 42, 0.12);
+  border-top: 1px solid rgba(151, 29, 19, 0.12);
 }
 
 /* ── CAPOS watermark ─────────────────────────────── */
@@ -16,7 +16,7 @@
   letter-spacing: -0.04em;
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(200, 146, 42, 0.07);
+  -webkit-text-stroke: 1px rgba(151, 29, 19, 0.07);
   user-select: none;
   pointer-events: none;
   z-index: 0;
@@ -39,7 +39,7 @@
 .c-footer-circles {
   display: block;
   margin-bottom: 24px;
-  color: #c8922a;
+  color: #971d13;
 }
 
 .c-footer-title {
@@ -51,7 +51,7 @@
 
 .c-footer-title i {
   font-style: italic;
-  color: #c8922a;
+  color: #971d13;
 }
 
 /* ── Body layout ─────────────────────────────────── */
@@ -77,12 +77,12 @@
 
 .c-footer-col-title {
   margin-bottom: 22px;
-  color: #8a7d6b;
+  color: #7a8a84;
   letter-spacing: 0.2em;
 }
 
 .c-footer-muted {
-  color: #8a7d6b;
+  color: #7a8a84;
   line-height: 1.7;
 }
 
@@ -96,7 +96,7 @@
   margin-top: 8px;
   font-size: max(0.677vw, 11px);
   letter-spacing: 0.08em;
-  color: rgba(200, 146, 42, 0.6);
+  color: rgba(151, 29, 19, 0.6);
 }
 
 /* Email */
@@ -105,7 +105,7 @@
   align-items: center;
   gap: 8px;
   margin-top: 32px;
-  color: #f0ede6;
+  color: #ffffff;
   text-decoration: none;
   font-size: clamp(16px, 1.6vw, 26px);
   font-weight: 500;
@@ -113,7 +113,7 @@
   transition: color 0.3s ease;
 }
 
-.c-footer-email:hover { color: #c8922a; }
+.c-footer-email:hover { color: #971d13; }
 
 .c-footer-arrow {
   display: inline-block;
@@ -135,13 +135,13 @@
 }
 
 .c-footer-social-link {
-  color: #8a7d6b;
+  color: #7a8a84;
   text-decoration: none;
   transition: color 0.3s ease;
   font-size: max(0.833vw, 14px);
 }
 
-.c-footer-social-link:hover { color: #c8922a; }
+.c-footer-social-link:hover { color: #971d13; }
 
 /* Nav */
 .c-footer-nav {
@@ -155,23 +155,23 @@
 
 .c-footer-nav-link {
   display: inline-block;
-  color: #8a7d6b;
+  color: #7a8a84;
   text-decoration: none;
   transition: color 0.3s ease;
   letter-spacing: 0.14em;
 }
 
-.c-footer-nav-link:hover { color: #c8922a; }
+.c-footer-nav-link:hover { color: #971d13; }
 
 /* ── Email signup ─────────────────────────────────── */
 .c-footer-signup {
-  border-top: 1px solid rgba(240, 237, 230, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 48px;
   margin-bottom: 60px;
 }
 
 .c-footer-signup-label {
-  color: #8a7d6b;
+  color: #7a8a84;
   margin-bottom: 20px;
   letter-spacing: 0.18em;
 }
@@ -185,10 +185,10 @@
 
 .c-footer-signup-input {
   flex: 1;
-  background: #1e1a15;
-  border: 1px solid rgba(200, 146, 42, 0.2);
+  background: #0d1410;
+  border: 1px solid rgba(151, 29, 19, 0.2);
   border-radius: 42px;
-  color: #f0ede6;
+  color: #ffffff;
   padding: 12px 22px;
   font-family: inherit;
   font-size: max(0.833vw, 14px);
@@ -196,8 +196,8 @@
   transition: border-color 0.3s ease;
 }
 
-.c-footer-signup-input::placeholder { color: #8a7d6b; }
-.c-footer-signup-input:focus { border-color: #c8922a; }
+.c-footer-signup-input::placeholder { color: #7a8a84; }
+.c-footer-signup-input:focus { border-color: #971d13; }
 
 .c-footer-signup-btn {
   flex-shrink: 0;
@@ -207,7 +207,7 @@
 }
 
 .c-footer-signup-thanks {
-  color: #c8922a;
+  color: #971d13;
   margin: 0;
 }
 
@@ -216,7 +216,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(240, 237, 230, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 5px;
 }
 
@@ -227,8 +227,8 @@
   gap: 6px;
   padding: 5px 15px;
   border-radius: 42px;
-  border: 1px solid rgba(200, 146, 42, 0.3);
-  color: #8a7d6b;
+  border: 1px solid rgba(151, 29, 19, 0.3);
+  color: #7a8a84;
   cursor: pointer;
   background: none;
   font-family: inherit;
@@ -239,8 +239,8 @@
 }
 
 .c-footer-top-btn:hover {
-  color: #c8922a;
-  border-color: #c8922a;
+  color: #971d13;
+  border-color: #971d13;
 }
 
 /* ── Responsive ──────────────────────────────────── */

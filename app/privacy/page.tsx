@@ -93,7 +93,7 @@ export default function PrivacyPage() {
         ]}
       />
 
-      <div className="bg-[#0a0906]">
+      <div className="bg-[#080d0a]">
       {/* Content */}
       <section ref={bodyRef} className="px-5 py-20 sm:px-6 md:px-[3.9vw] md:py-28">
         <div className="mx-auto max-w-[760px]">
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <h2
-                  className="m-0 font-bold text-[#f0ede6]"
+                  className="m-0 font-bold text-[#ffffff]"
                   style={{ fontSize: 'clamp(17px, 1.4vw, 22px)', letterSpacing: '-0.01em' }}
                 >
                   {s.title}
@@ -139,17 +139,17 @@ export default function PrivacyPage() {
 
           {/* Contact card */}
           <div
-            className="mt-20 rounded-[6px] border border-[rgba(200,146,42,0.15)] bg-[#1e1a15] p-8 text-center md:p-12"
+            className="mt-20 rounded-[6px] border border-[rgba(200,146,42,0.15)] bg-[#0d1410] p-8 text-center md:p-12"
             data-reveal
           >
             <p
-              className="mb-2 font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+              className="mb-2 font-bold uppercase tracking-[0.22em] text-[#971d13]"
               style={{ fontSize: 'max(0.677vw, 11px)' }}
             >
               Privacy questions?
             </p>
             <h3
-              className="mb-4 font-bold text-[#f0ede6]"
+              className="mb-4 font-bold text-[#ffffff]"
               style={{ fontSize: 'clamp(20px, 2vw, 28px)' }}
             >
               We&apos;re here to help.
@@ -179,7 +179,7 @@ export default function PrivacyPage() {
               <Link
                 key={label}
                 href={href}
-                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#c8922a]"
+                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
                 {label}

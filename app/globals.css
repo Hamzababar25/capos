@@ -1,29 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0a0906;
-  --color-bg-card: #1e1a15;
-  --color-bg-raised: #2a2318;
-  --color-warm-white: #f0ede6;
-  --color-muted: #8a7d6b;
-  --color-amber: #c8922a;
+  --color-bg:         #080d0a;
+  --color-bg-card:    #0d1410;
+  --color-bg-raised:  #141a16;
+  --color-warm-white: #ffffff;
+  --color-muted:      #7a8a84;
+  --color-accent:     #971d13;
+  --color-green:      #5b8152;
 }
 
 :root {
-  --bg:        #0a0906;
-  --bg-card:   #1e1a15;
-  --bg-raised: #2a2318;
-  --warm-white:#f0ede6;
-  --muted:     #8a7d6b;
-  --amber:     #c8922a;
-  --amber-dim: rgba(200, 146, 42, 0.15);
-  --border:    rgba(240, 237, 230, 0.08);
+  --bg:        #080d0a;
+  --bg-card:   #0d1410;
+  --bg-raised: #141a16;
+  --warm-white:#ffffff;
+  --muted:     #7a8a84;
+  --amber:     #971d13;   /* kept as alias so components using var(--amber) still work */
+  --accent:    #971d13;
+  --green:     #5b8152;
+  --amber-dim: rgba(151, 29, 19, 0.15);
+  --border:    rgba(255, 255, 255, 0.08);
 
-  /* legacy aliases kept so existing components don't break */
-  --black: #0a0906;
-  --white: #f0ede6;
-  --gray:  #8a7d6b;
-  --accent:#c8922a;
+  --black: #080d0a;
+  --white: #ffffff;
+  --gray:  #7a8a84;
 }
 
 *,

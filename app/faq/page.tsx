@@ -39,7 +39,7 @@ const categories = [
     items: [
       {
         q: 'What areas do you serve?',
-        a: 'We serve the greater Tri-State area — New York, New Jersey, and Connecticut. Travel fees may apply for events outside our standard service radius. Contact us with your location and we\'ll confirm availability.',
+        a: 'We serve the greater Tri-State area — New York, New Jersey, Connecticut, and Pennsylvania. Travel fees may apply for events outside our standard service radius. Contact us with your location and we\'ll confirm availability.',
       },
       {
         q: 'How many guests can you accommodate?',
@@ -105,13 +105,13 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
     >
       <div className="flex items-center justify-between gap-6 py-6">
         <p
-          className="m-0 font-semibold text-[#f0ede6] transition-colors duration-300"
+          className="m-0 font-semibold text-[#ffffff] transition-colors duration-300"
           style={{ fontSize: 'clamp(15px, 1.15vw, 18px)', lineHeight: 1.4 }}
         >
           {q}
         </p>
         <span
-          className="shrink-0 w-7 h-7 rounded-full border border-[rgba(200,146,42,0.35)] flex items-center justify-center text-[#c8922a] transition-transform duration-300"
+          className="shrink-0 w-7 h-7 rounded-full border border-[rgba(200,146,42,0.35)] flex items-center justify-center text-[#971d13] transition-transform duration-300"
           style={{ fontSize: 18, transform: open ? 'rotate(45deg)' : 'rotate(0deg)' }}
           aria-hidden
         >
@@ -161,7 +161,7 @@ export default function FAQPage() {
         ]}
       />
 
-      <div className="bg-[#0a0906]">
+      <div className="bg-[#080d0a]">
       {/* Body */}
       <section ref={bodyRef} className="px-5 py-20 sm:px-6 md:px-[3.9vw] md:py-28">
         <div className="mx-auto max-w-[820px]">
@@ -170,7 +170,7 @@ export default function FAQPage() {
               {/* Category label */}
               <div className="mb-8 flex items-center gap-5">
                 <span
-                  className="font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+                  className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
                   style={{ fontSize: 'max(0.677vw, 11px)', whiteSpace: 'nowrap' }}
                 >
                   {cat.label}
@@ -189,17 +189,17 @@ export default function FAQPage() {
 
           {/* Still have questions */}
           <div
-            className="mt-20 rounded-[6px] border border-[rgba(200,146,42,0.15)] bg-[#1e1a15] p-8 text-center md:p-12"
+            className="mt-20 rounded-[6px] border border-[rgba(200,146,42,0.15)] bg-[#0d1410] p-8 text-center md:p-12"
             data-reveal
           >
             <p
-              className="mb-2 font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+              className="mb-2 font-bold uppercase tracking-[0.22em] text-[#971d13]"
               style={{ fontSize: 'max(0.677vw, 11px)' }}
             >
               Still have questions?
             </p>
             <h3
-              className="mb-4 font-bold text-[#f0ede6]"
+              className="mb-4 font-bold text-[#ffffff]"
               style={{ fontSize: 'clamp(22px, 2.2vw, 32px)' }}
             >
               We&apos;d love to hear from you.
@@ -235,7 +235,7 @@ export default function FAQPage() {
               <Link
                 key={label}
                 href={href}
-                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#c8922a]"
+                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
                 {label}

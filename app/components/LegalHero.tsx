@@ -41,7 +41,7 @@ export default function LegalHero({
       <Navigation />
 
       <section
-        className="relative flex min-h-[88vh] flex-col overflow-hidden bg-[#0a0906]"
+        className="relative flex min-h-[88vh] flex-col overflow-hidden bg-[#080d0a]"
         style={{ paddingTop: 'max(96px, 8vh)' }}
       >
         {/* Subtle ambient */}
@@ -58,7 +58,7 @@ export default function LegalHero({
           style={{ opacity: 0 }}
         >
           <span
-            className="font-bold uppercase tracking-[0.22em] text-[#c8922a]"
+            className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 10px)' }}
           >
             CAPOS Coffee · {eyebrow}
@@ -83,7 +83,7 @@ export default function LegalHero({
             style={{ opacity: 0 }}
           >
             <h1
-              className="m-0 font-bold uppercase leading-[0.88] tracking-[-0.04em] text-[#f0ede6]"
+              className="m-0 font-bold uppercase leading-[0.88] tracking-[-0.04em] text-[#ffffff]"
               style={{ fontSize: 'clamp(72px, 13.5vw, 200px)' }}
             >
               {titleLine1}
@@ -119,7 +119,7 @@ export default function LegalHero({
           ref={ruleRef}
           className="mt-10 h-px w-full"
           style={{
-            background: 'linear-gradient(90deg, #c8922a 0%, rgba(200,146,42,0.10) 100%)',
+            background: 'linear-gradient(90deg, #971d13 0%, rgba(200,146,42,0.10) 100%)',
             transformOrigin: 'left center',
           }}
         />
@@ -146,14 +146,14 @@ export default function LegalHero({
                 className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.30)]"
                 style={{ fontSize: 'max(0.677vw, 10px)' }}
               >
-                <span className="text-[#c8922a]">{m.value}</span>
+                <span className="text-[#971d13]">{m.value}</span>
                 {' '}
                 {m.label}
               </span>
             ))}
             <Link
               href="/"
-              className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.25)] transition-colors hover:text-[#c8922a]"
+              className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.25)] transition-colors hover:text-[#971d13]"
               style={{ fontSize: 'max(0.677vw, 10px)', marginTop: 4 }}
             >
               ← Home

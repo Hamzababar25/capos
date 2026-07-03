@@ -17,7 +17,7 @@ const sections = [
   },
   {
     title: 'Our Services',
-    body: `CAPOS Coffee provides mobile coffee cart catering for private and corporate events in the Tri-State area (New York, New Jersey, and Connecticut). Our services include:\n\n• Setup and operation of a professional espresso and coffee bar at your event\n• Preparation of drinks from our signature and collaboration menus\n• Service staff for the duration of the agreed service window\n• All necessary equipment, ingredients, and consumables\n\nThe specific services, menu items, duration, and staffing will be confirmed in a written service agreement at the time of booking.`,
+    body: `CAPOS Coffee provides mobile coffee cart catering for private and corporate events in the Tri-State area (New York, New Jersey, Connecticut, and Pennsylvania). Our services include:\n\n• Setup and operation of a professional espresso and coffee bar at your event\n• Preparation of drinks from our signature and collaboration menus\n• Service staff for the duration of the agreed service window\n• All necessary equipment, ingredients, and consumables\n\nThe specific services, menu items, duration, and staffing will be confirmed in a written service agreement at the time of booking.`,
   },
   {
     title: 'Booking & Confirmation',
@@ -88,7 +88,7 @@ export default function TermsPage() {
         ]}
       />
 
-      <div className="bg-[#0a0906]">
+      <div className="bg-[#080d0a]">
       {/* Content */}
       <section ref={bodyRef} className="px-5 py-20 sm:px-6 md:px-[3.9vw] md:py-28">
         <div className="mx-auto max-w-[760px]">
@@ -116,7 +116,7 @@ export default function TermsPage() {
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <h2
-                  className="m-0 font-bold text-[#f0ede6]"
+                  className="m-0 font-bold text-[#ffffff]"
                   style={{ fontSize: 'clamp(17px, 1.4vw, 22px)', letterSpacing: '-0.01em' }}
                 >
                   {s.title}
@@ -152,7 +152,7 @@ export default function TermsPage() {
               <Link
                 key={label}
                 href={href}
-                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#c8922a]"
+                className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.35)] transition-colors hover:text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
                 {label}
