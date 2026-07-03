@@ -104,6 +104,7 @@ export default function Navigation() {
     { label: 'Home',            href: '/'          },
     { label: 'Catering',        href: '/catering'  },
     { label: 'About',           section: 'about'   },
+    { label: 'FAQ',             href: '/faq'       },
     { label: 'Book Your Event', section: 'booking' },
   ];
 
