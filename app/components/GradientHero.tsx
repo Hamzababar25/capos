@@ -121,11 +121,11 @@ export default function GradientHero() {
           ) + uMouse;
         }
         
-        // Enhanced coffee colors - more vibrant and rich
-        vec3 c1 = vec3(0.12, 0.06, 0.03);      // Deep espresso
-        vec3 c2 = vec3(0.55, 0.32, 0.18);      // Rich coffee brown
-        vec3 c3 = vec3(0.92, 0.82, 0.68);      // Creamy latte
-        vec3 accent = vec3(0.85, 0.45, 0.20);  // Caramel accent
+        // Brand palette — black / deep red / dark silver
+        vec3 c1 = vec3(0.03, 0.05, 0.04);      // Cool near-black base
+        vec3 c2 = vec3(0.22, 0.06, 0.04);      // Deep rose-red shadow
+        vec3 c3 = vec3(0.40, 0.34, 0.33);      // Dark charcoal-silver highlight
+        vec3 accent = vec3(0.59, 0.11, 0.07);  // Rose red (#971d13)
         
         float t = uTime * 0.12;
         
@@ -160,14 +160,14 @@ export default function GradientHero() {
           col.b = mix(col.b, b, bubble * 0.7);
         }
         
-        // Intense glow around mouse (reduced)
+        // Rose-red glow around mouse
         float glow = exp(-dist * 4.0) * bubble;
-        col += vec3(glow * 0.25, glow * 0.15, glow * 0.1);
+        col += vec3(glow * 0.38, glow * 0.06, glow * 0.04);
         
-        // Pulsing energy (reduced)
+        // Pulsing red energy
         float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
         float energy = bubble * pulse;
-        col += vec3(energy * 0.12, energy * 0.08, energy * 0.05);
+        col += vec3(energy * 0.18, energy * 0.03, energy * 0.02);
         
         // Sparkle effect
         float sparkle = smoothstep(0.98, 1.0, noise(rotatedUV * 50.0 + uTime));
