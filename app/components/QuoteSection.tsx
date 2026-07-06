@@ -61,7 +61,7 @@ export default function QuoteSection() {
         </div>
         <div className="quote-image">
           <video
-            src="/fq-updated  .mp4"
+            src="/fq-updated.mp4"
             className="quote-video"
             autoPlay
             loop
