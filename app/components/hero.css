@@ -86,14 +86,60 @@
 .pixi-intro-center {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-between;
   gap: 28px;
   padding: 0 3.9vw;
   /* push content below the ~80px transparent navbar */
   padding-top: 96px;
+}
+
+/* Text column — left-aligned */
+/* padding-left lines the headline up with "New Jersey" in the footer row
+   below (which sits past the three-circle mark + its own inner padding) */
+.pixi-intro-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 28px;
+  flex: 1;
+  min-width: 0;
+  padding-left: calc(54px + 4vw);
+}
+
+/* ── 3D product model (iced rose latte cup, GLB) ───── */
+/* Portrait box — the cup is tall and narrow, not square like the
+   previous logo model, so give it a taller frame to sit in. */
+.pixi-intro-logo {
+  flex-shrink: 0;
+  width: clamp(260px, 22vw, 360px);
+  height: clamp(380px, 36vw, 560px);
+  margin-right: clamp(16px, 3vw, 56px);
+  pointer-events: auto;
+  filter: drop-shadow(0 18px 40px rgba(151, 29, 19, 0.25));
+}
+
+/* Inner wrapper handles the continuous float loop, kept separate from
+   the outer element so GSAP's one-time entrance animation (applied to
+   .pixi-intro-logo itself) doesn't fight over the transform property. */
+.pixi-intro-logo-float {
+  width: 100%;
+  height: 100%;
+  animation: cupFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes cupFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-18px); }
+}
+
+.hero-logo-3d {
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+  background-color: transparent;
 }
 
 /* Eyebrow label */
@@ -110,7 +156,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;        /* shrink-wrap each line to its text */
+  align-items: flex-start;    /* shrink-wrap each line to its text */
   row-gap: 6px;
   transition: transform 0.1s ease-out, opacity 0.1s ease-out;
   will-change: transform, opacity;
@@ -119,7 +165,7 @@
 .pixi-intro-line {
   display: block;
   opacity: 0;
-  text-align: center;
+  text-align: left;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.0;
@@ -144,7 +190,7 @@
 .hero-flip-hover {
   grid-area: 1 / 1;          /* stack in same cell */
   display: block;
-  text-align: center;
+  text-align: left;
   transition: opacity 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: opacity;
 }
@@ -154,13 +200,12 @@
   font-weight: 300;
   pointer-events: none;
   align-self: center;
-  justify-self: center;
+  justify-self: start;
 }
 
-/* WELCOME — italic, warm white */
-/* WELCOME — warm white italic */
+/* WELCOME — italic, brand red */
 .hero-flip-hover--en {
-  color: #ffffff;
+  color: #971d13;
   font-style: italic;
   letter-spacing: 0.06em;
 }
@@ -172,9 +217,9 @@
   font-weight: 400;
 }
 
-/* BENVENUTO — Cormorant Garamond, champagne gold italic */
+/* BENVENUTO — Cormorant Garamond, brand red italic */
 .hero-flip-hover--it {
-  color: #ffffff;
+  color: #971d13;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-weight: 500;
@@ -319,6 +364,30 @@
   .pixi-intro-foot-items { gap: 3vw; padding: 0 3vw; }
   .cursor-circle { width: 180px; height: 180px; }
   .pixi-intro-foot-row { padding-left: 24px; padding-right: 24px; }
+  /* foot row's padding switched to a fixed px value at this breakpoint —
+     recompute the headline offset to keep it lined up with "New Jersey" */
+  .pixi-intro-text { padding-left: calc(78px - 0.9vw); }
+}
+
+/* Below this, the side-by-side text/logo layout gets cramped —
+   stack the 3D logo above the text and center both. */
+@media only screen and (max-width: 900px) {
+  .pixi-intro-center {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+  }
+  .pixi-intro-text {
+    align-items: center;
+    text-align: center;
+    padding-left: 0;
+  }
+  .pixi-intro-title { align-items: center; }
+  .pixi-intro-line,
+  .hero-flip-default,
+  .hero-flip-hover { text-align: center; }
+  .hero-flip-hover { justify-self: center; }
 }
 
 @media only screen and (max-width: 767px) {
@@ -328,4 +397,5 @@
   .cursor-circle { display: none; }
   .pixi-intro-center { padding: 80px 20px 0; }
   .pixi-intro-foot-row { padding-left: 20px; padding-right: 20px; }
+  .pixi-intro-logo { width: 170px; height: 270px; margin-right: 0; }
 }

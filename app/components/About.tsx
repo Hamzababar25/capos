@@ -21,31 +21,31 @@ const slides: Slide[] = [
   {
     id: 1,
     num: '01',
-    title: 'Ethically\nSourced',
-    subtitle: 'From Farm to Cup',
+    title: 'Your event \n Capo’s way',
+    subtitle: 'Any time. Any place.',
     description:
-      'We work directly with farmers across the globe, ensuring fair-trade practices and sustainable farming. Every bean carries the story of the hands that grew it.',
+      'Whether it’s a wedding, corporate event, or private celebration, Capo’s Coffee adds a touch of elegance with café quality beverages and an unforgettable guest experience.',
     image: '/capos1.PNG',
     tag: 'Origin',
   },
   {
     id: 2,
     num: '02',
-    title: 'Small Batch\nRoasting',
-    subtitle: 'Crafted with Precision',
+    title: 'Collaboration \n Events',
+    subtitle: 'Exceptional brands - exceptional experiences',
     description:
-      'Our master roasters develop each batch to unlock singular flavour profiles. Temperature, timing, and silence — together they create perfection in every cup.',
-    image: '/capos2.PNG',
+      'We love collaborating with brands, boutiques, fitness studios, grand openings, and community events open to public to bring people together over exceptional coffee and memorable experiences.',
+    image: '/collab.jpeg',
     tag: 'Roast',
   },
   {
     id: 3,
     num: '03',
     title: 'Artisanal\nExcellence',
-    subtitle: '15+ Years of Expertise',
+    subtitle: '5+ Years of Expertise',
     description:
-      'Passion meets craft in every roast. Decades of experience, constant innovation, deep respect for coffee tradition — this is what CAPOS is made of.',
-    image: '/capos3.PNG',
+      'Passion meets craft in every roast. Years of experience, constant innovation, deep respect for coffee tradition ,this is what CAPOS is made of.',
+    image: '/capos4.jpg',
     tag: 'Craft',
   },
 ];
@@ -77,9 +77,9 @@ export default function About() {
       onEnter: () => {
         gsap.timeline()
           .to(eyebrow,  { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' })
-          .to(content,  { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out' }, '-=0.5')
-          .to(imagery,  { x: 0, opacity: 1, duration: 1.1, ease: 'expo.out' }, '-=0.7')
-          .to(progress, { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' }, '-=0.5');
+          .to(content,  { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out' }, '-=0.7')
+          .to(imagery,  { x: 0, opacity: 1, duration: 1.1, ease: 'expo.out' }, '-=0.9')
+          .to(progress, { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' }, '-=0.9');
       },
     });
 

@@ -161,7 +161,7 @@ export default function LoadingScreen() {
             opacity: 0,
           }}
         >
-          CAPO&apos;S
+          MEMBERS ONLY
         </div>
 
         {/* White sweep line — below the heading */}
@@ -189,7 +189,7 @@ export default function LoadingScreen() {
             opacity: 0,
           }}
         >
-          COFFEE
+          
         </p>
       </div>
     </div>
