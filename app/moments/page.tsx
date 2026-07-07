@@ -126,9 +126,14 @@ const testimonials: Testimonial[] = [
 export default function MomentsPage() {
   const router = useRouter();
   const heroRef      = useRef<HTMLElement>(null);
-  const galleryRef   = useRef<HTMLElement>(null);
+  const reelRef      = useRef<HTMLElement>(null);
+  const reelPinRef   = useRef<HTMLDivElement>(null);
+  const reelViewportRef = useRef<HTMLDivElement>(null);
+  const reelTrackRef = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
   const testiRef     = useRef<HTMLElement>(null);
   const [activeTesti, setActiveTesti] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const goToBooking = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -158,26 +163,111 @@ export default function MomentsPage() {
       .to(rose,    { opacity: 0.75, y: 0, duration: 1.2, ease: 'expo.out' }, '-=0.9');
   }, []);
 
-  /* Gallery scroll-reveal ------------------------ */
+  /* Horizontal cinematic reel -------------------- */
   useEffect(() => {
-    const section = galleryRef.current;
-    if (!section) return;
-    const cards = section.querySelectorAll<HTMLElement>('.mp-card');
+    const pin      = reelPinRef.current;
+    const viewport = reelViewportRef.current;
+    const track    = reelTrackRef.current;
+    if (!pin || !viewport || !track) return;
 
-    gsap.set(cards, { opacity: 0, y: 60 });
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 78%',
-      once: true,
-      onEnter: () => {
-        gsap.to(cards, {
-          opacity: 1, y: 0,
-          duration: 0.95, stagger: 0.12, ease: 'expo.out',
-        });
+    const mm = gsap.matchMedia();
+
+    /* ── Desktop / tablet: pinned horizontal reel ── */
+    mm.add(
+      {
+        isDesktop:       '(min-width: 900px) and (prefers-reduced-motion: no-preference)',
+        isReducedMotion: '(prefers-reduced-motion: reduce)',
+        isMobile:        '(max-width: 899px)',
       },
-    });
+      (ctx) => {
+        const { isDesktop } = ctx.conditions as {
+          isDesktop: boolean;
+          isReducedMotion: boolean;
+          isMobile: boolean;
+        };
+        if (!isDesktop) return;
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+        const getScrollAmount = () =>
+          Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+        /* Main horizontal translation, driven by vertical scroll */
+        const mainTween = gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: 'none',
+        });
+
+        ScrollTrigger.create({
+          trigger: pin,
+          start: 'top top',
+          end: () => `+=${getScrollAmount() + window.innerHeight * 0.4}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.8,
+          animation: mainTween,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            /* Progress bar */
+            if (progressFillRef.current) {
+              progressFillRef.current.style.transform =
+                `scaleX(${self.progress})`;
+            }
+            /* Active slide counter */
+            const idx = Math.min(
+              events.length - 1,
+              Math.round(self.progress * (events.length - 1))
+            );
+            setActiveSlide(idx);
+          },
+        });
+
+        /* Parallax on each slide's image (uses containerAnimation) */
+        const slides = track.querySelectorAll<HTMLElement>('.mp-slide');
+        slides.forEach((slide) => {
+          const inner = slide.querySelector<HTMLElement>('.mp-slide-image-inner');
+          if (!inner) return;
+          gsap.fromTo(
+            inner,
+            { xPercent: -8 },
+            {
+              xPercent: 8,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: slide,
+                containerAnimation: mainTween,
+                start: 'left right',
+                end:   'right left',
+                scrub: true,
+              },
+            }
+          );
+
+          /* Subtle scale/opacity on the currently centered slide */
+          gsap.fromTo(
+            slide,
+            { scale: 0.95, opacity: 0.55 },
+            {
+              scale: 1,
+              opacity: 1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: slide,
+                containerAnimation: mainTween,
+                start: 'left 85%',
+                end:   'center 50%',
+                scrub: true,
+              },
+            }
+          );
+        });
+
+        return () => {
+          /* mm.revert() will kill these — no manual teardown needed */
+        };
+      }
+    );
+
+    return () => mm.revert();
   }, []);
 
   /* Testimonial auto-rotate ---------------------- */
@@ -243,51 +333,84 @@ export default function MomentsPage() {
         </div>
       </section>
 
-      {/* ======= RECENT EVENTS GALLERY ======= */}
-      <section id="events" className="mp-gallery" ref={galleryRef}>
-        <div className="mp-section-head">
-          <div className="mp-section-head-left">
-            <span className="mp-section-eyebrow t-h6">Recent Events</span>
-            <h2 className="mp-section-title t-h2">
-              Where <i>we&apos;ve been</i>
-            </h2>
+      {/* ======= RECENT EVENTS — CINEMATIC REEL ======= */}
+      <section id="events" className="mp-reel" ref={reelRef}>
+        <div className="mp-reel-pin" ref={reelPinRef}>
+          {/* Section head — stays visible throughout the pinned scroll */}
+          <div className="mp-reel-head">
+            <div className="mp-reel-head-left">
+              <span className="mp-section-eyebrow t-h6">Recent Events</span>
+              <h2 className="mp-reel-title">
+                Where <i>we&apos;ve been</i>
+              </h2>
+            </div>
+            <p className="mp-reel-lead t-text-lg">
+              Scroll to move through the reel — a glimpse into celebrations,
+              brand activations and quiet morning rituals we&apos;ve had the
+              honour of pouring for.
+            </p>
           </div>
-          <p className="mp-section-lead t-text-lg">
-            A glimpse into the celebrations, brand activations and quiet
-            morning rituals we&apos;ve had the honour of pouring for.
-          </p>
-        </div>
 
-        <div className="mp-grid">
-          {events.map((ev, i) => (
-            <article key={ev.id} className={`mp-card mp-card--${(i % 6) + 1}`}>
-              <div className="mp-card-image">
-                <Image
-                  src={ev.image}
-                  alt={ev.title}
-                  fill
-                  sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw"
-                  className="mp-card-img"
-                />
-                <div className="mp-card-overlay" aria-hidden />
-                <span className="mp-card-type t-h6">{ev.type}</span>
-              </div>
+          {/* Reel viewport — clips horizontal overflow */}
+          <div className="mp-reel-viewport" ref={reelViewportRef}>
+            <div className="mp-reel-track" ref={reelTrackRef}>
+              {events.map((ev, i) => (
+                <article key={ev.id} className="mp-slide">
+                  <div className="mp-slide-image">
+                    <div className="mp-slide-image-inner">
+                      <Image
+                        src={ev.image}
+                        alt={ev.title}
+                        fill
+                        sizes="(max-width: 899px) 100vw, 45vw"
+                        className="mp-slide-img"
+                        priority={i < 2}
+                      />
+                    </div>
+                    <div className="mp-slide-overlay" aria-hidden />
+                    <span className="mp-slide-num t-h6">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="mp-slide-type t-h6">{ev.type}</span>
+                  </div>
 
-              <div className="mp-card-body">
-                <div className="mp-card-meta">
-                  <span className="mp-card-num t-h6">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="mp-card-date t-h6">{ev.date}</span>
-                </div>
-                <h3 className="mp-card-title">{ev.title}</h3>
-                <p className="mp-card-venue">
-                  {ev.venue}
-                  <span className="mp-card-location"> · {ev.location}</span>
-                </p>
-              </div>
-            </article>
-          ))}
+                  <div className="mp-slide-caption">
+                    <h3 className="mp-slide-title">{ev.title}</h3>
+                    <p className="mp-slide-venue">
+                      {ev.venue}
+                      <span className="mp-slide-location"> · {ev.location}</span>
+                    </p>
+                    <span className="mp-slide-date t-h6">{ev.date}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Fading edge on the right — a soft "there's more" hint */}
+            <div className="mp-reel-fade" aria-hidden />
+          </div>
+
+          {/* Footer bar — hint, progress line, counter */}
+          <div className="mp-reel-foot">
+            <span className="mp-reel-hint t-h6">
+              <span className="mp-reel-hint-dot" aria-hidden />
+              Scroll to explore
+            </span>
+
+            <div className="mp-reel-progress" aria-hidden>
+              <div className="mp-reel-progress-fill" ref={progressFillRef} />
+            </div>
+
+            <span className="mp-reel-counter t-h6">
+              <span className="mp-reel-counter-current">
+                {String(activeSlide + 1).padStart(2, '0')}
+              </span>
+              <span className="mp-reel-counter-sep">—</span>
+              <span className="mp-reel-counter-total">
+                {String(events.length).padStart(2, '0')}
+              </span>
+            </span>
+          </div>
         </div>
       </section>
 
