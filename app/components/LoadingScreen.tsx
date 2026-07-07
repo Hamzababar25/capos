@@ -3,14 +3,19 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*▓▒░';
+const TARGET_TEXT = 'MEMBERS ONLY';
+
 export default function LoadingScreen() {
-  const overlayRef  = useRef<HTMLDivElement>(null);
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const eyebrowRef  = useRef<HTMLParagraphElement>(null);
-  const logoRef     = useRef<HTMLDivElement>(null);
-  const lineRef     = useRef<HTMLDivElement>(null);
-  const tagRef      = useRef<HTMLParagraphElement>(null);
-  const rafRef      = useRef<number>(0);
+  const overlayRef   = useRef<HTMLDivElement>(null);
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
+  const scanlineRef  = useRef<HTMLDivElement>(null);
+  const eyebrowRef   = useRef<HTMLParagraphElement>(null);
+  const logoRef      = useRef<HTMLDivElement>(null);
+  const lineRef      = useRef<HTMLDivElement>(null);
+  const tagRef       = useRef<HTMLParagraphElement>(null);
+  const rafRef       = useRef<number>(0);
+  const scrambleRafRef = useRef<number>(0);
 
   useEffect(() => {
     const overlay = overlayRef.current;
@@ -21,6 +26,7 @@ export default function LoadingScreen() {
 
     /* -- CRT static ----------------------------------- */
     const ctx = canvas.getContext('2d')!;
+    let frame = 0;
     const drawStatic = () => {
       // quarter-res for a chunky, vintage pixel look
       const w = Math.ceil(window.innerWidth  / 3);
@@ -28,19 +34,91 @@ export default function LoadingScreen() {
       canvas.width  = w;
       canvas.height = h;
 
+      frame++;
+      // a bright horizontal band that rolls down the screen like a tv sync glitch
+      const rollY = (frame * 2.2) % (h + 40) - 20;
+      const bandHalf = Math.max(4, h * 0.05);
+
       const img  = ctx.createImageData(w, h);
       const data = img.data;
-      for (let i = 0; i < data.length; i += 4) {
-        const v      = Math.random() * 220;
-        data[i]     = v;           // R
-        data[i + 1] = v;           // G — pure white noise
-        data[i + 2] = v;           // B
-        data[i + 3] = Math.random() < 0.04 ? 180 : 16; // occasional bright flicker
+      const total = w * h;
+      for (let p = 0; p < total; p++) {
+        const i   = p * 4;
+        const row = (p / w) | 0;
+
+        let v = Math.random() * 200 + 20;
+        // interlaced scanline darkening
+        if ((row & 1) === 0) v *= 0.5;
+        // rolling bright sync band
+        const dist = Math.abs(row - rollY);
+        if (dist < bandHalf) v = Math.min(255, v + (bandHalf - dist) * 4);
+
+        data[i]     = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = Math.random() < 0.06 ? 210 : 26;
       }
       ctx.putImageData(img, 0, 0);
       rafRef.current = requestAnimationFrame(drawStatic);
     };
     drawStatic();
+
+    // occasional whole-frame flicker + jitter, like a loose antenna signal
+    const flicker = gsap.timeline({ repeat: -1 });
+    const flickerStep = () => {
+      const jitter = Math.random();
+      if (jitter > 0.88) {
+        gsap.to(canvas, {
+          opacity: 0.4 + Math.random() * 0.3,
+          x: (Math.random() - 0.5) * 6,
+          duration: 0.05,
+          onComplete: () => gsap.to(canvas, { opacity: 1, x: 0, duration: 0.08 }),
+        });
+      }
+    };
+    flicker.to({}, { duration: 0.09, repeat: -1, onRepeat: flickerStep });
+
+    // slow vertical drift of the scanline overlay for a rolling-picture feel
+    if (scanlineRef.current) {
+      gsap.set(scanlineRef.current, { backgroundPositionY: '0px' });
+      gsap.to(scanlineRef.current, {
+        backgroundPositionY: '400px',
+        duration: 8,
+        repeat: -1,
+        ease: 'none',
+      });
+    }
+
+    /* -- alphabet scramble → reveal on the brand name -- */
+    const scrambleLogo = () => {
+      const el = logoRef.current;
+      if (!el) return () => {};
+      const duration = 900;
+      const start = performance.now();
+      const perCharDelay = (duration * 0.95) / TARGET_TEXT.length;
+
+      const tick = (now: number) => {
+        const elapsed = now - start;
+        let out = '';
+        for (let idx = 0; idx < TARGET_TEXT.length; idx++) {
+          const ch = TARGET_TEXT[idx];
+          if (ch === ' ') { out += ' '; continue; }
+          const revealAt = duration * 0.2 + idx * perCharDelay;
+          out += elapsed >= revealAt
+            ? ch
+            : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
+        }
+        el.textContent = out;
+
+        if (elapsed < duration) {
+          scrambleRafRef.current = requestAnimationFrame(tick);
+        } else {
+          el.textContent = TARGET_TEXT;
+        }
+      };
+      scrambleRafRef.current = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(scrambleRafRef.current);
+    };
 
     /* -- GSAP timeline -------------------------------- */
     const tl = gsap.timeline({
@@ -51,13 +129,16 @@ export default function LoadingScreen() {
       },
     });
 
+    let stopScramble = () => {};
+
     tl
       // eyebrow fades in
       .fromTo(eyebrowRef.current,
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
       )
-      // main logo rises up
+      // logo rises up while its letters scramble through and lock into place
+      .call(() => { stopScramble = scrambleLogo(); }, [], '-=0.2')
       .fromTo(logoRef.current,
         { opacity: 0, y: 36 },
         { opacity: 1, y: 0, duration: 0.75, ease: 'expo.out' },
@@ -93,6 +174,9 @@ export default function LoadingScreen() {
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(scrambleRafRef.current);
+      stopScramble();
+      flicker.kill();
       tl.kill();
     };
   }, []);
@@ -124,6 +208,32 @@ export default function LoadingScreen() {
           imageRendering: 'pixelated',
           pointerEvents: 'none',
           mixBlendMode: 'screen',
+          filter: 'contrast(1.35) brightness(1.05)',
+        }}
+      />
+
+      {/* Rolling scanlines */}
+      <div
+        ref={scanlineRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          backgroundImage:
+            'repeating-linear-gradient(to bottom, rgba(0,0,0,0.55) 0px, rgba(0,0,0,0.55) 1px, transparent 2px, transparent 4px)',
+          mixBlendMode: 'multiply',
+          opacity: 0.5,
+        }}
+      />
+
+      {/* CRT vignette */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)',
         }}
       />
 
@@ -159,6 +269,7 @@ export default function LoadingScreen() {
             textTransform: 'uppercase',
             lineHeight: 1,
             opacity: 0,
+            textShadow: '2px 0 rgba(255,40,60,0.35), -2px 0 rgba(40,220,255,0.3)',
           }}
         >
           MEMBERS ONLY
