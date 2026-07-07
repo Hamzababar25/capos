@@ -1,7 +1,20 @@
+/* ══════════════════════════════════════════════════════
+   HERO — GradientHero
+   Responsive at every breakpoint:
+     ≥1200px  — desktop, generous side padding
+     900–1199 — tablet landscape / small desktop
+     600–899  — tablet portrait
+     ≤599     — mobile
+     landscape phone — height-based tweaks
+   ══════════════════════════════════════════════════════ */
+
 .pixi-intro {
   position: relative;
+  /* svh handles mobile browser chrome (address bar) properly.
+     Fallback to vh for older browsers. */
   height: 100vh;
-  width: 100vw;
+  height: 100svh;
+  width: 100%;
   overflow: hidden;
   color: #ffffff;
   cursor: none;
@@ -9,7 +22,7 @@
   padding: 0;
 }
 
-/* Top veil — keeps nav text readable over the bright WebGL gradient */
+/* Top veil — keeps nav text readable over the bright video */
 .pixi-intro::before {
   content: '';
   position: absolute;
@@ -26,18 +39,33 @@
   z-index: 2;
 }
 
-/* ── WebGL / canvas layers ─────────────────────────── */
+/* ── Video background ─────────────────────────────── */
 .pixi-intro-canvas {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   pointer-events: none;
   z-index: 0;
   display: block;
 }
 
+/* Optional dark veil that sits above the video */
+.pixi-intro-video-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 13, 10, 0.35) 0%,
+    rgba(8, 13, 10, 0.15) 40%,
+    rgba(8, 13, 10, 0.65) 100%
+  );
+}
 
 /* ── Hover orb ─────────────────────────────────────── */
 .cursor-circle {
@@ -56,15 +84,15 @@
     rgba(151, 29, 19, 0.08) 0%,
     transparent 70%
   );
-  box-shadow: 
+  box-shadow:
     0 0 60px rgba(151, 29, 19, 0.12),
     inset 0 0 40px rgba(151, 29, 19, 0.06);
   animation: bubblePulse 3s ease-in-out infinite;
 }
 
 @keyframes bubblePulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); border-radius: 50%; }
-  50%       { transform: translate(-50%, -50%) scale(1.06); border-radius: 48% 52% 51% 49%; }
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    border-radius: 50%; }
+  50%      { transform: translate(-50%, -50%) scale(1.06); border-radius: 48% 52% 51% 49%; }
 }
 
 /* ── Main content wrapper ──────────────────────────── */
@@ -72,8 +100,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 3;
   pointer-events: auto;
   transition: transform 0.1s ease-out, opacity 0.1s ease-out;
@@ -88,76 +116,41 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 28px;
-  padding: 0 3.9vw;
-  /* push content below the ~80px transparent navbar */
-  padding-top: 96px;
+  padding: 96px clamp(24px, 5vw, 80px) 24px;
+  min-height: 0; /* allows child to shrink */
 }
 
-/* Text column — left-aligned */
-/* padding-left lines the headline up with "New Jersey" in the footer row
-   below (which sits past the three-circle mark + its own inner padding) */
+/* Text column — left-aligned on desktop, centred on tablet/mobile */
 .pixi-intro-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 28px;
+  gap: clamp(18px, 2.5vw, 28px);
   flex: 1;
   min-width: 0;
-  padding-left: calc(54px + 4vw);
-}
-
-/* ── 3D product model (iced rose latte cup, GLB) ───── */
-/* Portrait box — the cup is tall and narrow, not square like the
-   previous logo model, so give it a taller frame to sit in. */
-.pixi-intro-logo {
-  flex-shrink: 0;
-  width: clamp(260px, 22vw, 360px);
-  height: clamp(380px, 36vw, 560px);
-  margin-right: clamp(16px, 3vw, 56px);
-  pointer-events: auto;
-  filter: drop-shadow(0 18px 40px rgba(151, 29, 19, 0.25));
-}
-
-/* Inner wrapper handles the continuous float loop, kept separate from
-   the outer element so GSAP's one-time entrance animation (applied to
-   .pixi-intro-logo itself) doesn't fight over the transform property. */
-.pixi-intro-logo-float {
-  width: 100%;
-  height: 100%;
-  animation: cupFloat 4.5s ease-in-out infinite;
-}
-
-@keyframes cupFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-18px); }
-}
-
-.hero-logo-3d {
-  width: 100%;
-  height: 100%;
-  --poster-color: transparent;
-  background-color: transparent;
+  max-width: 900px;
 }
 
 /* Eyebrow label */
 .pixi-intro-eyebrow {
-  color: #971d13;
+  color: #ffffff;
   opacity: 0;
   letter-spacing: 0.22em;
+  max-width: 100%;
 }
 
 /* Headline */
 .pixi-intro-title {
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;    /* shrink-wrap each line to its text */
-  row-gap: 6px;
+  align-items: flex-start;
+  row-gap: clamp(2px, 0.5vw, 6px);
   transition: transform 0.1s ease-out, opacity 0.1s ease-out;
   will-change: transform, opacity;
 }
@@ -170,25 +163,18 @@
   letter-spacing: -0.03em;
   line-height: 1.0;
   cursor: default;
-  /* NO width:100% — stays as wide as the actual text */
 }
 
 /* ── Per-line hover flip ──────────────────────────── */
-/*
- * Both texts share the SAME grid cell so the container
- * auto-sizes to the widest/tallest of the two — no full-width
- * spanning, no overflow:hidden needed, pure crossfade.
- */
 .hero-flip {
   display: grid;
-  /* Padding for Arabic diacritics above the baseline */
   padding-top: 0.14em;
   padding-bottom: 0.06em;
 }
 
 .hero-flip-default,
 .hero-flip-hover {
-  grid-area: 1 / 1;          /* stack in same cell */
+  grid-area: 1 / 1;
   display: block;
   text-align: left;
   transition: opacity 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -203,21 +189,18 @@
   justify-self: start;
 }
 
-/* WELCOME — italic, brand red */
 .hero-flip-hover--en {
-  color: #971d13;
+  color: #ffffff;
   font-style: italic;
   letter-spacing: 0.06em;
 }
 
-/* مرحباً — brand amber */
 .hero-flip-hover--ar {
   color: #971d13;
   letter-spacing: 0.02em;
   font-weight: 400;
 }
 
-/* BENVENUTO — Cormorant Garamond, brand red italic */
 .hero-flip-hover--it {
   color: #971d13;
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -226,33 +209,21 @@
   letter-spacing: 0.06em;
 }
 
-/* Trigger — pure crossfade, no layout shift */
-.pixi-intro-line:hover .hero-flip-default {
-  opacity: 0;
-}
-
-.pixi-intro-line:hover .hero-flip-hover {
-  opacity: 1;
-}
+.pixi-intro-line:hover .hero-flip-default { opacity: 0; }
+.pixi-intro-line:hover .hero-flip-hover   { opacity: 1; }
 
 .pixi-intro-line i {
   font-style: italic;
   color: #971d13;
 }
 
-.pixi-intro-line--1 {}
-.pixi-intro-line--2 {}
-.pixi-intro-line--3 {}
-
-/* Hero CTA — dark glass bg so it pops on the golden gradient */
+/* Hero CTA — dark glass bg so it pops on the video */
 .pixi-intro-cta {
   background: rgba(8, 13, 10, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-color: rgba(255, 255, 255, 0.5) !important;
 }
-/* On hover the ::before amber fill takes over — clear the static bg so
-   the amber sweep is visible and text reads dark on amber (globals.css) */
 .pixi-intro-cta:hover {
   background: transparent !important;
 }
@@ -260,9 +231,10 @@
 /* Subtext below headline */
 .pixi-intro-sub {
   opacity: 0;
-  color: rgba(255, 255, 255, 0.65);
-  max-width: 420px;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 460px;
   line-height: 1.65;
+  letter-spacing: 0.06em;
 }
 
 /* Bottom veil — dark gradient so footer strip text is readable */
@@ -280,24 +252,23 @@
 
 /* ── Bottom strip ──────────────────────────────────── */
 .pixi-intro-foot {
-  padding-bottom: 36px;
+  padding-bottom: clamp(20px, 3vw, 36px);
   opacity: 0;
   transition: opacity 0.1s ease-out, transform 0.1s ease-out;
   will-change: transform, opacity;
   width: 100%;
   position: relative;
-  z-index: 4; /* above the veil */
+  z-index: 4;
 }
 
 .pixi-intro-foot-row {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-left: 3.9vw;
-  padding-right: 3.9vw;
+  padding: 20px clamp(20px, 3.9vw, 80px) 0;
   width: 100%;
-  border-top: 1px solid rgba(151, 29, 19, 0.1);
-  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 24px;
 }
 
 .pixi-intro-foot-circles {
@@ -307,95 +278,175 @@
 }
 
 .pixi-intro-foot-circles circle {
-  stroke: #971d13;
-  stroke-opacity: 0.3;
+  stroke: #ffffff;
+  stroke-opacity: 0.5;
 }
 
 .pixi-intro-foot-items {
   display: flex;
   flex: 1;
-  padding: 0 4vw;
-  gap: 5vw;
+  padding: 0 clamp(16px, 4vw, 48px);
+  gap: clamp(20px, 5vw, 64px);
 }
 
 .pixi-intro-foot-item {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .pixi-intro-foot-item strong {
   font-weight: 600;
-  font-size: max(1vw, 14px);
+  font-size: clamp(13px, 1vw, 15px);
   color: #ffffff;
   letter-spacing: 0.08em;
 }
 
 .pixi-intro-foot-sub {
   display: block;
-  opacity: 0.75;
+  opacity: 0.7;
   margin-top: 4px;
-  font-size: max(0.677vw, 10px);
+  font-size: clamp(9px, 0.677vw, 10px);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #971d13;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .pixi-intro-scroll-wrap {
   flex-shrink: 0;
   display: flex;
   align-items: flex-end;
-  opacity: 0.45;
+  opacity: 0.5;
   animation: scrollBounce 2.2s ease-in-out infinite;
 }
 
 .pixi-intro-scroll-wrap svg line,
 .pixi-intro-scroll-wrap svg path {
-  stroke: #971d13;
-  stroke-opacity: 0.65;
+  stroke: #ffffff;
+  stroke-opacity: 0.7;
 }
 
 @keyframes scrollBounce {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-7px); }
+  50%      { transform: translateY(-7px); }
 }
 
-/* ── Responsive ────────────────────────────────────── */
-@media only screen and (max-width: 979px) {
-  .pixi-intro-foot-items { gap: 3vw; padding: 0 3vw; }
-  .cursor-circle { width: 180px; height: 180px; }
-  .pixi-intro-foot-row { padding-left: 24px; padding-right: 24px; }
-  /* foot row's padding switched to a fixed px value at this breakpoint —
-     recompute the headline offset to keep it lined up with "New Jersey" */
-  .pixi-intro-text { padding-left: calc(78px - 0.9vw); }
-}
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════ */
 
-/* Below this, the side-by-side text/logo layout gets cramped —
-   stack the 3D logo above the text and center both. */
-@media only screen and (max-width: 900px) {
+/* ── Small desktop / tablet landscape (≤ 1199px) ── */
+@media only screen and (max-width: 1199px) {
   .pixi-intro-center {
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    gap: 20px;
+    padding-top: 88px;
+  }
+  .cursor-circle {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* ── Tablet (≤ 979px) ── */
+@media only screen and (max-width: 979px) {
+  .pixi-intro-foot-items {
+    padding: 0 clamp(16px, 3vw, 24px);
+    gap: clamp(16px, 3.5vw, 40px);
+  }
+  .cursor-circle {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* ── Tablet portrait / small tablet (≤ 899px) ── */
+@media only screen and (max-width: 899px) {
+  .pixi-intro-center {
+    padding: 80px 32px 24px;
   }
   .pixi-intro-text {
-    align-items: center;
-    text-align: center;
-    padding-left: 0;
+    max-width: 100%;
   }
-  .pixi-intro-title { align-items: center; }
-  .pixi-intro-line,
-  .hero-flip-default,
-  .hero-flip-hover { text-align: center; }
-  .hero-flip-hover { justify-self: center; }
+  .pixi-intro-foot-items .pixi-intro-foot-item:nth-child(3) {
+    display: none; /* drop "Italian Touch" to keep 2 items visible */
+  }
 }
 
+/* ── Mobile (≤ 767px) ── */
 @media only screen and (max-width: 767px) {
-  .pixi-intro-foot-items { display: none; }
-  .pixi-intro-foot { padding-bottom: 28px; }
   .pixi-intro { cursor: auto; }
   .cursor-circle { display: none; }
-  .pixi-intro-center { padding: 80px 20px 0; }
-  .pixi-intro-foot-row { padding-left: 20px; padding-right: 20px; }
-  .pixi-intro-logo { width: 170px; height: 270px; margin-right: 0; }
+
+  .pixi-intro-center {
+    padding: 84px 20px 20px;
+    gap: 20px;
+  }
+
+  .pixi-intro-eyebrow {
+    letter-spacing: 0.18em;
+  }
+
+  .pixi-intro-sub {
+    max-width: 100%;
+  }
+
+  .pixi-intro-foot {
+    padding-bottom: 24px;
+  }
+  .pixi-intro-foot-row {
+    padding: 16px 20px 0;
+    gap: 12px;
+    align-items: center;
+  }
+  .pixi-intro-foot-circles svg {
+    width: 42px;
+    height: 14px;
+  }
+  .pixi-intro-foot-items {
+    padding: 0 4vw;
+    gap: 20px;
+  }
+  /* Show only "New Jersey" on mobile — clean and readable */
+  .pixi-intro-foot-items .pixi-intro-foot-item:nth-child(2),
+  .pixi-intro-foot-items .pixi-intro-foot-item:nth-child(3) {
+    display: none;
+  }
+  .pixi-intro-scroll-wrap svg {
+    width: 14px;
+    height: 40px;
+  }
+}
+
+/* ── Small mobile (≤ 400px) ── */
+@media only screen and (max-width: 400px) {
+  .pixi-intro-center {
+    padding: 78px 16px 16px;
+  }
+  .pixi-intro-foot-row {
+    padding: 14px 16px 0;
+  }
+  .pixi-intro-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+}
+
+/* ── Landscape phone (short viewport) ── */
+@media only screen and (max-height: 500px) and (orientation: landscape) {
+  .pixi-intro-center {
+    padding-top: 68px;
+    padding-bottom: 12px;
+  }
+  .pixi-intro-title {
+    row-gap: 0;
+  }
+  .pixi-intro-foot {
+    padding-bottom: 12px;
+  }
+  .pixi-intro-foot-row {
+    padding-top: 10px;
+  }
+  .pixi-intro::before,
+  .pixi-intro::after {
+    height: 90px;
+  }
 }

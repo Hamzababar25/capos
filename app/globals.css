@@ -137,12 +137,14 @@ canvas {
 
 /* ─── Typography Scale ──────────────────────────────── */
 
-/* Hero display — big, tight */
+/* Hero display — big, tight
+   clamp uses vw so it scales smoothly across viewports.
+   min → tiny phones; preferred → fluid; max → capped on huge screens. */
 .t-h1 {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: clamp(64px, 8.5vw, 130px);
+  font-size: clamp(44px, 10vw, 130px);
   line-height: 0.92;
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -152,7 +154,7 @@ canvas {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: clamp(32px, 3.8vw, 64px);
+  font-size: clamp(28px, 4.2vw, 64px);
   line-height: 1.05;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -162,7 +164,7 @@ canvas {
   display: block;
   margin: 0;
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
-  font-size: clamp(22px, 2.5vw, 40px);
+  font-size: clamp(20px, 2.8vw, 40px);
   line-height: 1.15;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -278,23 +280,46 @@ canvas {
   isolation: isolate;
 }
 
-/* ─── Mobile tweaks ───────────────────────────────────── */
-@media only screen and (max-width: 767px) {
+/* ─── Tablet tweaks (900px and below) ───────────────── */
+@media only screen and (max-width: 900px) {
   .t-h1 {
-    font-size: clamp(52px, 13vw, 90px);
+    font-size: clamp(44px, 11vw, 88px);
     line-height: 0.95;
   }
-
   .t-h2 {
-    font-size: clamp(28px, 7vw, 48px);
+    font-size: clamp(28px, 5.6vw, 52px);
   }
+}
 
+/* ─── Mobile tweaks (768px and below) ───────────────── */
+@media only screen and (max-width: 767px) {
+  .t-h1 {
+    font-size: clamp(40px, 12.5vw, 72px);
+    line-height: 0.95;
+  }
+  .t-h2 {
+    font-size: clamp(26px, 7vw, 44px);
+    line-height: 1.1;
+  }
   .t-h3 {
-    font-size: clamp(20px, 6vw, 32px);
+    font-size: clamp(19px, 5.5vw, 30px);
   }
-
   .t-text-lg {
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.6;
+  }
+  .t-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+/* ─── Very small phones (400px and below) ───────────── */
+@media only screen and (max-width: 400px) {
+  .t-h1 {
+    font-size: clamp(36px, 12vw, 56px);
+  }
+  .t-h2 {
+    font-size: clamp(24px, 7vw, 36px);
   }
 }

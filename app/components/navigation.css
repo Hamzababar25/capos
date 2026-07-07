@@ -20,7 +20,7 @@
 .c-header-inner {
   display: flex;
   align-items: center;
-  padding: 28px 3.9vw;
+  padding: clamp(16px, 2.2vw, 28px) clamp(20px, 3.9vw, 60px);
   gap: 0;
   width: 100%;
 }
@@ -37,13 +37,13 @@
 }
 
 .c-header-logo-mark {
-  height: 32px;
+  height: clamp(26px, 2.4vw, 32px);
   width: auto;
   object-fit: contain;
 }
 
 .c-header-logo-name {
-  font-size: 18px;
+  font-size: clamp(15px, 1.3vw, 18px);
   font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -122,8 +122,13 @@
   margin-left: 24px;
 }
 
-@media (min-width: 1100px) {
+/* Show a single clock (NYC) on tablet, both on wider screens */
+@media (min-width: 768px) {
   .c-header-clocks { display: flex; }
+  .c-header-clocks .c-header-clock:nth-child(2) { display: none; }
+}
+@media (min-width: 1100px) {
+  .c-header-clocks .c-header-clock:nth-child(2) { display: inline; }
 }
 
 .c-header-clock {
@@ -146,19 +151,26 @@
   padding: 10px 18px;
   letter-spacing: 0.12em;
   pointer-events: auto;
-  /* Dark glass bg so button is legible on the golden gradient */
+  white-space: nowrap;
   background: rgba(8, 13, 10, 0.55) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-color: rgba(255, 255, 255, 0.5) !important;
 }
-/* On hover the ::before amber fill takes over — let globals.css handle the rest */
 .c-header-cta:hover {
   background: transparent !important;
 }
 
 @media (min-width: 900px) {
   .c-header-cta { display: inline-flex; }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .c-header-cta {
+    display: inline-flex;
+    padding: 9px 14px;
+    font-size: 10px;
+    margin-left: 12px;
+  }
 }
 
 /* ── Burger ──────────────────────────────────────────── */
@@ -231,6 +243,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh; /* dynamic viewport so it always fills to the address bar */
   background: linear-gradient(145deg, #080d0a 0%, #0d1410 60%, #080d0a 100%);
   display: none;
   flex-direction: column;
@@ -239,6 +252,8 @@
   gap: 48px;
   z-index: 99;
   clip-path: inset(0% 0% 100% 0%);
+  padding: 80px 24px 40px;
+  overflow-y: auto;
 }
 
 .c-header-overlay-time {
@@ -268,8 +283,8 @@
 .c-header-overlay-nav ul li a {
   display: inline-flex;
   align-items: baseline;
-  gap: 18px;
-  font-size: clamp(2.5rem, 10vw, 6rem);
+  gap: clamp(10px, 1.5vw, 18px);
+  font-size: clamp(2rem, 8.5vw, 5.5rem);
   font-weight: 300;
   color: #ffffff;
   text-decoration: none;
@@ -281,12 +296,11 @@
 
 .c-header-overlay-nav ul li a:hover { color: #971d13; }
 
-/* "Book Your Event" — same big type, amber so it reads as primary CTA */
+/* "Book Your Event" — same big type, red so it reads as primary CTA */
 .c-header-overlay-nav ul li.is-cta-item a {
   color: #971d13;
   font-weight: 700;
-  /* Slightly tighter size so the long label stays on one line */
-  font-size: clamp(1.8rem, 7.5vw, 5rem);
+  font-size: clamp(1.5rem, 6.5vw, 4.5rem);
   letter-spacing: 0.06em;
 }
 .c-header-overlay-nav ul li.is-cta-item a:hover {
@@ -313,6 +327,17 @@
 /* ── Mobile ──────────────────────────────────────────── */
 @media only screen and (max-width: 767px) {
   .c-header-inner {
-    padding: 20px 20px;
+    padding: 18px 20px;
+    gap: 8px;
   }
+  .c-header-logo { gap: 8px; }
+  .c-header-burger { margin-left: 12px; }
+}
+
+@media only screen and (max-width: 400px) {
+  .c-header-inner {
+    padding: 16px;
+  }
+  /* On very small phones hide the "CAPOS" wordmark next to logo — image mark is enough */
+  .c-header-logo-name { display: none; }
 }
