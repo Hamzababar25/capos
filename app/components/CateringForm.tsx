@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { CupFlourish } from './Flourishes';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,19 +41,21 @@ const empty: FormState = {
   eventType: '', eventDate: '', venue: '', guests: '', notes: '',
 };
 
-// Exact pixel-match with the original CSS design
+// Input styling — subtle red focus glow, smooth transitions
 const inputBase = [
   'w-full',
   'rounded-[4px]',
   'border border-[rgba(151,29,19,0.18)]',
   'bg-[rgba(8,13,10,0.6)]',
-  'px-4 py-[13px]',
+  'px-4 py-[14px]',
   'text-[14px] text-[#ffffff]',
   'font-[inherit]',
   'outline-none',
-  'transition-[border-color,background]',
+  'transition-all duration-300 ease-out',
   'placeholder:text-[rgba(138,125,107,0.5)]',
-  'focus:border-[#971d13] focus:bg-[rgba(8,13,10,0.85)]',
+  'focus:border-[#971d13] focus:bg-[rgba(8,13,10,0.9)]',
+  'focus:shadow-[0_0_0_3px_rgba(151,29,19,0.12)]',
+  'hover:border-[rgba(151,29,19,0.3)]',
   'appearance-none',
 ].join(' ');
 
@@ -148,6 +151,18 @@ export default function CateringForm() {
         aria-hidden
       />
 
+      {/* Cup flourish — top left corner */}
+      <CupFlourish
+        className="pointer-events-none absolute z-0 hidden sm:block"
+        style={{
+          top: '80px',
+          right: '5vw',
+          color: 'rgba(151, 29, 19, 0.22)',
+          filter: 'drop-shadow(0 0 20px rgba(151, 29, 19, 0.12))',
+        }}
+        size={110}
+      />
+
       {/* Animated amber rule — GSAP scaleX reveal */}
       <div
         data-cf="rule"
@@ -159,7 +174,7 @@ export default function CateringForm() {
       <div
         className="relative z-10 grid grid-cols-1 gap-12 px-5 sm:px-6 md:grid-cols-[40%_60%] md:gap-[6vw] md:px-[3.9vw]"
       >
-        {/* ── LEFT — info panel ── */}
+        {/* -- LEFT — info panel -- */}
         <div data-cf="left" className="flex flex-col opacity-0">
 
           <span
@@ -219,36 +234,47 @@ export default function CateringForm() {
           </div>
         </div>
 
-        {/* ── RIGHT — form ── */}
+        {/* -- RIGHT — form -- */}
         <div data-cf="right" className="opacity-0">
           {submitted ? (
-            <div className="flex flex-col gap-5 rounded-md border border-[rgba(151,29,19,0.2)] bg-[rgba(8,13,10,0.4)] p-8 sm:p-10">
-              <span
-                className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-[#971d13] text-xl text-[#971d13]"
-                aria-hidden
-              >
-                ✓
-              </span>
+            <div className="cf-success">
+              {/* Animated concentric rings + checkmark */}
+              <div className="cf-success-badge" aria-hidden>
+                <div className="cf-success-pulse" />
+                <div className="cf-success-pulse cf-success-pulse--2" />
+                <svg viewBox="0 0 48 48" width="52" height="52">
+                  <circle cx="24" cy="24" r="22" fill="none" stroke="#971d13" strokeWidth="1.5" />
+                  <path
+                    className="cf-success-check"
+                    d="M14 24 L21 31 L34 17"
+                    fill="none"
+                    stroke="#971d13"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
               <h3
                 className="m-0 font-bold tracking-[-0.02em] text-[#ffffff]"
-                style={{ fontSize: 'clamp(22px, 2.5vw, 36px)' }}
+                style={{ fontSize: 'clamp(24px, 2.8vw, 40px)' }}
               >
                 Enquiry received.
               </h3>
               <p
-                className="m-0 max-w-[420px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
+                className="m-0 max-w-[440px] leading-[1.7] text-[rgba(240,237,230,0.7)]"
                 style={{ fontSize: 'max(1.04vw, 17px)' }}
               >
-                Thank you, {form.name.split(' ')[0]}. Our team will be in touch
+                Thank you, {form.name.split(' ')[0] || 'friend'}. Our team will be in touch
                 within 24 hours to discuss your event.
               </p>
               <button
                 type="button"
                 className="btn-primary mt-2 self-start"
                 style={{ fontSize: 'max(0.677vw, 11px)', padding: '12px 24px', letterSpacing: '0.1em' }}
-                onClick={() => { setForm(empty); setSubmitted(false); }}
+                onClick={() => { setForm(empty); setSubmitted(false); setErrors({}); }}
               >
-                Submit another enquiry
+                Submit another enquiry →
               </button>
             </div>
           ) : (

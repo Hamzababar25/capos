@@ -1,59 +1,97 @@
+/* ══════════════════════════════════════════════════════
+   Custom cursor — a small white dot + a lagging red ring.
+   Only replaces the native pointer on precision-pointer
+   devices (mouse/trackpad). Touch devices keep their default.
+   ══════════════════════════════════════════════════════ */
+
 @media (pointer: fine) {
-  *,
-  *::before,
-  *::after {
-    cursor: none !important;
+  html,
+  body {
+    cursor: none;
+  }
+  /* Interactive elements swap to a subtle native pointer as a
+     graceful fallback in case the custom cursor JS ever fails. */
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    cursor: none;
   }
 }
 
+/* ── The dot ─────────────────────────────────────────── */
 .cursor-dot {
   position: fixed;
   top: 0;
   left: 0;
   width: 8px;
   height: 8px;
-  background: #d9bf9e;
+  background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
-  opacity: 0;
+  /* Start visible — opacity is only lowered when mouse leaves the window */
+  opacity: 1;
+  mix-blend-mode: difference; /* Guarantees visibility on ANY background */
   transition:
-    opacity 0.3s ease,
-    width 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
-    height 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
-    background 0.3s ease;
+    opacity 0.25s ease,
+    width   0.3s cubic-bezier(0.165, 0.84, 0.44, 1),
+    height  0.3s cubic-bezier(0.165, 0.84, 0.44, 1),
+    background 0.25s ease;
   will-change: transform;
 }
 
+/* ── The trailing ring ───────────────────────────────── */
 .cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid rgba(217, 191, 158, 0.65);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99998;
-  opacity: 0;
+  opacity: 1;
   transition:
-    opacity 0.3s ease,
-    width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    border-color 0.35s ease,
-    background 0.35s ease;
+    opacity 0.25s ease,
+    width   0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+    height  0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+    border-color 0.3s ease,
+    background   0.3s ease;
   will-change: transform;
 }
 
+/* ── Hover state — brand red, larger ring, magnetic feel ── */
 .cursor-dot.is-hovering {
   width: 14px;
   height: 14px;
-  background: #c9a96e;
+  background: #971d13;
+  mix-blend-mode: normal; /* solid red on hover, no blend confusion */
 }
 
 .cursor-ring.is-hovering {
-  width: 64px;
-  height: 64px;
-  border-color: rgba(201, 169, 110, 0.75);
-  background: rgba(201, 169, 110, 0.04);
+  width: 56px;
+  height: 56px;
+  border-color: rgba(151, 29, 19, 0.85);
+  background: rgba(151, 29, 19, 0.08);
+}
+
+/* ── Fallback: touch/coarse pointer devices ──────────── */
+@media (pointer: coarse), (hover: none) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ── Reduced motion — keep cursor visible, remove all
+       transitions so it snaps instantly with no smooth trail. */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot,
+  .cursor-ring {
+    transition: none !important;
+  }
 }

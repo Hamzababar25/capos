@@ -51,7 +51,7 @@ export default function LegalHero({
           aria-hidden
         />
 
-        {/* ── Top meta bar ── */}
+        {/* -- Top meta bar -- */}
         <div
           ref={topRef}
           className="flex items-center justify-between px-5 pb-0 sm:px-6 md:px-[3.9vw]"
@@ -73,7 +73,7 @@ export default function LegalHero({
           )}
         </div>
 
-        {/* ── Giant title ── */}
+        {/* -- Giant title -- */}
         <div className="mt-auto flex flex-col px-5 sm:px-6 md:px-[3.9vw]" style={{ paddingBottom: 0 }}>
 
           {/* Line 1 — solid warm white */}
@@ -114,7 +114,7 @@ export default function LegalHero({
           </div>
         </div>
 
-        {/* ── Amber rule ── */}
+        {/* -- Amber rule -- */}
         <div
           ref={ruleRef}
           className="mt-10 h-px w-full"
@@ -124,7 +124,7 @@ export default function LegalHero({
           }}
         />
 
-        {/* ── Bottom strip ── */}
+        {/* -- Bottom strip -- */}
         <div
           ref={bottomRef}
           className="grid grid-cols-1 gap-8 px-5 py-8 sm:px-6 md:grid-cols-[1fr_auto] md:items-end md:gap-16 md:px-[3.9vw] md:py-10"

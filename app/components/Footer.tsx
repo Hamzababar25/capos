@@ -137,8 +137,9 @@ export default function Footer() {
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Navigate</h5>
               <ul className="c-footer-nav t-h6">
-                <li><Link href="/"       className="c-footer-nav-link">Home</Link></li>
+                <li><Link href="/"        className="c-footer-nav-link">Home</Link></li>
                 <li><Link href="/catering" className="c-footer-nav-link">Catering</Link></li>
+                <li><Link href="/moments"  className="c-footer-nav-link">Moments</Link></li>
                 <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('about')}>About</a></li>
                 <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('booking')}>Book Event</a></li>
               </ul>

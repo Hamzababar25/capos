@@ -19,7 +19,7 @@ export default function LoadingScreen() {
 
     document.body.style.overflow = 'hidden';
 
-    /* ── CRT static ─────────────────────────────────── */
+    /* -- CRT static ----------------------------------- */
     const ctx = canvas.getContext('2d')!;
     const drawStatic = () => {
       // quarter-res for a chunky, vintage pixel look
@@ -42,7 +42,7 @@ export default function LoadingScreen() {
     };
     drawStatic();
 
-    /* ── GSAP timeline ──────────────────────────────── */
+    /* -- GSAP timeline -------------------------------- */
     const tl = gsap.timeline({
       onComplete: () => {
         cancelAnimationFrame(rafRef.current);

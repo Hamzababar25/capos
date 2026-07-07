@@ -115,6 +115,16 @@
   transform-origin: left center;
 }
 
+/* Active-page indicator — line stays lit and text turns red */
+.c-header-nav-link.is-active {
+  opacity: 1;
+  color: #971d13;
+}
+.c-header-nav-link.is-active .c-header-nav-link-line {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
 /* ── Clocks ──────────────────────────────────────────── */
 .c-header-clocks {
   display: none;

@@ -175,8 +175,9 @@
 }
 
 .c-about-arrow:hover::before   { transform: scale(1); }
-.c-about-arrow:hover           { color: #080d0a; border-color: #971d13; transform: scale(1.05); }
-.c-about-arrow span            { position: relative; z-index: 1; }
+.c-about-arrow:hover           { color: #ffffff; border-color: #971d13; transform: scale(1.05); }
+.c-about-arrow span,
+.c-about-arrow svg             { position: relative; z-index: 1; }
 
 .c-about-dots {
   display: flex;
@@ -250,14 +251,17 @@
 .c-about-image-frame img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;              /* fill the frame edge-to-edge */
+  object-position: center;
   background: #080d0a;
   display: block;
-  transition: transform 8s ease-out;
+  transition: transform 8s ease-out, filter 0.5s ease;
+  filter: brightness(0.92) contrast(1.05);
 }
 
 .c-about-image-frame.is-active img {
-  transform: scale(1.40);
+  transform: scale(1.06);          /* subtle Ken Burns, not aggressive 1.4 */
+  filter: brightness(1) contrast(1.05);
 }
 
 /* Dark gradient overlay — bottom + left blend */

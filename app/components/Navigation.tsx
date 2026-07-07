@@ -103,6 +103,7 @@ export default function Navigation() {
   const overlayItems: { label: string; href?: string; section?: string }[] = [
     { label: 'Home',            href: '/'          },
     { label: 'Catering',        href: '/catering'  },
+    { label: 'Moments',         href: '/moments'   },
     { label: 'About',           section: 'about'   },
     { label: 'FAQ',             href: '/faq'       },
     { label: 'Book Your Event', section: 'booking' },
@@ -126,27 +127,33 @@ export default function Navigation() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="c-header-nav">
+        <nav className="c-header-nav" aria-label="Primary">
           <ul className="c-header-nav-list t-h6">
-            {navLinks.map((item) => (
-              <li key={item}>
-                {item === 'Catering' ? (
-                  <Link href="/catering" className="c-header-nav-link">
-                    <span className="c-header-nav-link-text">{item}</span>
-                    <span className="c-header-nav-link-line" aria-hidden="true" />
-                  </Link>
-                ) : (
-                  <a
-                    href="#"
-                    className="c-header-nav-link"
-                    onClick={scrollToSection(item.toLowerCase())}
-                  >
-                    <span className="c-header-nav-link-text">{item}</span>
-                    <span className="c-header-nav-link-line" aria-hidden="true" />
-                  </a>
-                )}
-              </li>
-            ))}
+            {navLinks.map((item) => {
+              const isCatering    = item === 'Catering';
+              const isActivePage  = isCatering && pathname === '/catering';
+              const classes       = `c-header-nav-link${isActivePage ? ' is-active' : ''}`;
+
+              return (
+                <li key={item}>
+                  {isCatering ? (
+                    <Link href="/catering" className={classes} aria-current={isActivePage ? 'page' : undefined}>
+                      <span className="c-header-nav-link-text">{item}</span>
+                      <span className="c-header-nav-link-line" aria-hidden="true" />
+                    </Link>
+                  ) : (
+                    <a
+                      href="#"
+                      className="c-header-nav-link"
+                      onClick={scrollToSection(item.toLowerCase())}
+                    >
+                      <span className="c-header-nav-link-text">{item}</span>
+                      <span className="c-header-nav-link-line" aria-hidden="true" />
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </nav>
 

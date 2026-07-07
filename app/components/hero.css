@@ -134,12 +134,26 @@
   max-width: 900px;
 }
 
-/* Eyebrow label */
+/* Eyebrow label — inline row with tiny red dot separators */
 .pixi-intro-eyebrow {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.85);
   opacity: 0;
   letter-spacing: 0.22em;
   max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 16px);
+  flex-wrap: wrap;
+}
+
+.pixi-intro-eyebrow-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #971d13;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(151, 29, 19, 0.6);
+  flex-shrink: 0;
 }
 
 /* Headline */
@@ -223,18 +237,30 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-color: rgba(255, 255, 255, 0.5) !important;
+  gap: 10px !important;
 }
 .pixi-intro-cta:hover {
   background: transparent !important;
 }
 
-/* Subtext below headline */
+/* Arrow that slides right on hover */
+.pixi-intro-cta-arrow {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.pixi-intro-cta:hover .pixi-intro-cta-arrow {
+  transform: translateX(5px);
+}
+
+/* Subtext below headline — refined for elegance, no shouty caps */
 .pixi-intro-sub {
   opacity: 0;
-  color: rgba(255, 255, 255, 0.75);
-  max-width: 460px;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 500px;
   line-height: 1.65;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  text-transform: none;
 }
 
 /* Bottom veil — dark gradient so footer strip text is readable */

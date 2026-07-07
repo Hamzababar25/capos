@@ -37,6 +37,85 @@ html {
   overflow-y: scroll;
   -webkit-tap-highlight-color: transparent;
   height: auto;
+  background-color: var(--bg); /* prevents white flash on hard reloads */
+  scroll-behavior: smooth;
+}
+
+/* ── Text selection — brand red on cream ─────────────── */
+::selection {
+  background: rgba(151, 29, 19, 0.85);
+  color: #ffffff;
+}
+::-moz-selection {
+  background: rgba(151, 29, 19, 0.85);
+  color: #ffffff;
+}
+
+/* ── Custom dark scrollbar ───────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(151, 29, 19, 0.35) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(151, 29, 19, 0.28);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(151, 29, 19, 0.55);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* ── Accessible skip link ────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 0 0 6px 0;
+  transform: translateY(-120%);
+  transition: transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: none;
+}
+
+/* ── Respect prefers-reduced-motion ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Kill grain animation, cursor lag, floating loops */
+  body::after,
+  .cursor-circle,
+  .pixi-intro-scroll-wrap,
+  .cursor-dot,
+  .cursor-ring {
+    animation: none !important;
+  }
 }
 
 html.lenis,
@@ -106,15 +185,23 @@ a {
   outline: 0;
 }
 
+/* Only show the focus ring for keyboard users, not mouse clicks. */
 a:focus,
-a:active {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
 }
 
-button:focus {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 button {
@@ -278,6 +365,56 @@ canvas {
    not to the page — so text nodes always render above the amber fill */
 .btn-primary {
   isolation: isolate;
+}
+
+/* ─── Catering-form success celebration ──────────────── */
+.cf-success {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(151, 29, 19, 0.2);
+  background: rgba(8, 13, 10, 0.4);
+  padding: clamp(24px, 4vw, 44px);
+  animation: cfFadeUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cf-success-badge {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-success-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(151, 29, 19, 0.4);
+  animation: cfPulse 2.2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+}
+.cf-success-pulse--2 {
+  animation-delay: 0.8s;
+}
+
+.cf-success-check {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: cfCheck 0.7s ease-out 0.35s forwards;
+}
+
+@keyframes cfFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cfPulse {
+  0%   { transform: scale(1);   opacity: 0.85; }
+  100% { transform: scale(1.6); opacity: 0;    }
+}
+@keyframes cfCheck {
+  to { stroke-dashoffset: 0; }
 }
 
 /* ─── Tablet tweaks (900px and below) ───────────────── */

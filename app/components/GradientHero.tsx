@@ -92,14 +92,17 @@ export default function GradientHero() {
       {/* Navigation - part of hero */}
       <Navigation />
       
-      {/* Background video */}
+      {/* Background video — poster prevents the black flash before first frame loads */}
       <video
         className="pixi-intro-canvas"
         src="/hero-section.mp4"
+        poster="/logo.png"
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
+        aria-hidden="true"
       />
       <div className="pixi-intro-video-veil" />
 
@@ -124,7 +127,11 @@ export default function GradientHero() {
         <div className="pixi-intro-center">
           <div className="pixi-intro-text">
             <div className="pixi-intro-eyebrow t-h6">
-              Coffee Cart · Tri-State Area · Est. 2025
+              <span>Coffee Cart</span>
+              <span className="pixi-intro-eyebrow-dot" aria-hidden="true" />
+              <span>Tri-State Area</span>
+              <span className="pixi-intro-eyebrow-dot" aria-hidden="true" />
+              <span>Est. 2025</span>
             </div>
             <h1
               ref={titleRef}
@@ -167,16 +174,15 @@ export default function GradientHero() {
               </span>
             </h1>
             <p className="pixi-intro-sub t-text-lg">
-            HANDCRAFTED ESPRESSO EXPERIENCES,
-              <br />
-
-             TAILORED TO EVERY OCCASION
+              Handcrafted espresso experiences,
+              tailored to every occasion.
             </p>
             <a
               href="#booking"
               className="pixi-intro-cta btn-primary pointer-events-auto px-7 py-3.5 text-xs tracking-[0.12em] opacity-0"
             >
-              Book Your Event →
+              <span>Book Your Event</span>
+              <span className="pixi-intro-cta-arrow" aria-hidden="true">→</span>
             </a>
           </div>
         </div>

@@ -9,7 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── Data ─────────────────────────────────────────── */
+/* --- Data ------------------------------------------- */
 
 const signatures = [
   {
@@ -50,7 +50,7 @@ const addOns = [
   'Biscoff bomb',
 ];
 
-/* ─── Scroll-reveal hook ────────────────────────────── */
+/* --- Scroll-reveal hook ------------------------------ */
 
 function useReveal(ref: React.RefObject<HTMLElement | null>, options: { stagger?: number; y?: number } = {}) {
   useEffect(() => {
@@ -77,7 +77,7 @@ function useReveal(ref: React.RefObject<HTMLElement | null>, options: { stagger?
   }, [ref, options.stagger, options.y]);
 }
 
-/* ─── Sub-components ────────────────────────────────── */
+/* --- Sub-components ---------------------------------- */
 
 function Rule() {
   return (
@@ -147,7 +147,7 @@ function DrinkCard({ name, desc, tag }: {
   );
 }
 
-/* ─── Page ──────────────────────────────────────────── */
+/* --- Page -------------------------------------------- */
 
 export default function MenuPage() {
   const router = useRouter();
@@ -188,7 +188,7 @@ export default function MenuPage() {
     <div className="min-h-screen bg-[#080d0a] text-[#ffffff]">
       <Navigation />
 
-      {/* ── HERO ──────────────────────────────────────────── */}
+      {/* -- HERO -------------------------------------------- */}
       <section
         ref={heroRef}
         className="relative flex min-h-[70vh] flex-col items-start justify-end overflow-hidden px-5 pb-16 pt-40 md:px-[3.9vw] md:pb-20"
@@ -250,7 +250,7 @@ export default function MenuPage() {
         />
       </section>
 
-      {/* ── SIGNATURES BY CAPO ─────────────────────────── */}
+      {/* -- SIGNATURES BY CAPO --------------------------- */}
       <section
         ref={sigRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
@@ -278,7 +278,7 @@ export default function MenuPage() {
 
       <Rule />
 
-      {/* ── CAPO'S ESSENTIALS ──────────────────────────── */}
+      {/* -- CAPO'S ESSENTIALS ---------------------------- */}
       <section
         ref={essRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
@@ -333,7 +333,7 @@ export default function MenuPage() {
 
       <Rule />
 
-      {/* ── COLLABORATION MENU ─────────────────────────── */}
+      {/* -- COLLABORATION MENU --------------------------- */}
       <section
         ref={collabRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
@@ -402,7 +402,7 @@ export default function MenuPage() {
 
       <Rule />
 
-      {/* ── CUSTOMIZE YOUR CUP ─────────────────────────── */}
+      {/* -- CUSTOMIZE YOUR CUP --------------------------- */}
       <section
         ref={customizeRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
@@ -447,7 +447,7 @@ export default function MenuPage() {
 
       <Rule />
 
-      {/* ── FOOTER STRIP ───────────────────────────────── */}
+      {/* -- FOOTER STRIP --------------------------------- */}
       <footer className="flex flex-col items-center gap-6 px-5 py-16 text-center md:px-[3.9vw]">
         <p
           className="m-0 font-bold uppercase tracking-[0.3em] text-[rgba(240,237,230,0.20)]"

@@ -5,6 +5,30 @@
   overflow: hidden;
 }
 
+/* ── Corner flourishes ─────────────────────────────── */
+.quote-flourish {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  color: #971d13;
+}
+.quote-flourish--rose {
+  top: 40px;
+  right: 40px;
+  opacity: 0.18;
+  filter: drop-shadow(0 0 20px rgba(151, 29, 19, 0.15));
+}
+.quote-flourish--bean {
+  bottom: 60px;
+  left: 40px;
+  opacity: 0.35;
+  transform: rotate(-25deg);
+}
+@media only screen and (max-width: 767px) {
+  .quote-flourish--rose { width: 90px; height: 90px; top: 20px; right: 20px; }
+  .quote-flourish--bean { display: none; }
+}
+
 /* Subtle warm radial glow */
 .quote-section::before {
   content: '';

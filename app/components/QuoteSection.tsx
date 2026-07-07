@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { RoseFlourish, BeanFlourish } from './Flourishes';
 import './quote-section.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -43,6 +44,10 @@ export default function QuoteSection() {
 
   return (
     <section className="quote-section" ref={sectionRef}>
+      {/* Corner flourishes — subtle brand marks */}
+      <RoseFlourish className="quote-flourish quote-flourish--rose" size={130} />
+      <BeanFlourish className="quote-flourish quote-flourish--bean" size={22} />
+
       <div className="quote-line" aria-hidden="true" />
       <div className="quote-layout">
         <div className="quote-inner">

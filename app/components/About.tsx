@@ -86,12 +86,21 @@ export default function About() {
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
-  // Auto-advance with progress bar
+  // Auto-advance with progress bar (respects reduced-motion)
   const startInterval = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
+    if (typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     intervalRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
+  };
+
+  const pauseInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   };
 
   useEffect(() => {
@@ -127,7 +136,13 @@ export default function About() {
   const slide = slides[currentSlide];
 
   return (
-    <section id="about" className="c-about" ref={sectionRef}>
+    <section
+      id="about"
+      className="c-about"
+      ref={sectionRef}
+      onMouseEnter={pauseInterval}
+      onMouseLeave={startInterval}
+    >
       {/* Section header */}
       <div className="c-about-header">
         <span className="c-about-eyebrow t-h6">About CAPOS</span>
@@ -157,11 +172,15 @@ export default function About() {
 
           {/* Controls */}
           <div className="c-about-controls">
-            <button className="c-about-arrow" onClick={prev} aria-label="Previous">
-              <span>←</span>
+            <button className="c-about-arrow" onClick={prev} aria-label="Previous slide">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
-            <button className="c-about-arrow" onClick={next} aria-label="Next">
-              <span>→</span>
+            <button className="c-about-arrow" onClick={next} aria-label="Next slide">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
             <div className="c-about-dots">
               {slides.map((_, i) => (
@@ -169,7 +188,7 @@ export default function About() {
                   key={i}
                   className={`c-about-dot${i === currentSlide ? ' is-active' : ''}`}
                   onClick={() => goTo(i)}
-                  aria-label={`Slide ${i + 1}`}
+                  aria-label={`Go to slide ${i + 1}`}
                 />
               ))}
             </div>

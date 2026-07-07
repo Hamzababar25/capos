@@ -1,25 +1,43 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import SmoothScroll from "./components/SmoothScroll";
 import Cursor from "./components/Cursor";
 import LoadingScreen from "./components/LoadingScreen";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
-  description: "Experience exceptional coffee moments with CAPOS. Premium single-origin and artisanal coffee blends, ethically sourced and expertly roasted in small batches.",
-  keywords: "coffee, specialty coffee, artisanal coffee, single origin, coffee roasters, premium coffee, CAPOS, ethically sourced coffee, small batch roasting",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://capos.coffee"),
+  title: "CAPOS Coffee | Premium Coffee Cart Catering — Tri-State Area",
+  description: "Handcrafted espresso experiences for weddings, corporate events & private gatherings across NY, NJ, CT & PA. A marriage of cultures, one unforgettable cup at a time.",
+  keywords: "coffee catering, wedding coffee bar, corporate coffee service, espresso cart, CAPOS coffee, tri-state coffee catering, mobile coffee bar",
   authors: [{ name: "CAPOS Coffee" }],
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
-    title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
-    description: "Experience exceptional coffee moments with CAPOS. Premium single-origin and artisanal coffee blends.",
+    title: "CAPOS Coffee | Premium Coffee Cart Catering",
+    description: "Handcrafted espresso experiences, tailored to every occasion. Serving NY, NJ, CT & PA.",
     type: "website",
     locale: "en_US",
+    siteName: "CAPOS Coffee",
+    images: [{ url: "/logo.png", width: 596, height: 627, alt: "CAPOS Coffee" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CAPOS Coffee | Premium Artisanal Coffee Roasters",
-    description: "Experience exceptional coffee moments with CAPOS.",
+    title: "CAPOS Coffee | Premium Coffee Cart Catering",
+    description: "Handcrafted espresso experiences, tailored to every occasion.",
+    images: ["/logo.png"],
   },
+};
+
+/* Explicit viewport meta so mobile browsers render at the right density
+   and don't allow accidental pinch-zoom breaking the WebGL cursor. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#080d0a",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -28,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -38,9 +56,13 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* Accessible skip-to-content — invisible until keyboard-focused */}
+        <a href="#main" className="skip-link">Skip to content</a>
         <LoadingScreen />
         <Cursor />
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <div id="main">{children}</div>
+        </SmoothScroll>
       </body>
     </html>
   );
