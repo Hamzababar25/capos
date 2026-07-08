@@ -5,14 +5,24 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Marquee from './Marquee';
 import './footer.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const footerMarqueeItems = [
+  'Available for Booking',
+  '2026 Season Open',
+  'NY · NJ · CT · PA',
+  'By Invitation',
+  'Handcrafted On-Site',
+  'Est. 2025',
+];
+
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const router   = useRouter();
-  const pathname = usePathname();
+  const router    = useRouter();
+  const pathname  = usePathname();
 
   const scrollToSection = (sectionId: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,6 +33,7 @@ export default function Footer() {
       router.push('/');
     }
   };
+
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -56,14 +67,13 @@ export default function Footer() {
     const footer = footerRef.current;
     if (!footer) return;
 
-    const circles  = footer.querySelector('.c-footer-circles');
-    const title    = footer.querySelector('.c-footer-title');
-    const contact  = footer.querySelector('.c-footer-col--contact');
-    const colsRight= footer.querySelector('.c-footer-cols-right');
-    const signup   = footer.querySelector('.c-footer-signup');
-    const bottom   = footer.querySelector('.c-footer-bottom');
+    const head    = footer.querySelector('.c-footer-head');
+    const contact = footer.querySelector('.c-footer-col--contact');
+    const cols    = footer.querySelector('.c-footer-cols-right');
+    const signup  = footer.querySelector('.c-footer-signup');
+    const bottom  = footer.querySelector('.c-footer-bottom');
 
-    const els = [circles, title, contact, colsRight, signup, bottom].filter(Boolean);
+    const els = [head, contact, cols, signup, bottom].filter(Boolean);
     gsap.set(els, { y: 50, opacity: 0 });
 
     ScrollTrigger.create({
@@ -80,29 +90,36 @@ export default function Footer() {
 
   return (
     <footer id="contact" className="c-footer" ref={footerRef}>
-      {/* Large watermark */}
-      <div className="c-footer-watermark" aria-hidden="true">CAPOS</div>
+      {/* ── Marquee at the top of the footer ── */}
+      <div className="c-footer-marquee">
+        <Marquee items={footerMarqueeItems} speed={45} />
+      </div>
+
+      {/* ── Massive watermark ── */}
+      <div className="c-footer-watermark" aria-hidden="true">CAPO&apos;S</div>
 
       <div className="c-footer-inner">
-        {/* Head */}
+        {/* Head — editorial statement */}
         <div className="c-footer-head">
-          <svg viewBox="0 0 36 18" width="36" height="18" fill="none" className="c-footer-circles">
-            <circle cx="9"  cy="9" r="8.5" stroke="currentColor" strokeOpacity="0.3"/>
-            <circle cx="18" cy="9" r="8.5" stroke="currentColor" strokeOpacity="0.3"/>
-            <circle cx="27" cy="9" r="8.5" stroke="currentColor" strokeOpacity="0.3"/>
-          </svg>
+          <div className="c-footer-head-eyebrow">
+            <span className="c-footer-head-dot" aria-hidden />
+            <span>Colophon</span>
+            <span className="c-footer-head-rule" aria-hidden />
+          </div>
           <h2 className="c-footer-title t-h2">
-            Your moments.<br/> <i>Capo’s way</i>
-            {/* We w<i>o</i>uld l<i>o</i>ve t<i>o</i>&nbsp;hear fr<i>o</i>m you. */}
+            Your moments.<br /> <i>Capo&apos;s way</i>
           </h2>
+          <p className="c-footer-tagline">
+            Coffee cart catering, poured with intention — for events across
+            the Tri-State area and Pennsylvania.
+          </p>
         </div>
 
-        {/* Body */}
+        {/* Body — 4 columns */}
         <div className="c-footer-body">
-          {/* Left — contact */}
           <div className="c-footer-col c-footer-col--contact">
             <p className="c-footer-muted t-text">
-              Reach out for collaborations, wholesale enquiries, <br/>
+              Reach out for collaborations, wholesale enquiries, <br />
               or simply a great cup of conversation.
             </p>
             <a href="mailto:hello@capos.coffee" className="c-footer-email">
@@ -111,33 +128,59 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Right — columns */}
           <div className="c-footer-cols-right">
-            {/* Address */}
             <div className="c-footer-col">
-              <h5 className="c-footer-col-title t-h6">Our Address</h5>
+              <h5 className="c-footer-col-title t-h6">Studio</h5>
               <address className="c-footer-address c-footer-muted t-text">
                 CAPOS Coffee<br />
-                New Jersy, USA<br />
-                <span className="c-footer-coords">51.5074° N, 0.1278° W</span>
+                New Jersey, USA<br />
+                <span className="c-footer-coords">40.0583° N · 74.4057° W</span>
               </address>
             </div>
 
-            {/* Social */}
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Follow</h5>
               <ul className="c-footer-socials">
-                <li><a href="https://www.instagram.com/caposcoffee/" target='_blank' className="c-footer-social-link t-text">Instagram</a></li>
-                <li><a href="https://www.linkedin.com/company/capos-coffee/" target='_blank' className="c-footer-social-link t-text">LinkedIn</a></li>
-                <li><a href="https://www.facebook.com/profile.php?id=61591468595806&mibextid=wwXIfr&rdid=zgEGCIoXfJSvlWoV&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F192bp3AKa6%2F%3Fmibextid%3DwwXIfr#" target='_blank' className="c-footer-social-link t-text">Facebook</a></li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/caposcoffee/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="c-footer-social-link t-text"
+                  >
+                    <span>Instagram</span>
+                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/capos-coffee/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="c-footer-social-link t-text"
+                  >
+                    <span>LinkedIn</span>
+                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61591468595806"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="c-footer-social-link t-text"
+                  >
+                    <span>Facebook</span>
+                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                  </a>
+                </li>
               </ul>
             </div>
 
-            {/* Nav */}
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Navigate</h5>
               <ul className="c-footer-nav t-h6">
-                <li><Link href="/"        className="c-footer-nav-link">Home</Link></li>
+                <li><Link href="/"         className="c-footer-nav-link">Home</Link></li>
                 <li><Link href="/catering" className="c-footer-nav-link">Catering</Link></li>
                 <li><Link href="/moments"  className="c-footer-nav-link">Moments</Link></li>
                 <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('about')}>About</a></li>
@@ -145,7 +188,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Legal */}
             <div className="c-footer-col">
               <h5 className="c-footer-col-title t-h6">Legal</h5>
               <ul className="c-footer-nav t-h6">
@@ -157,11 +199,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Email signup */}
+        {/* Newsletter card — visually prominent */}
         <div className="c-footer-signup">
-          <p className="c-footer-signup-label t-h6">Newsletter — Stories from origin</p>
+          <div className="c-footer-signup-head">
+            <span className="c-footer-signup-eyebrow t-h6">Newsletter</span>
+            <h3 className="c-footer-signup-title">
+              Stories from <i>origin</i>.
+            </h3>
+            <p className="c-footer-signup-desc">
+              Rare beans, seasonal drops and the occasional invitation.
+              No spam. Ever.
+            </p>
+          </div>
+
           {submitted ? (
             <p className="c-footer-signup-thanks t-text">
+              <span className="c-footer-signup-check" aria-hidden>✓</span>
               Thank you. We&apos;ll be in touch.
             </p>
           ) : (
@@ -183,11 +236,11 @@ export default function Footer() {
                   disabled={sending}
                   style={{ opacity: sending ? 0.6 : 1 }}
                 >
-                  {sending ? '…' : 'Subscribe'}
+                  {sending ? '…' : 'Subscribe →'}
                 </button>
               </form>
               {sendError && (
-                <p style={{ marginTop: 8, fontSize: 12, color: 'rgba(220,80,60,0.85)' }}>
+                <p className="c-footer-signup-error">
                   {sendError}
                 </p>
               )}
@@ -197,11 +250,18 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="c-footer-bottom">
-          <span className="c-footer-muted t-text-sm">
-            © CAPOS COFFEE 2025 · All rights reserved
-          </span>
-          <button className="c-footer-top-btn t-text-sm" onClick={scrollToTop}>
-            Back to top ↑
+          <div className="c-footer-bottom-left">
+            <span className="c-footer-muted t-text-sm">
+              © 2025 · CAPOS Coffee · All rights reserved
+            </span>
+            <span className="c-footer-signature t-text-sm">
+              Crafted with <span className="c-footer-signature-heart" aria-hidden>♦</span> in New Jersey
+            </span>
+          </div>
+
+          <button className="c-footer-top-btn t-text-sm" onClick={scrollToTop} aria-label="Back to top">
+            <span>Back to top</span>
+            <span className="c-footer-top-arrow" aria-hidden>↑</span>
           </button>
         </div>
       </div>

@@ -1,0 +1,40 @@
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9996;
+  background: #080d0a;
+  transform: scaleY(0);
+  transform-origin: top center;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.page-curtain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(151, 29, 19, 0.35) 0%, transparent 70%),
+    linear-gradient(180deg, #080d0a 0%, #120806 100%);
+}
+
+.page-curtain-label {
+  position: relative;
+  z-index: 1;
+  font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(14px, 1.2vw, 18px);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain {
+    display: none;
+  }
+}

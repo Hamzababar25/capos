@@ -8,8 +8,10 @@ import QuoteSection from './components/QuoteSection';
 import CateringForm from './components/CateringForm';
 import Footer from './components/Footer';
 import ScrollToSection from './components/ScrollToSection';
+import Marquee from './components/Marquee';
+import SectionLabels from './components/SectionLabels';
 import './styles/home.css';
-import './styles/hero.css'; // ADDED: loads .stat p rules without rendering Hero component
+import './styles/hero.css';
 
 export default function Home() {
   const [isPageReady, setIsPageReady] = useState(false);
@@ -22,7 +24,9 @@ export default function Home() {
   return (
     <main className={`home-page${isPageReady ? ' is-ready' : ''}`}>
       <ScrollToSection />
+      <SectionLabels />
       <GradientHero />
+      <Marquee />
       <About />
       <StatsSection />
       <QuoteSection />

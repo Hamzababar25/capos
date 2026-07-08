@@ -1,44 +1,61 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navigation from '../components/Navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* --- Data ------------------------------------------- */
+/* ── Data ──────────────────────────────────────────── */
 
-const signatures = [
+interface Drink {
+  name: string;
+  desc: string;
+  origin?: string;
+  ingredients?: string;
+  tag?: string | null;
+}
+
+const signatures: Drink[] = [
   {
     name: 'Crème Brûlée Latte',
-    desc: 'A rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under the decadent flavor of hard-top candied caramelised sugar.',
-    tag: null,
+    desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
+    origin: 'French pâtisserie meets Italian espresso',
+    ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
   },
   {
     name: 'Rose Saffron Latte',
-    desc: 'A luxurious floral blend of fragrant rose syrup and warm cardamom, finished with a cloud of sweet cold foam and topped with rose petals and saffron.',
+    desc: 'A luxurious floral blend of fragrant rose syrup and warm cardamom, finished with a cloud of sweet cold foam and topped with rose petals and saffron threads.',
+    origin: 'A quiet nod to Persian tearooms',
+    ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
     tag: "Mother's Day Special",
   },
   {
     name: 'Latte España',
-    desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for smooth indulgence.',
-    tag: null,
+    desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for a smooth indulgence.',
+    origin: 'Inspired by Madrid’s café con leche',
+    ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
   },
 ];
 
-const essentialFlavors = ['Vanilla', 'Caramel', 'Hazelnut', 'Mocha / Chocolate', 'White Chocolate'];
+const essentialFlavors = ['Vanilla', 'Caramel', 'Hazelnut', 'Mocha', 'White Chocolate'];
 
-const collabItems = [
+const collabItems: Drink[] = [
   {
     name: 'Tiramisu Latte',
-    desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes, and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
+    desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
+    origin: 'A love letter to Northern Italy',
+    ingredients: 'Espresso · Vanilla · Mascarpone foam · Cocoa · Swiss chocolate',
   },
   {
     name: 'La Dolce Latte',
-    desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and homemade caramel for rich sweetness. Finished with smooth cold foam for a creamy, luxurious sip that lives up to its name — "The Sweet Latte."',
+    desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and homemade caramel for rich sweetness. Finished with smooth cold foam.',
+    origin: '"The Sweet Latte" — La Dolce Vita in a cup',
+    ingredients: 'Espresso · Brown sugar · House caramel · Cold foam',
   },
 ];
 
@@ -50,7 +67,22 @@ const addOns = [
   'Biscoff bomb',
 ];
 
-/* --- Scroll-reveal hook ------------------------------ */
+/* ── Category tabs ─────────────────────────────────── */
+
+interface Category {
+  id: string;
+  label: string;
+  count: number;
+}
+
+const categories: Category[] = [
+  { id: 'signatures', label: 'Signatures', count: signatures.length },
+  { id: 'essentials', label: 'Essentials', count: 1 },
+  { id: 'collab',     label: 'Collab',     count: collabItems.length },
+  { id: 'customize',  label: 'Customize',  count: addOns.length },
+];
+
+/* ── Scroll reveal hook ────────────────────────────── */
 
 function useReveal(ref: React.RefObject<HTMLElement | null>, options: { stagger?: number; y?: number } = {}) {
   useEffect(() => {
@@ -77,7 +109,7 @@ function useReveal(ref: React.RefObject<HTMLElement | null>, options: { stagger?
   }, [ref, options.stagger, options.y]);
 }
 
-/* --- Sub-components ---------------------------------- */
+/* ── Sub-components ────────────────────────────────── */
 
 function Rule() {
   return (
@@ -104,7 +136,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2
-      className="m-0 font-bold uppercase leading-none tracking-[-0.03em] text-[#ffffff]"
+      className="m-0 font-bold uppercase leading-none tracking-[-0.03em] text-white"
       style={{ fontSize: 'clamp(36px, 5vw, 80px)' }}
       data-reveal
     >
@@ -113,41 +145,105 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DrinkCard({ name, desc, tag }: {
-  name: string; desc: string; tag?: string | null;
-}) {
+/**
+ * Drink card with a hover-reveal overlay showing origin + ingredients.
+ * The description slides out; the "story" (origin + ingredients) slides in.
+ */
+function DrinkCard({ name, desc, origin, ingredients, tag, index }: Drink & { index: number }) {
   return (
-    <div
-      className="flex flex-col gap-4 rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(151,29,19,0.30)]"
+    <article
+      className="cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(151,29,19,0.5)]"
       data-reveal
     >
-      <div className="flex items-start justify-between gap-4">
+      {/* Number chip */}
+      <span
+        className="cat-drink-num absolute right-6 top-6 font-bold tracking-[0.24em] text-[rgba(151,29,19,0.4)] transition-colors duration-500 group-hover:text-[#971d13]"
+        style={{ fontSize: 'max(0.72vw, 11px)' }}
+        aria-hidden
+      >
+        {String(index).padStart(2, '0')}
+      </span>
+
+      {/* Header */}
+      <div className="mb-4 flex items-start gap-4 pr-10">
         <h3
-          className="m-0 leading-tight tracking-[-0.01em] text-[#ffffff]"
-          style={{ fontSize: 'clamp(18px, 1.6vw, 26px)', fontWeight: 600 }}
+          className="m-0 leading-tight tracking-[-0.01em] text-white"
+          style={{ fontSize: 'clamp(19px, 1.7vw, 28px)', fontWeight: 600 }}
         >
           {name}
         </h3>
         {tag && (
           <span
-            className="rounded-sm border border-[rgba(151,29,19,0.35)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.85)]"
+            className="mt-1 shrink-0 rounded-sm border border-[rgba(151,29,19,0.4)] bg-[rgba(151,29,19,0.08)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.9)]"
             style={{ fontSize: 'max(0.677vw, 10px)' }}
           >
             {tag}
           </span>
         )}
       </div>
-      <p
-        className="m-0 leading-[1.7] text-[rgba(240,237,230,0.55)]"
-        style={{ fontSize: 'max(0.9vw, 14px)' }}
-      >
-        {desc}
-      </p>
-    </div>
+
+      {/* Description (fades out on hover to reveal ingredients) */}
+      <div className="relative min-h-[120px] flex-1">
+        <p
+          className="absolute inset-0 m-0 leading-[1.7] text-[rgba(240,237,230,0.55)] transition-all duration-500 group-hover:-translate-y-2 group-hover:opacity-0"
+          style={{ fontSize: 'max(0.9vw, 14px)' }}
+        >
+          {desc}
+        </p>
+
+        {/* Hover story */}
+        <div className="absolute inset-0 flex translate-y-2 flex-col gap-3 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          {origin && (
+            <p
+              className="m-0 italic text-white"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 'clamp(15px, 1.15vw, 18px)',
+                lineHeight: 1.4,
+              }}
+            >
+              &ldquo;{origin}&rdquo;
+            </p>
+          )}
+          {ingredients && (
+            <>
+              <span
+                className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
+                style={{ fontSize: 'max(0.6vw, 10px)' }}
+              >
+                Notes
+              </span>
+              <p
+                className="m-0 leading-[1.6] text-[rgba(240,237,230,0.75)]"
+                style={{ fontSize: 'max(0.85vw, 13px)' }}
+              >
+                {ingredients}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Bottom rule + subtle "iced" note */}
+      <div className="mt-6 flex items-center justify-between border-t border-[rgba(151,29,19,0.08)] pt-4 transition-colors duration-500 group-hover:border-[rgba(151,29,19,0.25)]">
+        <span
+          className="font-bold uppercase tracking-[0.2em] text-[rgba(240,237,230,0.35)]"
+          style={{ fontSize: 'max(0.6vw, 10px)' }}
+        >
+          Served Iced
+        </span>
+        <span
+          className="text-[#971d13] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          aria-hidden
+        >
+          →
+        </span>
+      </div>
+    </article>
   );
 }
 
-/* --- Page -------------------------------------------- */
+/* ── Page ──────────────────────────────────────────── */
 
 export default function MenuPage() {
   const router = useRouter();
@@ -169,7 +265,30 @@ export default function MenuPage() {
   useReveal(collabRef,    { stagger: 0.12 });
   useReveal(customizeRef, { stagger: 0.08 });
 
-  // Hero entrance
+  /* Active category tracker */
+  const [activeCat, setActiveCat] = useState<string>('signatures');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveCat(entry.target.id);
+        });
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: 0 }
+    );
+    categories.forEach((c) => {
+      const el = document.getElementById(c.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToCat = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  /* Hero entrance */
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -177,49 +296,75 @@ export default function MenuPage() {
     gsap.set(targets, { opacity: 0, y: 30 });
     gsap.to(targets, {
       opacity: 1, y: 0,
-      duration: 1.0,
-      stagger: 0.12,
-      ease: 'expo.out',
-      delay: 0.35,
+      duration: 1.0, stagger: 0.12,
+      ease: 'expo.out', delay: 0.35,
     });
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#080d0a] text-[#ffffff]">
+    <div className="min-h-screen bg-[#080d0a] text-white">
       <Navigation />
 
       {/* -- HERO -------------------------------------------- */}
       <section
         ref={heroRef}
-        className="relative flex min-h-[70vh] flex-col items-start justify-end overflow-hidden px-5 pb-16 pt-40 md:px-[3.9vw] md:pb-20"
+        className="relative flex min-h-[75vh] flex-col items-start justify-end overflow-hidden px-5 pb-16 pt-40 md:px-[3.9vw] md:pb-20"
       >
         {/* Ambient glow */}
         <div
           className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-w-[900px]"
-          style={{ background: 'radial-gradient(circle at 80% 20%, rgba(151,29,19,0.055) 0%, transparent 60%)' }}
+          style={{ background: 'radial-gradient(circle at 80% 20%, rgba(151,29,19,0.06) 0%, transparent 60%)' }}
           aria-hidden
+        />
+
+        <RoseFlourish
+          className="pointer-events-none absolute right-8 top-32 hidden md:block"
+          size={200}
+          style={{
+            color: '#971d13',
+            opacity: 0.12,
+            filter: 'drop-shadow(0 0 40px rgba(151,29,19,0.3))',
+          }}
+        />
+        <BeanFlourish
+          className="pointer-events-none absolute left-[15%] top-[35%] hidden md:block"
+          size={28}
+          style={{ color: 'rgba(255,255,255,0.2)' }}
         />
 
         <div className="relative z-10 max-w-[900px]">
           <span
-            className="mb-6 block font-bold uppercase tracking-[0.22em] text-[#971d13]"
+            className="mb-6 inline-flex items-center gap-3 font-bold uppercase tracking-[0.22em] text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
             data-hero
           >
-            Coffee Cart · Tri-State Area · Est. 2025
+            <span>Coffee Cart</span>
+            <span className="h-1 w-1 rounded-full bg-[#971d13]" aria-hidden />
+            <span>Tri-State Area</span>
+            <span className="h-1 w-1 rounded-full bg-[#971d13]" aria-hidden />
+            <span>Est. 2025</span>
           </span>
 
           <h1
-            className="m-0 mb-8 font-bold uppercase leading-none tracking-[-0.04em] text-[#ffffff]"
+            className="m-0 mb-8 font-bold uppercase leading-[0.92] tracking-[-0.04em] text-white"
             style={{ fontSize: 'clamp(52px, 9vw, 140px)' }}
             data-hero
           >
             The<br />
-            <span style={{ color: '#971d13' }}>Menu.</span>
+            <span style={{
+              color: '#971d13',
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: 'italic',
+              fontWeight: 500,
+              textTransform: 'none',
+              letterSpacing: '-0.02em',
+            }}>
+              menu.
+            </span>
           </h1>
 
           <p
-            className="m-0 mb-10 max-w-[520px] leading-[1.7] text-[rgba(240,237,230,0.55)]"
+            className="m-0 mb-10 max-w-[520px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
             style={{ fontSize: 'max(1.04vw, 16px)' }}
             data-hero
           >
@@ -229,7 +374,12 @@ export default function MenuPage() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4" data-hero>
-            <a href="#" className="btn-primary" style={{ padding: '13px 28px', fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.12em' }} onClick={goToBooking}>
+            <a
+              href="#"
+              className="btn-primary"
+              style={{ padding: '13px 28px', fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.12em' }}
+              onClick={goToBooking}
+            >
               Book Your Event →
             </a>
             <Link
@@ -250,28 +400,134 @@ export default function MenuPage() {
         />
       </section>
 
+      {/* -- STICKY CATEGORY NAV -------------------------- */}
+      <nav
+        className="sticky top-[72px] z-30 border-b border-[rgba(255,255,255,0.05)] bg-[rgba(8,13,10,0.85)] backdrop-blur-md"
+        aria-label="Menu categories"
+      >
+        <div className="flex items-center gap-6 overflow-x-auto px-5 py-4 md:gap-8 md:px-[3.9vw] md:py-5">
+          <span
+            className="hidden shrink-0 font-bold uppercase tracking-[0.24em] text-[rgba(255,255,255,0.3)] md:inline"
+            style={{ fontSize: '10px' }}
+          >
+            Explore
+          </span>
+          {categories.map((cat, i) => {
+            const isActive = activeCat === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => scrollToCat(cat.id)}
+                className={`flex shrink-0 items-center gap-3 py-1 font-bold uppercase tracking-[0.18em] transition-colors duration-300 ${
+                  isActive ? 'text-white' : 'text-[rgba(255,255,255,0.4)] hover:text-white'
+                }`}
+                style={{ fontSize: 'max(0.72vw, 11px)' }}
+              >
+                <span className={isActive ? 'text-[#971d13]' : 'text-[rgba(151,29,19,0.5)]'}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span>{cat.label}</span>
+                <span
+                  className={`h-px transition-all duration-500 ${
+                    isActive
+                      ? 'w-8 bg-[#971d13] shadow-[0_0_8px_rgba(151,29,19,0.6)]'
+                      : 'w-3 bg-[rgba(255,255,255,0.15)]'
+                  }`}
+                  aria-hidden
+                />
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
       {/* -- SIGNATURES BY CAPO --------------------------- */}
       <section
+        id="signatures"
         ref={sigRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
+        <div
+          className="cat-featured group relative mb-14 overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.22)] bg-[#0d1410] p-8 md:p-10"
+          data-reveal
+        >
+          <div
+            className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-60"
+            style={{ background: 'radial-gradient(circle, rgba(151,29,19,0.18) 0%, transparent 70%)' }}
+            aria-hidden
+          />
+          <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+            <div>
+              <span
+                className="mb-4 inline-flex items-center gap-2 font-bold uppercase tracking-[0.24em] text-[#971d13]"
+                style={{ fontSize: 'max(0.677vw, 10px)' }}
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-[#971d13] shadow-[0_0_8px_rgba(151,29,19,0.8)]" />
+                Featured This Season
+              </span>
+              <h2
+                className="m-0 mb-3 font-semibold tracking-[-0.02em] text-white"
+                style={{ fontSize: 'clamp(28px, 3.2vw, 48px)' }}
+              >
+                Rose Saffron Latte
+              </h2>
+              <p
+                className="m-0 max-w-[560px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
+                style={{ fontSize: 'max(0.95vw, 15px)' }}
+              >
+                A luxurious floral blend — fragrant rose syrup, warm cardamom,
+                sweet cold foam, finished with rose petals and saffron threads.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 md:justify-end">
+              <span
+                className="rounded-sm border border-[rgba(151,29,19,0.35)] bg-[rgba(151,29,19,0.1)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[#971d13]"
+                style={{ fontSize: 'max(0.677vw, 10px)' }}
+              >
+                Mother&apos;s Day Special
+              </span>
+              <span
+                className="font-bold uppercase tracking-[0.18em] text-[rgba(255,255,255,0.45)] transition-colors duration-300 group-hover:text-white"
+                style={{ fontSize: 'max(0.677vw, 10px)' }}
+              >
+                Hover any drink for notes →
+              </span>
+            </div>
+          </div>
+        </div>
+
         <div className="mb-14 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <Eyebrow>Signatures by CAPO</Eyebrow>
-            <SectionTitle>Our Craft<br />Selections.</SectionTitle>
+            <SectionTitle>
+              Our craft<br />
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  letterSpacing: '-0.02em',
+                  color: 'rgba(255,255,255,0.88)',
+                }}
+              >
+                selections.
+              </span>
+            </SectionTitle>
           </div>
           <p
-            className="m-0 self-end font-bold uppercase tracking-[0.18em] text-[rgba(240,237,230,0.30)]"
+            className="m-0 self-end font-bold uppercase tracking-[0.18em] text-[rgba(240,237,230,0.35)]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
             data-reveal
           >
-            All options served iced
+            Hover for tasting notes →
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {signatures.map((item) => (
-            <DrinkCard key={item.name} {...item} />
+          {signatures.map((item, i) => (
+            <DrinkCard key={item.name} {...item} index={i + 1} />
           ))}
         </div>
       </section>
@@ -280,13 +536,28 @@ export default function MenuPage() {
 
       {/* -- CAPO'S ESSENTIALS ---------------------------- */}
       <section
+        id="essentials"
         ref={essRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
         <div className="grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-[6vw]">
           <div>
             <Eyebrow>Capo&apos;s Essentials</Eyebrow>
-            <SectionTitle>Simple.<br />Perfect.</SectionTitle>
+            <SectionTitle>
+              Simple.<br />
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  letterSpacing: '-0.02em',
+                  color: 'rgba(255,255,255,0.88)',
+                }}
+              >
+                perfect.
+              </span>
+            </SectionTitle>
           </div>
 
           <div className="flex flex-col justify-center gap-8">
@@ -295,7 +566,7 @@ export default function MenuPage() {
               data-reveal
             >
               <h3
-                className="m-0 font-semibold tracking-[-0.01em] text-[#ffffff]"
+                className="m-0 font-semibold tracking-[-0.01em] text-white"
                 style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
               >
                 Iced Latte
@@ -311,7 +582,7 @@ export default function MenuPage() {
                 {essentialFlavors.map((f) => (
                   <span
                     key={f}
-                    className="rounded-sm border border-[rgba(151,29,19,0.20)] px-3 py-1 text-[rgba(151,29,19,0.70)]"
+                    className="rounded-sm border border-[rgba(151,29,19,0.2)] px-3 py-1 text-[rgba(151,29,19,0.7)] transition-colors duration-300 hover:border-[rgba(151,29,19,0.5)] hover:text-[#971d13]"
                     style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
                   >
                     {f}
@@ -335,6 +606,7 @@ export default function MenuPage() {
 
       {/* -- COLLABORATION MENU --------------------------- */}
       <section
+        id="collab"
         ref={collabRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
@@ -352,7 +624,7 @@ export default function MenuPage() {
                 Collaboration Menu
               </span>
               <p
-                className="m-0 font-semibold text-[#ffffff]"
+                className="m-0 font-semibold text-white"
                 style={{ fontSize: 'clamp(16px, 1.3vw, 20px)' }}
               >
                 In collaboration with <span className="text-[#971d13]">Namkeen</span>
@@ -367,13 +639,13 @@ export default function MenuPage() {
             <div className="flex flex-col gap-2 md:items-end">
               <div className="flex items-center gap-3">
                 <span
-                  className="rounded-sm border border-[rgba(151,29,19,0.30)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.80)]"
+                  className="rounded-sm border border-[rgba(151,29,19,0.3)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.8)]"
                   style={{ fontSize: 'max(0.677vw, 10px)' }}
                 >
                   Cars N&apos; Coffee
                 </span>
                 <span
-                  className="rounded-sm border border-[rgba(240,237,230,0.12)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.40)]"
+                  className="rounded-sm border border-[rgba(240,237,230,0.12)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.4)]"
                   style={{ fontSize: 'max(0.677vw, 10px)' }}
                 >
                   Mother&apos;s Day Edition
@@ -390,12 +662,26 @@ export default function MenuPage() {
         </div>
 
         <div className="mb-10">
-          <SectionTitle>Special<br />Collabs.</SectionTitle>
+          <SectionTitle>
+            Special<br />
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: 'italic',
+                fontWeight: 500,
+                textTransform: 'none',
+                letterSpacing: '-0.02em',
+                color: 'rgba(255,255,255,0.88)',
+              }}
+            >
+              collabs.
+            </span>
+          </SectionTitle>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {collabItems.map((item) => (
-            <DrinkCard key={item.name} {...item} />
+          {collabItems.map((item, i) => (
+            <DrinkCard key={item.name} {...item} index={i + 1} />
           ))}
         </div>
       </section>
@@ -404,15 +690,30 @@ export default function MenuPage() {
 
       {/* -- CUSTOMIZE YOUR CUP --------------------------- */}
       <section
+        id="customize"
         ref={customizeRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
         <div className="grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-[6vw]">
           <div>
             <Eyebrow>Add-Ons</Eyebrow>
-            <SectionTitle>Customize<br />Your Cup.</SectionTitle>
+            <SectionTitle>
+              Customize<br />
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  letterSpacing: '-0.02em',
+                  color: 'rgba(255,255,255,0.88)',
+                }}
+              >
+                your cup.
+              </span>
+            </SectionTitle>
             <p
-              className="mt-6 leading-[1.7] text-[rgba(240,237,230,0.45)]"
+              className="mt-6 leading-[1.7] text-[rgba(240,237,230,0.5)]"
               style={{ fontSize: 'max(1.04vw, 15px)' }}
               data-reveal
             >
@@ -424,20 +725,26 @@ export default function MenuPage() {
             {addOns.map((item, i) => (
               <li
                 key={item}
-                className="flex items-center gap-4 border-b border-[rgba(151,29,19,0.10)] py-5 transition-colors duration-300 last:border-0 hover:border-[rgba(151,29,19,0.25)]"
+                className="group flex items-center gap-4 border-b border-[rgba(151,29,19,0.1)] py-5 transition-all duration-300 last:border-0 hover:border-[rgba(151,29,19,0.4)] hover:pl-3"
                 data-reveal
               >
                 <span
-                  className="shrink-0 font-bold text-[rgba(151,29,19,0.40)]"
+                  className="shrink-0 font-bold text-[rgba(151,29,19,0.4)] transition-colors duration-300 group-hover:text-[#971d13]"
                   style={{ fontSize: 'max(0.677vw, 11px)', width: '1.8em' }}
                 >
                   0{i + 1}
                 </span>
                 <span
-                  className="font-medium text-[#ffffff]"
+                  className="flex-1 font-medium text-white"
                   style={{ fontSize: 'clamp(15px, 1.3vw, 20px)' }}
                 >
                   {item}
+                </span>
+                <span
+                  className="text-[#971d13] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  aria-hidden
+                >
+                  +
                 </span>
               </li>
             ))}
@@ -450,14 +757,14 @@ export default function MenuPage() {
       {/* -- FOOTER STRIP --------------------------------- */}
       <footer className="flex flex-col items-center gap-6 px-5 py-16 text-center md:px-[3.9vw]">
         <p
-          className="m-0 font-bold uppercase tracking-[0.3em] text-[rgba(240,237,230,0.20)]"
+          className="m-0 font-bold uppercase tracking-[0.3em] text-[rgba(240,237,230,0.15)]"
           style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}
           aria-hidden
         >
           CAPOS
         </p>
         <p
-          className="m-0 max-w-[360px] leading-[1.7] text-[rgba(240,237,230,0.40)]"
+          className="m-0 max-w-[360px] leading-[1.7] text-[rgba(240,237,230,0.4)]"
           style={{ fontSize: 'max(0.9vw, 14px)' }}
         >
           At your service — wherever the occasion takes us.
@@ -470,15 +777,15 @@ export default function MenuPage() {
           >
             hello@capos.coffee
           </a>
-          <span className="text-[rgba(240,237,230,0.20)]" aria-hidden>·</span>
+          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden>·</span>
           <a
-            href="tel:+442079460958"
+            href="tel:+17327894792"
             className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
-            +44 20 7946 0958
+            +1 (732) 789-4792
           </a>
-          <span className="text-[rgba(240,237,230,0.20)]" aria-hidden>·</span>
+          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden>·</span>
           <a
             href="#"
             className="btn-primary"

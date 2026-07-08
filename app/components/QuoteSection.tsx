@@ -36,6 +36,9 @@ export default function QuoteSection() {
           .to(text, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out' }, '-=0.5')
           .to(attr, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4')
           .to(img,  { opacity: 1, x: 0,  duration: 1.0, ease: 'expo.out' }, '-=1.0');
+
+        const reveal = section.querySelector('.img-reveal');
+        if (reveal) reveal.classList.add('is-revealed');
       },
     });
 
@@ -43,7 +46,7 @@ export default function QuoteSection() {
   }, []);
 
   return (
-    <section className="quote-section" ref={sectionRef}>
+    <section id="quote" className="quote-section" ref={sectionRef}>
       {/* Corner flourishes — subtle brand marks */}
       <RoseFlourish className="quote-flourish quote-flourish--rose" size={130} />
       <BeanFlourish className="quote-flourish quote-flourish--bean" size={22} />
@@ -64,10 +67,10 @@ export default function QuoteSection() {
             <br/> New York 2025
           </div>
         </div>
-        <div className="quote-image">
+        <div className="quote-image img-reveal">
           <video
             src="/fq-updated.mp4"
-            className="quote-video"
+            className="quote-video img-reveal-target"
             autoPlay
             loop
             muted

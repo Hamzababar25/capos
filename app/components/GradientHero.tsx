@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import Navigation from './Navigation';
 import './hero.css';
 import gsap from 'gsap';
+import { scrambleText } from '../lib/textScramble';
 
 
 export default function GradientHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const cancelScrambleRef = useRef<(() => void) | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -86,9 +88,63 @@ export default function GradientHero() {
       .to(foot, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, '-=0.55');
   }, []);
 
+  /* Text scramble on hero line hover */
+  useEffect(() => {
+    const title = titleRef.current;
+    if (!title) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const lines = title.querySelectorAll<HTMLElement>('.pixi-intro-line');
+
+    const onEnter = (line: HTMLElement) => {
+      const hover = line.querySelector<HTMLElement>('.hero-flip-hover');
+      if (!hover) return;
+
+      const finalText = hover.textContent?.trim() ?? '';
+      if (!finalText) return;
+
+      cancelScrambleRef.current?.();
+      cancelScrambleRef.current = scrambleText(hover, finalText, 380);
+    };
+
+    const onLeave = (line: HTMLElement) => {
+      const hover = line.querySelector<HTMLElement>('.hero-flip-hover');
+      if (!hover) return;
+
+      cancelScrambleRef.current?.();
+      cancelScrambleRef.current = null;
+      hover.textContent = hover.getAttribute('data-text') ?? hover.textContent;
+    };
+
+    const cleanups: (() => void)[] = [];
+
+    lines.forEach((line) => {
+      const hover = line.querySelector<HTMLElement>('.hero-flip-hover');
+      if (hover && !hover.getAttribute('data-text')) {
+        hover.setAttribute('data-text', hover.textContent?.trim() ?? '');
+      }
+
+      const enter = () => onEnter(line);
+      const leave = () => onLeave(line);
+      line.addEventListener('mouseenter', enter);
+      line.addEventListener('mouseleave', leave);
+      cleanups.push(() => {
+        line.removeEventListener('mouseenter', enter);
+        line.removeEventListener('mouseleave', leave);
+      });
+    });
+
+    return () => {
+      cancelScrambleRef.current?.();
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
+
 
   return (
-    <section className="pixi-intro" ref={sectionRef}>
+    <section id="hero" className="pixi-intro" ref={sectionRef}>
       {/* Navigation - part of hero */}
       <Navigation />
       

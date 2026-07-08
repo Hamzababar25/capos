@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import SmoothScroll from "./components/SmoothScroll";
 import Cursor from "./components/Cursor";
 import LoadingScreen from "./components/LoadingScreen";
+import PageTransition from "./components/PageTransition";
+import MagneticButtons from "./components/MagneticButtons";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -60,8 +62,11 @@ export default function RootLayout({
         <a href="#main" className="skip-link">Skip to content</a>
         <LoadingScreen />
         <Cursor />
+        <MagneticButtons />
         <SmoothScroll>
-          <div id="main">{children}</div>
+          <PageTransition>
+            <div id="main">{children}</div>
+          </PageTransition>
         </SmoothScroll>
       </body>
     </html>

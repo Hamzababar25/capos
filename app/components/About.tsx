@@ -1,223 +1,259 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './about.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Slide {
+/* ── Data ─────────────────────────────────────────── */
+
+interface Chapter {
   id: number;
   num: string;
+  tag: string;
   title: string;
   subtitle: string;
   description: string;
   image: string;
-  tag: string;
 }
 
-const slides: Slide[] = [
+const chapters: Chapter[] = [
   {
     id: 1,
     num: '01',
-    title: 'Your event \n Capo’s way',
-    subtitle: 'Any time. Any place.',
-    description:
-      'Whether it’s a wedding, corporate event, or private celebration, Capo’s Coffee adds a touch of elegance with café quality beverages and an unforgettable guest experience.',
-    image: '/capos1.PNG',
     tag: 'Origin',
+    title: 'Your event,\nCapo’s way.',
+    subtitle: 'Any time · Any place',
+    description:
+      'Whether it’s a wedding, corporate event, or private celebration, Capo’s Coffee adds a touch of elegance with café-quality beverages and an unforgettable guest experience.',
+    image: '/capos1.PNG',
   },
   {
     id: 2,
     num: '02',
-    title: 'Collaboration \n Events',
-    subtitle: 'Exceptional brands - exceptional experiences',
+    tag: 'Collaboration',
+    title: 'Brand meets\nbrew.',
+    subtitle: 'Exceptional brands, exceptional experiences',
     description:
-      'We love collaborating with brands, boutiques, fitness studios, grand openings, and community events open to public to bring people together over exceptional coffee and memorable experiences.',
+      'We love collaborating with brands, boutiques, fitness studios, grand openings and community events to bring people together over exceptional coffee and memorable experiences.',
     image: '/collab.jpeg',
-    tag: 'Roast',
   },
   {
     id: 3,
     num: '03',
-    title: 'Artisanal\nExcellence',
-    subtitle: '5+ Years of Expertise',
-    description:
-      'Passion meets craft in every roast. Years of experience, constant innovation, deep respect for coffee tradition ,this is what CAPOS is made of.',
-    image: '/capos4.jpg',
     tag: 'Craft',
+    title: 'Artisanal\nexcellence.',
+    subtitle: 'Years of expertise, distilled',
+    description:
+      'Passion meets craft in every roast. Years of experience, constant innovation, and a deep respect for coffee tradition — this is what CAPOS is made of.',
+    image: '/capos4.jpg',
+  },
+  {
+    id: 4,
+    num: '04',
+    tag: 'Vision',
+    title: 'Every cup,\na new story.',
+    subtitle: 'Tri-State · Pennsylvania · Beyond',
+    description:
+      'From intimate morning rituals to grand celebrations, we pour with intention — building a coffee culture that honours heritage while pushing what a mobile cart can be.',
+    image: '/capos-3.PNG',
   },
 ];
 
+/* ── Component ───────────────────────────────────── */
+
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const pinRef     = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  // Scroll-triggered entrance
+  /* Pinned split-scroll: vertical scroll -> chapter advance */
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    const pin     = pinRef.current;
+    if (!section || !pin) return;
 
-    const eyebrow = section.querySelector('.c-about-eyebrow');
-    const content  = section.querySelector('.c-about-left');
-    const imagery  = section.querySelector('.c-about-right');
-    const progress = section.querySelector('.c-about-progress-wrap');
+    const mm = gsap.matchMedia();
 
-    gsap.set([eyebrow, content, progress], { y: 50, opacity: 0 });
-    gsap.set(imagery, { x: 60, opacity: 0 });
-
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 72%',
-      once: true,
-      onEnter: () => {
-        gsap.timeline()
-          .to(eyebrow,  { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' })
-          .to(content,  { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out' }, '-=0.7')
-          .to(imagery,  { x: 0, opacity: 1, duration: 1.1, ease: 'expo.out' }, '-=0.9')
-          .to(progress, { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out' }, '-=0.9');
+    /* Desktop / tablet — pinned narrative */
+    mm.add(
+      {
+        isDesktop: '(min-width: 900px) and (prefers-reduced-motion: no-preference)',
       },
-    });
+      (ctx) => {
+        const { isDesktop } = ctx.conditions as { isDesktop: boolean };
+        if (!isDesktop) return;
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end:   () => `+=${window.innerHeight * chapters.length * 0.85}`,
+          pin: pin,
+          pinSpacing: true,
+          scrub: 0.4,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            const idx = Math.min(
+              chapters.length - 1,
+              Math.floor(p * chapters.length * 0.999)
+            );
+            setActiveIdx(idx);
+            if (progressRef.current) {
+              progressRef.current.style.transform = `scaleY(${p})`;
+            }
+          },
+        });
+      }
+    );
+
+    return () => mm.revert();
   }, []);
 
-  // Auto-advance with progress bar (respects reduced-motion)
-  const startInterval = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (typeof window !== 'undefined' &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    intervalRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-  };
-
-  const pauseInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-
+  /* Mobile fallback: manual advance every 6s, respects reduced motion */
   useEffect(() => {
-    startInterval();
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+    if (typeof window === 'undefined') return;
+    const isDesktop = window.matchMedia('(min-width: 900px)').matches;
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isDesktop || rm) return;
+
+    const id = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % chapters.length);
+    }, 6000);
+    return () => clearInterval(id);
   }, []);
 
-  // Animate progress bar width reset on slide change
-  useEffect(() => {
-    const bar = progressRef.current;
-    if (!bar) return;
-    bar.style.transition = 'none';
-    bar.style.width = '0%';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        bar.style.transition = 'width 5s linear';
-        bar.style.width = '100%';
-      });
-    });
-  }, [currentSlide]);
-
-  const goTo = (index: number) => {
-    if (isAnimating || index === currentSlide) return;
-    setIsAnimating(true);
-    setCurrentSlide(index);
-    startInterval();
-    setTimeout(() => setIsAnimating(false), 900);
-  };
-
-  const prev = () => goTo((currentSlide - 1 + slides.length) % slides.length);
-  const next = () => goTo((currentSlide + 1) % slides.length);
-
-  const slide = slides[currentSlide];
+  const active = chapters[activeIdx];
 
   return (
-    <section
-      id="about"
-      className="c-about"
-      ref={sectionRef}
-      onMouseEnter={pauseInterval}
-      onMouseLeave={startInterval}
-    >
-      {/* Section header */}
-      <div className="c-about-header">
-        <span className="c-about-eyebrow t-h6">About CAPOS</span>
-        <div className="c-about-header-line" aria-hidden="true" />
-      </div>
+    <section id="about" className="c-about" ref={sectionRef}>
+      {/* Pinned wrapper — becomes the full viewport during scroll */}
+      <div className="c-about-pin" ref={pinRef}>
+        {/* Header rail across the top */}
+        <div className="c-about-header">
+          <span className="c-about-eyebrow t-h6">About CAPOS</span>
+          <div className="c-about-header-rule" aria-hidden />
+          <span className="c-about-counter t-h6">
+            <span className="c-about-counter-current">
+              {String(activeIdx + 1).padStart(2, '0')}
+            </span>
+            <span className="c-about-counter-sep">—</span>
+            <span className="c-about-counter-total">
+              {String(chapters.length).padStart(2, '0')}
+            </span>
+          </span>
+        </div>
 
-      {/* Main two-column layout */}
-      <div className="c-about-body">
-        {/* LEFT — text */}
-        <div className="c-about-left">
-          <div className="c-about-slide-num t-h6" aria-hidden="true">
-            {slide.num} <span>/ {slides.length.toString().padStart(2, '0')}</span>
-          </div>
-
-          <div className="c-about-text-panel">
-            {slides.map((s, i) => (
-              <div
-                key={s.id}
-                className={`c-about-slide-content ${i === currentSlide ? 'is-active' : i < currentSlide ? 'is-prev' : 'is-next'}`}
-              >
-                <h2 className="c-about-slide-title">{s.title}</h2>
-                <p className="c-about-slide-sub t-h6">{s.subtitle}</p>
-                <p className="c-about-slide-desc t-text-lg">{s.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Controls */}
-          <div className="c-about-controls">
-            <button className="c-about-arrow" onClick={prev} aria-label="Previous slide">
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="c-about-arrow" onClick={next} aria-label="Next slide">
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
-                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <div className="c-about-dots">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  className={`c-about-dot${i === currentSlide ? ' is-active' : ''}`}
-                  onClick={() => goTo(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
+        {/* Main split body — text left, image right */}
+        <div className="c-about-body">
+          {/* LEFT — chapter text stack */}
+          <div className="c-about-text">
+            <div className="c-about-stage">
+              {chapters.map((ch, i) => (
+                <article
+                  key={ch.id}
+                  className={`c-about-chapter${
+                    i === activeIdx
+                      ? ' is-active'
+                      : i < activeIdx
+                      ? ' is-prev'
+                      : ' is-next'
+                  }`}
+                  aria-hidden={i !== activeIdx}
+                >
+                  <span className="c-about-chapter-num t-h6">
+                    Chapter {ch.num}
+                  </span>
+                  <h2 className="c-about-chapter-title">
+                    {ch.title.split('\n').map((line, li) => (
+                      <span key={li} className="c-about-chapter-line">
+                        {line}
+                      </span>
+                    ))}
+                  </h2>
+                  <p className="c-about-chapter-sub">{ch.subtitle}</p>
+                  <p className="c-about-chapter-desc">{ch.description}</p>
+                </article>
               ))}
+            </div>
+
+            {/* Chapter nav dots (also acts as jump-to on desktop) */}
+            <div className="c-about-nav">
+              {chapters.map((ch, i) => (
+                <button
+                  key={ch.id}
+                  type="button"
+                  className={`c-about-nav-btn${
+                    i === activeIdx ? ' is-active' : ''
+                  }`}
+                  onClick={() => setActiveIdx(i)}
+                  aria-label={`Chapter ${i + 1}: ${ch.tag}`}
+                >
+                  <span className="c-about-nav-num">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="c-about-nav-label">{ch.tag}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — pinned image stack */}
+          <div className="c-about-visual">
+            <div className="c-about-visual-frame">
+              {chapters.map((ch, i) => (
+                <div
+                  key={ch.id}
+                  className={`c-about-visual-slide${
+                    i === activeIdx
+                      ? ' is-active'
+                      : i < activeIdx
+                      ? ' is-prev'
+                      : ' is-next'
+                  }`}
+                  aria-hidden={i !== activeIdx}
+                >
+                  <Image
+                    src={ch.image}
+                    alt={ch.title.replace('\n', ' ')}
+                    fill
+                    sizes="(max-width: 899px) 100vw, 50vw"
+                    className="c-about-visual-img"
+                    priority={i === 0}
+                  />
+                  <div className="c-about-visual-overlay" aria-hidden />
+                </div>
+              ))}
+
+              {/* Floating tag badge — updates with active chapter */}
+              <div className="c-about-visual-tag t-h6">
+                <span className="c-about-visual-tag-dot" aria-hidden />
+                {active.tag}
+              </div>
+
+              {/* Corner brackets — editorial framing */}
+              <span className="c-about-bracket c-about-bracket--tl" aria-hidden />
+              <span className="c-about-bracket c-about-bracket--tr" aria-hidden />
+              <span className="c-about-bracket c-about-bracket--bl" aria-hidden />
+              <span className="c-about-bracket c-about-bracket--br" aria-hidden />
             </div>
           </div>
         </div>
 
-        {/* RIGHT — image stack */}
-        <div className="c-about-right">
-          <div className="c-about-image-track">
-            {slides.map((s, i) => (
-              <div
-                key={s.id}
-                className={`c-about-image-frame ${i === currentSlide ? 'is-active' : i < currentSlide ? 'is-prev' : 'is-next'}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.image} alt={s.title} loading="lazy" />
-                <div className="c-about-image-overlay">
-                  <span className="c-about-image-tag t-h6">{s.tag}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Vertical progress bar on the far right edge */}
+        <div className="c-about-progress" aria-hidden>
+          <div className="c-about-progress-fill" ref={progressRef} />
         </div>
-      </div>
 
-      {/* Progress bar */}
-      <div className="c-about-progress-wrap">
-        <div className="c-about-progress-track">
-          <div className="c-about-progress-bar" ref={progressRef} />
+        {/* Scroll cue at the bottom */}
+        <div className="c-about-cue" aria-hidden>
+          <span className="c-about-cue-text">Scroll through the story</span>
+          <span className="c-about-cue-line" />
         </div>
       </div>
     </section>

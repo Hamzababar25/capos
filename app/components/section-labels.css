@@ -1,0 +1,108 @@
+/* ══════════════════════════════════════════════════════
+   SECTION LABELS — vertical left rail, sticky/fixed.
+   Highlights the section currently in view.
+   ══════════════════════════════════════════════════════ */
+
+.sl-rail {
+  position: fixed;
+  left: clamp(16px, 2vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  pointer-events: none;
+}
+
+.sl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sl-item {
+  display: flex;
+}
+
+.sl-btn {
+  pointer-events: auto;
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.28);
+  font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  transition: color 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.sl-btn:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sl-num {
+  font-variant-numeric: tabular-nums;
+  min-width: 20px;
+  transition: color 0.4s ease;
+}
+
+.sl-dash {
+  display: inline-block;
+  height: 1px;
+  width: 14px;
+  background: currentColor;
+  opacity: 0.35;
+  transition: width 0.45s cubic-bezier(0.165, 0.84, 0.44, 1),
+              opacity 0.45s ease;
+}
+
+.sl-label {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  white-space: nowrap;
+}
+
+/* Reveal label on rail hover */
+.sl-rail:hover .sl-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Active state — red, longer dash, always shows label */
+.sl-btn.is-active {
+  color: #971d13;
+}
+.sl-btn.is-active .sl-num {
+  color: #971d13;
+}
+.sl-btn.is-active .sl-dash {
+  width: 28px;
+  opacity: 1;
+  background: #971d13;
+  box-shadow: 0 0 10px rgba(151, 29, 19, 0.5);
+}
+.sl-btn.is-active .sl-label {
+  opacity: 1;
+  transform: translateX(0);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Hide on tablet & below — rail becomes visual clutter on narrow screens */
+@media (max-width: 1099px) {
+  .sl-rail {
+    display: none;
+  }
+}
+
+/* Also hide when print or reduced motion (user preference respected) */
+@media print {
+  .sl-rail { display: none; }
+}

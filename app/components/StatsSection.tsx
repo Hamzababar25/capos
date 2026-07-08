@@ -56,7 +56,7 @@ export default function StatsSection() {
   }, []);
 
   return (
-    <section className="stats-section" ref={sectionRef}>
+    <section id="stats" className="stats-section" ref={sectionRef}>
       <div className="stats-eyebrow t-h6">By the numbers</div>
       <div className="stats-grid">
         {stats.map((s, i) => (
