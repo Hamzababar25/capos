@@ -268,11 +268,11 @@
 
 .c-about-visual-frame {
   position: relative;
-  width: 100%;
-  height: 100%;
-  max-height: min(72vh, 620px);
+  /* Height drives the frame; width follows via aspect-ratio */
+  height: min(62vh, 520px);
+  width: auto;
   aspect-ratio: 4 / 5;
-  max-width: 620px;
+  max-width: 100%;
   overflow: hidden;
   border-radius: 4px;
   background: #0a0d0c;
@@ -281,6 +281,7 @@
     0 30px 80px -30px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(151, 29, 19, 0.08) inset;
   align-self: center;
+  flex-shrink: 0;
 }
 
 .c-about-visual-slide {

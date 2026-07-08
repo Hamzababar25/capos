@@ -27,6 +27,15 @@ const guestCounts = [
   '500+',
 ];
 
+const budgetRanges = [
+  'Under $500',
+  '$500 – $1,000',
+  '$1,000 – $2,500',
+  '$2,500 – $5,000',
+  '$5,000+',
+  'To be discussed',
+];
+
 interface FormState {
   name: string;
   email: string;
@@ -35,12 +44,13 @@ interface FormState {
   eventDate: string;
   venue: string;
   guests: string;
+  budget: string;
   notes: string;
 }
 
 const empty: FormState = {
   name: '', email: '', phone: '',
-  eventType: '', eventDate: '', venue: '', guests: '', notes: '',
+  eventType: '', eventDate: '', venue: '', guests: '', budget: '', notes: '',
 };
 
 /* ── Step configuration ──────────────────────────── */
@@ -470,6 +480,23 @@ export default function CateringForm() {
                     </div>
 
                     <div data-cf-field className="flex flex-col">
+                      <Label htmlFor="cf-budget">Estimated Budget</Label>
+                      <select
+                        id="cf-budget"
+                        className={`${inputBase} cursor-pointer pr-10`}
+                        style={selectStyle}
+                        value={form.budget}
+                        onChange={set('budget')}
+                        disabled={step !== 0}
+                      >
+                        <option value="" style={{ background: '#0d1410', color: '#fff' }}>Select range</option>
+                        {budgetRanges.map((b) => (
+                          <option key={b} value={b} style={{ background: '#0d1410', color: '#fff' }}>{b}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div data-cf-field className="flex flex-col">
                       <Label htmlFor="cf-notes">
                         A note about your vision{' '}
                         <span className="font-normal normal-case tracking-normal text-[rgba(138,125,107,0.5)]">(optional)</span>
@@ -576,6 +603,10 @@ export default function CateringForm() {
                         <div className="cf-summary-row">
                           <dt>Event</dt>
                           <dd>{form.eventType || '—'} · {form.guests || '—'} guests</dd>
+                        </div>
+                        <div className="cf-summary-row">
+                          <dt>Budget</dt>
+                          <dd>{form.budget || '—'}</dd>
                         </div>
                         <div className="cf-summary-row">
                           <dt>When</dt>

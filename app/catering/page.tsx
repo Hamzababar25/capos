@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Navigation from '../components/Navigation';
 import gsap from 'gsap';
@@ -18,6 +19,7 @@ interface Drink {
   origin?: string;
   ingredients?: string;
   tag?: string | null;
+  image?: string;
 }
 
 const signatures: Drink[] = [
@@ -26,6 +28,7 @@ const signatures: Drink[] = [
     desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
     origin: 'French pâtisserie meets Italian espresso',
     ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
+    image: '/capos1.PNG',
   },
   {
     name: 'Rose Saffron Latte',
@@ -33,12 +36,14 @@ const signatures: Drink[] = [
     origin: 'A quiet nod to Persian tearooms',
     ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
     tag: "Mother's Day Special",
+    image: '/capos-2.PNG',
   },
   {
     name: 'Latte España',
     desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for a smooth indulgence.',
     origin: 'Inspired by Madrid’s café con leche',
     ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
+    image: '/capos3.PNG',
   },
 ];
 
@@ -50,12 +55,14 @@ const collabItems: Drink[] = [
     desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
     origin: 'A love letter to Northern Italy',
     ingredients: 'Espresso · Vanilla · Mascarpone foam · Cocoa · Swiss chocolate',
+    image: '/collab.jpeg',
   },
   {
     name: 'La Dolce Latte',
     desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and homemade caramel for rich sweetness. Finished with smooth cold foam.',
     origin: '"The Sweet Latte" — La Dolce Vita in a cup',
     ingredients: 'Espresso · Brown sugar · House caramel · Cold foam',
+    image: '/capos4.jpg',
   },
 ];
 
@@ -149,38 +156,76 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
  * Drink card with a hover-reveal overlay showing origin + ingredients.
  * The description slides out; the "story" (origin + ingredients) slides in.
  */
-function DrinkCard({ name, desc, origin, ingredients, tag, index }: Drink & { index: number }) {
+function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink & { index: number }) {
   return (
     <article
-      className="cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] p-7 transition-[border-color] duration-500 hover:border-[rgba(151,29,19,0.5)]"
+      className="cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] transition-[border-color,box-shadow] duration-500 hover:border-[rgba(151,29,19,0.5)] hover:shadow-[0_12px_40px_-12px_rgba(151,29,19,0.25)]"
       data-reveal
     >
-      {/* Number chip */}
-      <span
-        className="cat-drink-num absolute right-6 top-6 font-bold tracking-[0.24em] text-[rgba(151,29,19,0.4)] transition-colors duration-500 group-hover:text-[#971d13]"
-        style={{ fontSize: 'max(0.72vw, 11px)' }}
-        aria-hidden
-      >
-        {String(index).padStart(2, '0')}
-      </span>
-
-      {/* Header */}
-      <div className="mb-4 flex items-start gap-4 pr-10">
-        <h3
-          className="m-0 leading-tight tracking-[-0.01em] text-white"
-          style={{ fontSize: 'clamp(19px, 1.7vw, 28px)', fontWeight: 600 }}
-        >
-          {name}
-        </h3>
-        {tag && (
+      {/* Photo — clips with a gentle Ken Burns on hover */}
+      {image && (
+        <div className="relative h-48 w-full overflow-hidden">
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover object-center brightness-90 contrast-105 transition-transform duration-[1.4s] ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover:scale-105"
+          />
+          {/* Gradient fade into card body */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, transparent 50%, #0d1410 100%)' }}
+            aria-hidden
+          />
+          {/* Number chip — on top of the image */}
           <span
-            className="mt-1 shrink-0 rounded-sm border border-[rgba(151,29,19,0.4)] bg-[rgba(151,29,19,0.08)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.9)]"
-            style={{ fontSize: 'max(0.677vw, 10px)' }}
+            className="absolute left-4 top-4 rounded-sm border border-[rgba(255,255,255,0.1)] bg-[rgba(8,13,10,0.65)] px-2.5 py-1 font-bold tracking-[0.24em] text-[rgba(255,255,255,0.55)] backdrop-blur-sm"
+            style={{ fontSize: '10px' }}
+            aria-hidden
           >
-            {tag}
+            {String(index).padStart(2, '0')}
+          </span>
+          {tag && (
+            <span
+              className="absolute right-4 top-4 rounded-sm border border-[rgba(151,29,19,0.5)] bg-[rgba(151,29,19,0.75)] px-2.5 py-1 font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm"
+              style={{ fontSize: '9px' }}
+            >
+              {tag}
+            </span>
+          )}
+        </div>
+      )}
+
+      <div className="flex flex-1 flex-col p-7">
+        {/* Number chip when no image */}
+        {!image && (
+          <span
+            className="cat-drink-num absolute right-6 top-6 font-bold tracking-[0.24em] text-[rgba(151,29,19,0.4)] transition-colors duration-500 group-hover:text-[#971d13]"
+            style={{ fontSize: 'max(0.72vw, 11px)' }}
+            aria-hidden
+          >
+            {String(index).padStart(2, '0')}
           </span>
         )}
-      </div>
+
+        {/* Header */}
+        <div className="mb-4 flex items-start gap-4 pr-10">
+          <h3
+            className="m-0 leading-tight tracking-[-0.01em] text-white"
+            style={{ fontSize: 'clamp(19px, 1.7vw, 28px)', fontWeight: 600 }}
+          >
+            {name}
+          </h3>
+          {tag && !image && (
+            <span
+              className="mt-1 shrink-0 rounded-sm border border-[rgba(151,29,19,0.4)] bg-[rgba(151,29,19,0.08)] px-3 py-1 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.9)]"
+              style={{ fontSize: 'max(0.677vw, 10px)' }}
+            >
+              {tag}
+            </span>
+          )}
+        </div>
 
       {/* Description (fades out on hover to reveal ingredients) */}
       <div className="relative min-h-[120px] flex-1">
@@ -224,20 +269,21 @@ function DrinkCard({ name, desc, origin, ingredients, tag, index }: Drink & { in
         </div>
       </div>
 
-      {/* Bottom rule + subtle "iced" note */}
-      <div className="mt-6 flex items-center justify-between border-t border-[rgba(151,29,19,0.08)] pt-4 transition-colors duration-500 group-hover:border-[rgba(151,29,19,0.25)]">
-        <span
-          className="font-bold uppercase tracking-[0.2em] text-[rgba(240,237,230,0.35)]"
-          style={{ fontSize: 'max(0.6vw, 10px)' }}
-        >
-          Served Iced
-        </span>
-        <span
-          className="text-[#971d13] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          aria-hidden
-        >
-          →
-        </span>
+        {/* Bottom rule + subtle "iced" note */}
+        <div className="mt-6 flex items-center justify-between border-t border-[rgba(151,29,19,0.08)] pt-4 transition-colors duration-500 group-hover:border-[rgba(151,29,19,0.25)]">
+          <span
+            className="font-bold uppercase tracking-[0.2em] text-[rgba(240,237,230,0.35)]"
+            style={{ fontSize: 'max(0.6vw, 10px)' }}
+          >
+            Served Iced
+          </span>
+          <span
+            className="text-[#971d13] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            aria-hidden
+          >
+            →
+          </span>
+        </div>
       </div>
     </article>
   );

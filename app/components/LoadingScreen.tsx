@@ -188,7 +188,7 @@ export default function LoadingScreen() {
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        background: '#0a0906',
+        background: '#000000',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -197,6 +197,25 @@ export default function LoadingScreen() {
         overflow: 'hidden',
       }}
     >
+      {/* Thunder / atmospheric background video */}
+      <video
+        src="/BWG.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: 0.28,
+          filter: 'grayscale(1) contrast(1.4) brightness(0.7)',
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* CRT static canvas — full screen, behind content */}
       <canvas
         ref={canvasRef}

@@ -35,15 +35,16 @@ export default function StatsSection() {
         gsap.to(numbers,  { opacity: 1, y: 0, duration: 1,   stagger: 0.15, ease: 'expo.out', delay: 0.1 });
         gsap.to(labels,   { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: 'expo.out', delay: 0.2 });
 
-        // ADDED: count each number from 0 to its target as it fades in
+        // count each number from 0 → target, slow ease-out over 3.5 s
         numbers.forEach((el, i) => {
           const { num, suffix } = stats[i];
-          const duration = 1500;
+          const duration = 3500;
           let start: number | null = null;
           const tick = (ts: number) => {
             if (!start) start = ts;
             const p = Math.min((ts - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - p, 3);
+            // quintic ease-out — very slow at the end so the last few digits "tick" in
+            const eased = 1 - Math.pow(1 - p, 5);
             el.textContent = Math.floor(eased * num) + suffix;
             if (p < 1) requestAnimationFrame(tick);
           };
