@@ -6,73 +6,36 @@ import gsap from 'gsap';
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*▓▒░';
 const TARGET_TEXT = 'MEMBERS ONLY';
 
+// TESTER KNOB: tweak the thunder background video's opacity while previewing.
+const VIDEO_OPACITY = 0.28;
+
 export default function LoadingScreen() {
   const overlayRef   = useRef<HTMLDivElement>(null);
-  const canvasRef    = useRef<HTMLCanvasElement>(null);
+  const videoRef     = useRef<HTMLVideoElement>(null);
   const scanlineRef  = useRef<HTMLDivElement>(null);
   const eyebrowRef   = useRef<HTMLParagraphElement>(null);
   const logoRef      = useRef<HTMLDivElement>(null);
   const lineRef      = useRef<HTMLDivElement>(null);
   const tagRef       = useRef<HTMLParagraphElement>(null);
-  const rafRef       = useRef<number>(0);
   const scrambleRafRef = useRef<number>(0);
 
   useEffect(() => {
     const overlay = overlayRef.current;
-    const canvas  = canvasRef.current;
-    if (!overlay || !canvas) return;
+    const video   = videoRef.current;
+    if (!overlay || !video) return;
 
     document.body.style.overflow = 'hidden';
-
-    /* -- CRT static ----------------------------------- */
-    const ctx = canvas.getContext('2d')!;
-    let frame = 0;
-    const drawStatic = () => {
-      // quarter-res for a chunky, vintage pixel look
-      const w = Math.ceil(window.innerWidth  / 3);
-      const h = Math.ceil(window.innerHeight / 3);
-      canvas.width  = w;
-      canvas.height = h;
-
-      frame++;
-      // a bright horizontal band that rolls down the screen like a tv sync glitch
-      const rollY = (frame * 2.2) % (h + 40) - 20;
-      const bandHalf = Math.max(4, h * 0.05);
-
-      const img  = ctx.createImageData(w, h);
-      const data = img.data;
-      const total = w * h;
-      for (let p = 0; p < total; p++) {
-        const i   = p * 4;
-        const row = (p / w) | 0;
-
-        let v = Math.random() * 200 + 20;
-        // interlaced scanline darkening
-        if ((row & 1) === 0) v *= 0.5;
-        // rolling bright sync band
-        const dist = Math.abs(row - rollY);
-        if (dist < bandHalf) v = Math.min(255, v + (bandHalf - dist) * 4);
-
-        data[i]     = v;
-        data[i + 1] = v;
-        data[i + 2] = v;
-        data[i + 3] = Math.random() < 0.06 ? 210 : 26;
-      }
-      ctx.putImageData(img, 0, 0);
-      rafRef.current = requestAnimationFrame(drawStatic);
-    };
-    drawStatic();
 
     // occasional whole-frame flicker + jitter, like a loose antenna signal
     const flicker = gsap.timeline({ repeat: -1 });
     const flickerStep = () => {
       const jitter = Math.random();
       if (jitter > 0.88) {
-        gsap.to(canvas, {
-          opacity: 0.4 + Math.random() * 0.3,
+        gsap.to(video, {
+          opacity: Math.max(0, VIDEO_OPACITY - 0.1) + Math.random() * 0.15,
           x: (Math.random() - 0.5) * 6,
           duration: 0.05,
-          onComplete: () => gsap.to(canvas, { opacity: 1, x: 0, duration: 0.08 }),
+          onComplete: () => gsap.to(video, { opacity: VIDEO_OPACITY, x: 0, duration: 0.08 }),
         });
       }
     };
@@ -123,7 +86,6 @@ export default function LoadingScreen() {
     /* -- GSAP timeline -------------------------------- */
     const tl = gsap.timeline({
       onComplete: () => {
-        cancelAnimationFrame(rafRef.current);
         document.body.style.overflow = '';
         gsap.set(overlay, { display: 'none' });
       },
@@ -157,7 +119,7 @@ export default function LoadingScreen() {
         '-=0.45'
       )
       // hold
-      .to({}, { duration: 0.7 })
+      .to({}, { duration: 0.9 })
       // fade everything out
       .to([eyebrowRef.current, logoRef.current, lineRef.current, tagRef.current], {
         opacity: 0, y: -16,
@@ -173,7 +135,6 @@ export default function LoadingScreen() {
       }, '-=0.1');
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
       cancelAnimationFrame(scrambleRafRef.current);
       stopScramble();
       flicker.kill();
@@ -199,7 +160,8 @@ export default function LoadingScreen() {
     >
       {/* Thunder / atmospheric background video */}
       <video
-        src="/BWG.mp4"
+        ref={videoRef}
+        src="/Thunder.mp4"
         autoPlay
         loop
         muted
@@ -210,24 +172,9 @@ export default function LoadingScreen() {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          opacity: 0.28,
+          opacity: VIDEO_OPACITY,
           filter: 'grayscale(1) contrast(1.4) brightness(0.7)',
           pointerEvents: 'none',
-        }}
-      />
-
-      {/* CRT static canvas — full screen, behind content */}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          imageRendering: 'pixelated',
-          pointerEvents: 'none',
-          mixBlendMode: 'screen',
-          filter: 'contrast(1.35) brightness(1.05)',
         }}
       />
 
@@ -295,7 +242,7 @@ export default function LoadingScreen() {
         </div>
 
         {/* White sweep line — below the heading */}
-        <div
+        {/* <div
           ref={lineRef}
           style={{
             height: 1,
@@ -303,7 +250,7 @@ export default function LoadingScreen() {
             marginTop: 14,
             borderRadius: 1,
           }}
-        />
+        /> */}
 
         {/* Tagline */}
         <p
