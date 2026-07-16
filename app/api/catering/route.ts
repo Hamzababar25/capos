@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       from:     FROM,
       to:       TO,
       replyTo:  email,
-      subject:  `New Catering Inquiry — ${eventType} · ${eventDate}`,
+      subject:  `New Catering Inquiry: ${eventType} · ${eventDate}`,
       react:    createElement(CateringInquiry, { name, email, phone, eventType, eventDate, venue, guests, notes }),
     });
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from:    FROM,
       to:      email,
-      subject: `We received your inquiry, ${name} — CAPOS Coffee`,
+      subject: `We received your inquiry, ${name}: CAPOS Coffee`,
       react:   createElement(CateringConfirmation, { name, eventType, eventDate }),
     });
 

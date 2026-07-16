@@ -21,7 +21,7 @@ export default function HeroLogo3D() {
       ref={ref}
       className="hero-logo-3d"
       src="/models/capos-logo.glb"
-      alt="CAPO'S — a crimson rose growing through two stacked serif C's"
+      alt="CAPO'S, a crimson rose growing through two stacked serif C's"
       camera-controls
       disable-zoom
       disable-pan

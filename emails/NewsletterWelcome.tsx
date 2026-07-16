@@ -18,7 +18,7 @@ export default function NewsletterWelcome({ email }: Props) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to CAPOS — stories from origin, straight to your inbox.</Preview>
+      <Preview>Welcome to CAPOS: stories from origin, straight to your inbox.</Preview>
       <Body style={{ background: bg, margin: 0, padding: '40px 0', fontFamily: 'Helvetica, Arial, sans-serif' }}>
         <Container style={{ maxWidth: 600, margin: '0 auto', background: card, borderRadius: 6, overflow: 'hidden', border: `1px solid ${border}` }}>
 
@@ -40,7 +40,7 @@ export default function NewsletterWelcome({ email }: Props) {
               You&apos;re on the list.
             </Heading>
             <Text style={{ margin: 0, fontSize: 15, color: muted, lineHeight: '1.75', maxWidth: 420, display: 'block' }}>
-              Welcome to Stories from Origin — our newsletter where we share brewing notes, pop-up announcements, and everything happening behind the cup.
+              Welcome to Stories from Origin, our newsletter where we share brewing notes, pop-up announcements, and everything happening behind the cup.
             </Text>
           </Section>
 

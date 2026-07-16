@@ -70,7 +70,7 @@ const collabItems: Drink[] = [
   {
     name: 'La Dolce Latte',
     desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and homemade caramel for rich sweetness. Finished with smooth cold foam.',
-    origin: '"The Sweet Latte" — La Dolce Vita in a cup',
+    origin: '"The Sweet Latte", La Dolce Vita in a cup',
     ingredients: 'Espresso · Brown sugar · House caramel · Cold foam',
     image: '/capos4.jpg',
     imageWidth: 1535,
@@ -425,7 +425,7 @@ export default function MenuPage() {
           >
             A marriage of cultures, one unforgettable cup at a time.
             Bold South Asian flavours, authentic Yemeni-style coffee, and
-            timeless Italian recipes — served straight to you.
+            timeless Italian recipes, served straight to you.
           </p>
 
           <div className="flex flex-wrap items-center gap-4" data-hero>
@@ -531,7 +531,7 @@ export default function MenuPage() {
                 className="m-0 max-w-[560px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
                 style={{ fontSize: 'max(0.95vw, 15px)' }}
               >
-                A luxurious floral blend — fragrant rose syrup, warm cardamom,
+                A luxurious floral blend of fragrant rose syrup, warm cardamom,
                 sweet cold foam, finished with rose petals and saffron threads.
               </p>
             </div>
@@ -651,7 +651,7 @@ export default function MenuPage() {
               style={{ fontSize: 'max(0.677vw, 12px)' }}
               data-reveal
             >
-              Customise your order — see below for available add-ons.
+              Customise your order, see below for available add-ons.
             </p>
           </div>
         </div>
@@ -822,7 +822,7 @@ export default function MenuPage() {
           className="m-0 max-w-[360px] leading-[1.7] text-[rgba(240,237,230,0.4)]"
           style={{ fontSize: 'max(0.9vw, 14px)' }}
         >
-          At your service — wherever the occasion takes us.
+          At your service, wherever the occasion takes us.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-6">
           <a

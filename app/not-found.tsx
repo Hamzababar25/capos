@@ -120,7 +120,7 @@ export default function NotFound() {
             style={{ fontSize: 'clamp(14px, 1vw, 16px)' }}
           >
             The page you&apos;re looking for has drifted off-menu.
-            Let us pour you something else — the rest of the shop is warm.
+            Let us pour you something else, the rest of the shop is warm.
           </p>
 
           <div

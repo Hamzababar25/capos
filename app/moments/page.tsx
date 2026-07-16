@@ -46,7 +46,7 @@ const events: Event[] = [
   },
   {
     id: 3,
-    title: 'Product Launch — Studio 47',
+    title: 'Product Launch · Studio 47',
     venue: 'Chelsea Loft',
     location: 'Manhattan, NY',
     type: 'Corporate',
@@ -55,7 +55,7 @@ const events: Event[] = [
   },
   {
     id: 4,
-    title: 'Golden Hour — Sweet Sixteen',
+    title: 'Golden Hour · Sweet Sixteen',
     venue: 'Private Residence',
     location: 'Short Hills, NJ',
     type: 'Private Party',
@@ -96,7 +96,7 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     quote:
-      'Capo’s made our wedding morning feel like a boutique café. Every guest asked where the coffee was from — the rose saffron latte stole the show.',
+      'Capo’s made our wedding morning feel like a boutique café. Every guest asked where the coffee was from, the rose saffron latte stole the show.',
     author: 'Sana & Adil',
     role: 'Bride & Groom',
     event: 'Long Island, NY · May 2026',
@@ -112,7 +112,7 @@ const testimonials: Testimonial[] = [
   {
     id: 3,
     quote:
-      'The team has real craft — you can taste it. From the tiramisu latte to how carefully they poured each cup, it was clearly built by people who love what they do.',
+      'The team has real craft, you can taste it. From the tiramisu latte to how carefully they poured each cup, it was clearly built by people who love what they do.',
     author: 'Farhan Qureshi',
     role: 'Founder, Namkeen',
     event: 'Collab Pop-up · May 2026',
@@ -345,7 +345,7 @@ export default function MomentsPage() {
               </h2>
             </div>
             <p className="mp-reel-lead t-text-lg">
-              Scroll to move through the reel — a glimpse into celebrations,
+              Scroll to move through the reel, a glimpse into celebrations,
               brand activations and quiet morning rituals we&apos;ve had the
               honour of pouring for.
             </p>

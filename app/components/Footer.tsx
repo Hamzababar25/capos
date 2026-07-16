@@ -110,7 +110,7 @@ export default function Footer() {
             Your moments.<br /> <i>Capo&apos;s way</i>
           </h2>
           <p className="c-footer-tagline">
-            Coffee cart catering, poured with intention — for events across
+            Coffee cart catering, poured with intention for events across
             the Tri-State area and Pennsylvania.
           </p>
         </div>

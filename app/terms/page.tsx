@@ -41,7 +41,7 @@ const sections = [
   },
   {
     title: 'Intellectual Property',
-    body: `All content on this website — including text, images, graphics, logos, and design elements — is the property of CAPOS Coffee and is protected by applicable intellectual property laws.\n\nYou may not reproduce, distribute, or use any content from this website without prior written permission from CAPOS Coffee.`,
+    body: `All content on this website, including text, images, graphics, logos, and design elements, is the property of CAPOS Coffee and is protected by applicable intellectual property laws.\n\nYou may not reproduce, distribute, or use any content from this website without prior written permission from CAPOS Coffee.`,
   },
   {
     title: 'Governing Law',

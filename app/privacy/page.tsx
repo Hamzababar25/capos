@@ -17,7 +17,7 @@ const sections = [
   },
   {
     title: 'Information We Collect',
-    body: `We collect information you voluntarily provide to us:\n\n• Contact information (name, email address, phone number)\n• Event details (date, venue, location, guest count, event type)\n• Message content you include in inquiries or notes\n• Email address if you subscribe to our newsletter\n\nWe do not collect payment card information directly — any payments are processed through secure third-party payment processors.\n\nWhen you visit our website, we may also collect basic technical data such as your IP address, browser type, device type, and pages visited, through cookies and analytics tools.`,
+    body: `We collect information you voluntarily provide to us:\n\n• Contact information (name, email address, phone number)\n• Event details (date, venue, location, guest count, event type)\n• Message content you include in inquiries or notes\n• Email address if you subscribe to our newsletter\n\nWe do not collect payment card information directly. Any payments are processed through secure third-party payment processors.\n\nWhen you visit our website, we may also collect basic technical data such as your IP address, browser type, device type, and pages visited, through cookies and analytics tools.`,
   },
   {
     title: 'How We Use Your Information',
@@ -25,15 +25,15 @@ const sections = [
   },
   {
     title: 'Email Communications',
-    body: `When you submit a catering inquiry, you will receive a confirmation email. This is a transactional email — it is not marketing and you cannot opt out of it as it is necessary to confirm your request.\n\nIf you sign up for our newsletter, we will send you occasional updates about CAPOS — pop-up events, new menus, and stories from origin. You can unsubscribe from marketing emails at any time using the unsubscribe link in any email we send.`,
+    body: `When you submit a catering inquiry, you will receive a confirmation email. This is a transactional email, not marketing, and you cannot opt out of it as it is necessary to confirm your request.\n\nIf you sign up for our newsletter, we will send you occasional updates about CAPOS: pop-up events, new menus, and stories from origin. You can unsubscribe from marketing emails at any time using the unsubscribe link in any email we send.`,
   },
   {
     title: 'Sharing Your Information',
-    body: `We do not sell, trade, or share your personal information with third parties for their marketing purposes.\n\nWe may share information with trusted service providers who assist us in operating our website and delivering our services — such as email delivery services (Resend) and analytics platforms. These providers are contractually required to handle your data securely and only for the purpose of providing services to us.\n\nWe may also disclose information if required by law or to protect our rights and safety.`,
+    body: `We do not sell, trade, or share your personal information with third parties for their marketing purposes.\n\nWe may share information with trusted service providers who assist us in operating our website and delivering our services, such as email delivery services (Resend) and analytics platforms. These providers are contractually required to handle your data securely and only for the purpose of providing services to us.\n\nWe may also disclose information if required by law or to protect our rights and safety.`,
   },
   {
     title: 'Cookies & Analytics',
-    body: `Our website may use cookies to improve your experience. Cookies are small text files stored on your device.\n\nWe may use analytics tools (such as Vercel Analytics or similar) to understand how visitors use our site. This data is aggregated and anonymised — we cannot identify individual visitors from this data.\n\nYou can control cookie settings through your browser. Disabling cookies may affect some functionality of the website.`,
+    body: `Our website may use cookies to improve your experience. Cookies are small text files stored on your device.\n\nWe may use analytics tools (such as Vercel Analytics or similar) to understand how visitors use our site. This data is aggregated and anonymised, so we cannot identify individual visitors from this data.\n\nYou can control cookie settings through your browser. Disabling cookies may affect some functionality of the website.`,
   },
   {
     title: 'Data Retention',
@@ -41,7 +41,7 @@ const sections = [
   },
   {
     title: 'Your Rights',
-    body: `Depending on your location, you may have rights regarding your personal data:\n\n• Right to access — request a copy of the data we hold about you\n• Right to correction — ask us to correct inaccurate data\n• Right to deletion — request deletion of your personal data\n• Right to withdraw consent — where processing is based on consent\n• Right to object — to certain types of processing\n\nTo exercise any of these rights, contact us at hello@capos.coffee. We will respond within 30 days.`,
+    body: `Depending on your location, you may have rights regarding your personal data:\n\n• Right to access: request a copy of the data we hold about you\n• Right to correction: ask us to correct inaccurate data\n• Right to deletion: request deletion of your personal data\n• Right to withdraw consent: where processing is based on consent\n• Right to object: to certain types of processing\n\nTo exercise any of these rights, contact us at hello@capos.coffee. We will respond within 30 days.`,
   },
   {
     title: 'Data Security',

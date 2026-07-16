@@ -14,11 +14,11 @@ const categories = [
     items: [
       {
         q: 'How do I book CAPOS for my event?',
-        a: 'Fill out our catering inquiry form on the website — or email us directly at hello@capos.coffee. Share your event date, venue, and guest count and we\'ll get back to you within 24–48 hours to confirm availability and discuss the details.',
+        a: 'Fill out our catering inquiry form on the website, or email us directly at hello@capos.coffee. Share your event date, venue, and guest count and we\'ll get back to you within 24–48 hours to confirm availability and discuss the details.',
       },
       {
         q: 'How far in advance should I book?',
-        a: 'We recommend booking at least 4–6 weeks in advance for most events. For weddings and large gatherings (300+), 3–6 months ahead ensures you secure your preferred date. That said, reach out even for last-minute requests — we\'ll do our best.',
+        a: 'We recommend booking at least 4–6 weeks in advance for most events. For weddings and large gatherings (300+), 3–6 months ahead ensures you secure your preferred date. That said, reach out even for last-minute requests, we\'ll do our best.',
       },
       {
         q: 'What types of events do you cater?',
@@ -26,7 +26,7 @@ const categories = [
       },
       {
         q: 'Do you require a deposit to reserve a date?',
-        a: 'Yes — a deposit is required to lock in your event date. Full details including deposit amount and payment schedule will be outlined in your booking agreement after your initial inquiry.',
+        a: 'Yes, a deposit is required to lock in your event date. Full details including deposit amount and payment schedule will be outlined in your booking agreement after your initial inquiry.',
       },
       {
         q: 'What is your cancellation policy?',
@@ -39,15 +39,15 @@ const categories = [
     items: [
       {
         q: 'What areas do you serve?',
-        a: 'We serve the greater Tri-State area — New York, New Jersey, Connecticut, and Pennsylvania. Travel fees may apply for events outside our standard service radius. Contact us with your location and we\'ll confirm availability.',
+        a: 'We serve the greater Tri-State area: New York, New Jersey, Connecticut, and Pennsylvania. Travel fees may apply for events outside our standard service radius. Contact us with your location and we\'ll confirm availability.',
       },
       {
         q: 'How many guests can you accommodate?',
-        a: 'Our setup scales from intimate gatherings of 20 to large-scale events of 500+. We tailor our staffing and equipment to match your guest count — let us know your numbers and we\'ll plan accordingly.',
+        a: 'Our setup scales from intimate gatherings of 20 to large-scale events of 500+. We tailor our staffing and equipment to match your guest count, let us know your numbers and we\'ll plan accordingly.',
       },
       {
         q: 'What equipment do you bring?',
-        a: 'We arrive with our full coffee cart setup — professional espresso machine, grinder, all necessary supplies, cups, lids, stirrers, and any specialty ingredients for the menu. We just need power access at the venue.',
+        a: 'We arrive with our full coffee cart setup: professional espresso machine, grinder, all necessary supplies, cups, lids, stirrers, and any specialty ingredients for the menu. We just need power access at the venue.',
       },
       {
         q: 'How long does a typical setup take?',
@@ -64,15 +64,15 @@ const categories = [
     items: [
       {
         q: 'Can I customise the menu for my event?',
-        a: 'Yes — that\'s one of our favourite parts. We can work with you to create a menu that reflects the theme, season, or culture of your event. Our signatures can be adapted, and we\'re always open to new collaborations.',
+        a: 'Yes, that\'s one of our favourite parts. We can work with you to create a menu that reflects the theme, season, or culture of your event. Our signatures can be adapted, and we\'re always open to new collaborations.',
       },
       {
         q: 'Do you accommodate dietary restrictions?',
-        a: 'We offer oat milk and almond milk as dairy alternatives for all drinks. Please let us know of any specific allergies or dietary needs when you book — we\'ll make sure every guest is taken care of.',
+        a: 'We offer oat milk and almond milk as dairy alternatives for all drinks. Please let us know of any specific allergies or dietary needs when you book, we\'ll make sure every guest is taken care of.',
       },
       {
         q: 'Can guests see a full menu on the day?',
-        a: 'Yes — we provide a printed or display menu at the cart for guests. We can also create a custom menu card that matches your event\'s aesthetic if you\'d like.',
+        a: 'Yes, we provide a printed or display menu at the cart for guests. We can also create a custom menu card that matches your event\'s aesthetic if you\'d like.',
       },
       {
         q: 'Do you serve tea or non-coffee options?',
@@ -208,7 +208,7 @@ export default function FAQPage() {
               className="mb-8 leading-[1.75] text-[rgba(240,237,230,0.50)]"
               style={{ fontSize: 'max(0.9vw, 14px)' }}
             >
-              Can&apos;t find your answer here? Reach out directly — we reply within 24 hours.
+              Can&apos;t find your answer here? Reach out directly, we reply within 24 hours.
             </p>
             <a
               href="mailto:hello@capos.coffee"

@@ -20,7 +20,7 @@ export default function CateringConfirmation({ name, eventType, eventDate }: Pro
   return (
     <Html>
       <Head />
-      <Preview>We received your inquiry, {name} — we'll be in touch soon.</Preview>
+      <Preview>We received your inquiry, {name}, we'll be in touch soon.</Preview>
       <Body style={{ background: bg, margin: 0, padding: '40px 0', fontFamily: 'Helvetica, Arial, sans-serif' }}>
         <Container style={{ maxWidth: 600, margin: '0 auto', background: card, borderRadius: 6, overflow: 'hidden', border: `1px solid ${border}` }}>
 

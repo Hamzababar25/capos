@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from:    FROM,
       to:      email,
-      subject: 'Welcome to CAPOS — Stories from Origin',
+      subject: 'Welcome to CAPOS: Stories from Origin',
       react:   createElement(NewsletterWelcome, { email }),
     });
 

@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://capos.coffee"),
-  title: "CAPOS Coffee | Premium Coffee Cart Catering — Tri-State Area",
+  title: "CAPOS Coffee | Premium Coffee Cart Catering, Tri-State Area",
   description: "Handcrafted espresso experiences for weddings, corporate events & private gatherings across NY, NJ, CT & PA. A marriage of cultures, one unforgettable cup at a time.",
   keywords: "coffee catering, wedding coffee bar, corporate coffee service, espresso cart, CAPOS coffee, tri-state coffee catering, mobile coffee bar",
   authors: [{ name: "CAPOS Coffee" }],
