@@ -20,6 +20,8 @@ interface Drink {
   ingredients?: string;
   tag?: string | null;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 const signatures: Drink[] = [
@@ -29,6 +31,8 @@ const signatures: Drink[] = [
     origin: 'French pâtisserie meets Italian espresso',
     ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
     image: '/creme-blu.jpg',
+    imageWidth: 1000,
+    imageHeight: 1200,
   },
   {
     name: 'Rose Saffron Latte',
@@ -37,6 +41,8 @@ const signatures: Drink[] = [
     ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
     tag: "Mother's Day Special",
     image: '/rose-saf.jpg',
+    imageWidth: 1000,
+    imageHeight: 1200,
   },
   {
     name: 'Latte España',
@@ -44,6 +50,8 @@ const signatures: Drink[] = [
     origin: 'Inspired by Madrid’s café con leche',
     ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
     image: '/latte-esp.jpg',
+    imageWidth: 1000,
+    imageHeight: 1200,
   },
 ];
 
@@ -56,6 +64,8 @@ const collabItems: Drink[] = [
     origin: 'A love letter to Northern Italy',
     ingredients: 'Espresso · Vanilla · Mascarpone foam · Cocoa · Swiss chocolate',
     image: '/collab.jpeg',
+    imageWidth: 1200,
+    imageHeight: 1600,
   },
   {
     name: 'La Dolce Latte',
@@ -63,6 +73,8 @@ const collabItems: Drink[] = [
     origin: '"The Sweet Latte" — La Dolce Vita in a cup',
     ingredients: 'Espresso · Brown sugar · House caramel · Cold foam',
     image: '/capos4.jpg',
+    imageWidth: 1535,
+    imageHeight: 2300,
   },
 ];
 
@@ -156,48 +168,45 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
  * Drink card with a hover-reveal overlay showing origin + ingredients.
  * The description slides out; the "story" (origin + ingredients) slides in.
  */
-function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink & { index: number }) {
+function DrinkCard({ name, desc, origin, ingredients, tag, image, imageWidth, imageHeight, index }: Drink & { index: number }) {
   return (
     <article
       className="cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] transition-[border-color,box-shadow] duration-500 hover:border-[rgba(151,29,19,0.5)] hover:shadow-[0_12px_40px_-12px_rgba(151,29,19,0.25)]"
       data-reveal
     >
-      {/* Photo — clips with a gentle Ken Burns on hover */}
+      {/* Photo — inset/framed, sized to its own natural aspect ratio, clips with a gentle Ken Burns on hover */}
       {image && (
-        <div className="relative aspect-9/10 w-full overflow-hidden">
-          <Image
-            src={image}
-            alt={name}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover object-center brightness-90 contrast-105 transition-transform duration-[1.4s] ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover:scale-105"
-          />
-          {/* Gradient fade into card body */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, transparent 50%, #0d1410 100%)' }}
-            aria-hidden
-          />
-          {/* Number chip — on top of the image */}
-          <span
-            className="absolute left-4 top-4 rounded-sm border border-[rgba(255,255,255,0.1)] bg-[rgba(8,13,10,0.65)] px-2.5 py-1 font-bold tracking-[0.24em] text-[rgba(255,255,255,0.55)] backdrop-blur-sm"
-            style={{ fontSize: '10px' }}
-            aria-hidden
-          >
-            {String(index).padStart(2, '0')}
-          </span>
-          {tag && (
+        <div className="p-6 pb-0">
+          <div className="relative mx-auto w-3/4 overflow-hidden rounded-sm border border-[rgba(151,29,19,0.15)]">
+            <Image
+              src={image}
+              alt={name}
+              width={imageWidth ?? 1122}
+              height={imageHeight ?? 1402}
+              sizes="(max-width: 768px) 75vw, 25vw"
+              className="block h-auto w-full brightness-90 contrast-105 transition-transform duration-[1.4s] ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover:scale-105"
+            />
+            {/* Number chip — on top of the image */}
             <span
-              className="absolute right-4 top-4 rounded-sm border border-[rgba(151,29,19,0.5)] bg-[rgba(151,29,19,0.75)] px-2.5 py-1 font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm"
-              style={{ fontSize: '9px' }}
+              className="absolute left-2.5 top-2.5 rounded-sm border border-[rgba(255,255,255,0.1)] bg-[rgba(8,13,10,0.65)] px-2 py-1 font-bold tracking-[0.24em] text-[rgba(255,255,255,0.55)] backdrop-blur-sm"
+              style={{ fontSize: '10px' }}
+              aria-hidden
             >
-              {tag}
+              {String(index).padStart(2, '0')}
             </span>
-          )}
+            {tag && (
+              <span
+                className="absolute right-2.5 top-2.5 rounded-sm border border-[rgba(151,29,19,0.5)] bg-[rgba(151,29,19,0.75)] px-2 py-1 font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm"
+                style={{ fontSize: '9px' }}
+              >
+                {tag}
+              </span>
+            )}
+          </div>
         </div>
       )}
 
-      <div className="flex flex-1 flex-col p-7">
+      <div className="flex flex-1 flex-col p-6">
         {/* Number chip when no image */}
         {!image && (
           <span
@@ -210,7 +219,7 @@ function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink
         )}
 
         {/* Header */}
-        <div className="mb-4 flex items-start gap-4 pr-10">
+        <div className="mb-3 flex items-start gap-4 pr-10">
           <h3
             className="m-0 leading-tight tracking-[-0.01em] text-white"
             style={{ fontSize: 'clamp(19px, 1.7vw, 28px)', fontWeight: 600 }}
@@ -228,7 +237,7 @@ function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink
         </div>
 
       {/* Description (fades out on hover to reveal ingredients) */}
-      <div className="relative min-h-[120px] flex-1">
+      <div className="relative min-h-[100px] flex-1">
         <p
           className="absolute inset-0 m-0 leading-[1.7] text-[rgba(240,237,230,0.55)] transition-all duration-500 group-hover:-translate-y-2 group-hover:opacity-0"
           style={{ fontSize: 'max(0.9vw, 14px)' }}
@@ -270,7 +279,7 @@ function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink
       </div>
 
         {/* Bottom rule + subtle "iced" note */}
-        <div className="mt-6 flex items-center justify-between border-t border-[rgba(151,29,19,0.08)] pt-4 transition-colors duration-500 group-hover:border-[rgba(151,29,19,0.25)]">
+        <div className="mt-4 flex items-center justify-between border-t border-[rgba(151,29,19,0.08)] pt-3 transition-colors duration-500 group-hover:border-[rgba(151,29,19,0.25)]">
           <span
             className="font-bold uppercase tracking-[0.2em] text-[rgba(240,237,230,0.35)]"
             style={{ fontSize: 'max(0.6vw, 10px)' }}
