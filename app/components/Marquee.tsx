@@ -9,14 +9,11 @@ interface MarqueeProps {
 }
 
 const defaultItems = [
-  '40+ Events Poured',
-  'NY · NJ · CT · PA',
-  'By Invitation',
-  'Est. 2025',
-  'Handcrafted On-Site',
-  'A Marriage of Cultures',
-  'Yemeni · Italian · South Asian',
-  'Tri-State Area',
+  'Next Event',
+  'Pakistan 🇵🇰 Day Parade',
+  'Sunday, August 16',
+  'Rain Date: August 23',
+  'Oak Tree Road, Woodbridge & Edison, NJ',
 ];
 
 /**

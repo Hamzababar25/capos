@@ -51,16 +51,16 @@ const chapters: Chapter[] = [
       'Passion meets craft in every roast. Years of experience, constant innovation, and a deep respect for coffee tradition this is what CAPOS is made of.',
     image: '/capos4.jpg',
   },
-  {
-    id: 4,
-    num: '04',
-    tag: 'Vision',
-    title: 'Every cup,\na new story.',
-    subtitle: 'Tri-State · Pennsylvania · Beyond',
-    description:
-      'From intimate morning rituals to grand celebrations, we pour with intention building a coffee culture that honours heritage while pushing what a mobile cart can be.',
-    image: '/capos-3.PNG',
-  },
+  // {
+  //   id: 4,
+  //   num: '04',
+  //   tag: 'Vision',
+  //   title: 'Every cup,\na new story.',
+  //   subtitle: 'Tri-State · Pennsylvania · Beyond',
+  //   description:
+  //     'From intimate morning rituals to grand celebrations, we pour with intention building a coffee culture that honours heritage while pushing what a mobile cart can be.',
+  //   image: '/capos-3.PNG',
+  // },
 ];
 
 /* ── Component ───────────────────────────────────── */

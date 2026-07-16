@@ -28,7 +28,7 @@ const signatures: Drink[] = [
     desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
     origin: 'French pâtisserie meets Italian espresso',
     ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
-    image: '/capos1.PNG',
+    image: '/creme-blu.jpg',
   },
   {
     name: 'Rose Saffron Latte',
@@ -36,14 +36,14 @@ const signatures: Drink[] = [
     origin: 'A quiet nod to Persian tearooms',
     ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
     tag: "Mother's Day Special",
-    image: '/capos-2.PNG',
+    image: '/rose-saf.jpg',
   },
   {
     name: 'Latte España',
     desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for a smooth indulgence.',
     origin: 'Inspired by Madrid’s café con leche',
     ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
-    image: '/capos3.PNG',
+    image: '/latte-esp.jpg',
   },
 ];
 
@@ -164,7 +164,7 @@ function DrinkCard({ name, desc, origin, ingredients, tag, image, index }: Drink
     >
       {/* Photo — clips with a gentle Ken Burns on hover */}
       {image && (
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative aspect-9/10 w-full overflow-hidden">
           <Image
             src={image}
             alt={name}

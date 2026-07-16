@@ -56,10 +56,10 @@ export default function QuoteSection() {
         <div className="quote-inner">
           <span className="quote-deco t-h6">Founder&apos;s Note</span>
           <blockquote className="quote-text t-display">
-            &ldquo;At Capo’s, it’s more than what’s in your cup. Every drink is crafted with authentic Yemeni coffee, bold South Asian flavors, and timeless Italian influence. From intimate gatherings to grand celebrations, we bring an elevated coffee experience to every event.
+            &ldquo;At Capo’s, it’s more than what’s in your cup. Every drink is crafted with authentic Yemeni style coffee, bold South Asian flavors, and timeless Italian influence. From intimate gatherings to grand celebrations, we bring an elevated coffee experience to every event.
           </blockquote>
           <div className="quote-attribution t-h6"> 
-            - Founder           </div>
+            - Founder, Capo’s coffee            </div>
         </div>
         <div className="quote-image img-reveal">
           <video
