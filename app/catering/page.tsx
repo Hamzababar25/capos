@@ -39,7 +39,7 @@ const signatures: Drink[] = [
     desc: 'A luxurious floral blend of fragrant rose syrup and warm cardamom, finished with a cloud of sweet cold foam and topped with rose petals and saffron threads.',
     origin: 'A quiet nod to Persian tearooms',
     ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
-    tag: "Mother's Day Special",
+    tag: "Seasonal Special",
     image: '/rose-saf.jpg',
     imageWidth: 1000,
     imageHeight: 1200,
@@ -540,7 +540,7 @@ export default function MenuPage() {
                 className="rounded-sm border border-[rgba(151,29,19,0.35)] bg-[rgba(151,29,19,0.1)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 10px)' }}
               >
-                Mother&apos;s Day Special
+                Seasonal Special
               </span>
               <span
                 className="font-bold uppercase tracking-[0.18em] text-[rgba(255,255,255,0.45)] transition-colors duration-300 group-hover:text-white"
@@ -703,7 +703,7 @@ export default function MenuPage() {
                   className="rounded-sm border border-[rgba(240,237,230,0.12)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.4)]"
                   style={{ fontSize: 'max(0.677vw, 10px)' }}
                 >
-                  Mother&apos;s Day Edition
+                
                 </span>
               </div>
               <p
