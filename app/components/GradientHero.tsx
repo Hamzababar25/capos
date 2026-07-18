@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Navigation from './Navigation';
-import './hero.css';
+import './gradient-hero.css';
 import gsap from 'gsap';
 import { scrambleText } from '../lib/textScramble';
 

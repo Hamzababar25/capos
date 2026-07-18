@@ -10,8 +10,7 @@ import Footer from './components/Footer';
 import ScrollToSection from './components/ScrollToSection';
 import Marquee from './components/Marquee';
 import SectionLabels from './components/SectionLabels';
-import './styles/home.css';
-import './styles/hero.css';
+import './page.css';
 
 export default function Home() {
   const [isPageReady, setIsPageReady] = useState(false);

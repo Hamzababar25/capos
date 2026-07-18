@@ -181,6 +181,7 @@
   align-items: center;
   gap: 12px;
   max-width: 520px;
+  padding-top: 25px;
 }
 
 .c-footer-signup-input {

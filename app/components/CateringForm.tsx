@@ -331,9 +331,9 @@ export default function CateringForm() {
                 +1 (732) 789-4792
               </a>
             </li>
-            <li className="flex items-center gap-3 tracking-[0.06em] text-[rgba(240,237,230,0.55)]" style={{ fontSize: 'max(0.677vw, 11px)' }}>
+            <li className="flex items-center gap-3 tracking-[0.06em] text-[rgba(240,237,230,0.55)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
               <span className="w-[16px] shrink-0 text-[#971d13]" aria-hidden>◷</span>
-              We&apos;ll get back to you within 24 hours.
+              We&apos;ll get back to you as soon as possible.
             </li>
           </ul>
 
@@ -351,7 +351,7 @@ export default function CateringForm() {
         </div>
 
         {/* ── RIGHT — wizard ─────────────────────────── */}
-        <div data-cf="right" className="opacity-0">
+        <div data-cf="right" className="pr-14 opacity-0">
           {submitted ? (
             <div className="cf-success">
               <div className="cf-success-badge" aria-hidden>

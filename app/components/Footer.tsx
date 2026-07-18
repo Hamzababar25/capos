@@ -149,7 +149,8 @@ export default function Footer() {
                     className="c-footer-social-link t-text"
                   >
                     <span>Instagram</span>
-                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                    <span className="c-footer-arrow">→</span>
+                    {/* <span className="c-footer-social-arrow" aria-hidden>↗</span> */}
                   </a>
                 </li>
                 <li>
@@ -160,7 +161,8 @@ export default function Footer() {
                     className="c-footer-social-link t-text"
                   >
                     <span>LinkedIn</span>
-                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                    <span className="c-footer-arrow">→</span>
+                    {/* <span className="c-footer-social-arrow" aria-hidden>↗</span> */}
                   </a>
                 </li>
                 <li>
@@ -171,7 +173,8 @@ export default function Footer() {
                     className="c-footer-social-link t-text"
                   >
                     <span>Facebook</span>
-                    <span className="c-footer-social-arrow" aria-hidden>↗</span>
+                    <span className="c-footer-arrow">→</span>
+                    {/* <span className="c-footer-social-arrow" aria-hidden>↗</span> */}
                   </a>
                 </li>
               </ul>
@@ -203,12 +206,11 @@ export default function Footer() {
         <div className="c-footer-signup">
           <div className="c-footer-signup-head">
             <span className="c-footer-signup-eyebrow t-h6">Newsletter</span>
-            <h3 className="c-footer-signup-title">
+            {/* <h3 className="c-footer-signup-title">
               Stories from <i>origin</i>.
-            </h3>
+            </h3> */}
             <p className="c-footer-signup-desc">
               Rare beans, seasonal drops and the occasional invitation.
-              No spam. Ever.
             </p>
           </div>
 
@@ -254,6 +256,7 @@ export default function Footer() {
             <span className="c-footer-muted t-text-sm">
               © 2025 · CAPOS Coffee · All rights reserved
             </span>
+            <br/>
             <span className="c-footer-signature t-text-sm">
               Crafted with <span className="c-footer-signature-heart" aria-hidden>♦</span> in New Jersey
             </span>

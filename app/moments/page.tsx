@@ -9,7 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { RoseFlourish, CupFlourish, BeanFlourish } from '../components/Flourishes';
-import './moments.css';
+import './page.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
