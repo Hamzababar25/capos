@@ -98,13 +98,18 @@ export default function Navigation() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  const navLinks = ['Catering', 'About', 'Moments'];
-  const routeLinks: Record<string, string> = { Catering: '/catering', Moments: '/moments' };
+  const navLinks = ['Catering', 'Moments', 'Articles', 'About'];
+  const routeLinks: Record<string, string> = {
+    Catering: '/catering',
+    Moments: '/moments',
+    Articles: '/articles',
+  };
 
   const overlayItems: { label: string; href?: string; section?: string }[] = [
     { label: 'Home',            href: '/'          },
     { label: 'Catering',        href: '/catering'  },
     { label: 'Moments',         href: '/moments'   },
+    { label: 'Articles',        href: '/articles'  },
     { label: 'About',           section: 'about'   },
     { label: 'FAQ',             href: '/faq'       },
     { label: 'Book Your Event', section: 'booking' },
