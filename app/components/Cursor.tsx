@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import './cursor.css';
 
+const HOVER_SELECTOR = 'a, button, [data-cursor-hover]';
+
 export default function Cursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -35,7 +37,6 @@ export default function Cursor() {
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      // Ensure visible in case cursor was hidden after leaving window
       if (dot.style.opacity !== '1') {
         dot.style.opacity  = '1';
         ring.style.opacity = '1';
@@ -62,27 +63,31 @@ export default function Cursor() {
       }
     };
 
-    const attachToElements = () => {
-      document.querySelectorAll('a, button, [data-cursor-hover]').forEach((el) => {
-        if ((el as HTMLElement).dataset.cursorBound) return;
-        (el as HTMLElement).dataset.cursorBound = '1';
-        el.addEventListener('mouseenter', () => setHovering(true));
-        el.addEventListener('mouseleave', () => setHovering(false));
-      });
+    /**
+     * Event delegation — never mutates DOM attributes.
+     * Avoids hydration mismatches from MutationObserver + data-cursor-bound.
+     */
+    const handlePointerOver = (e: MouseEvent) => {
+      const target = (e.target as Element | null)?.closest?.(HOVER_SELECTOR);
+      if (target) setHovering(true);
     };
-    attachToElements();
 
-    const mutationObserver = new MutationObserver(attachToElements);
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    const handlePointerOut = (e: MouseEvent) => {
+      const from = (e.target as Element | null)?.closest?.(HOVER_SELECTOR);
+      if (!from) return;
+      const to = (e.relatedTarget as Element | null)?.closest?.(HOVER_SELECTOR);
+      if (!to) setHovering(false);
+    };
 
     document.addEventListener('mousemove',  handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseover',  handlePointerOver);
+    document.addEventListener('mouseout',   handlePointerOut);
 
     const animate = () => {
       dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
 
-      // Trailing ring: exponential lerp toward mouse position
       ringX += (mouseX - ringX) * 0.15;
       ringY += (mouseY - ringY) * 0.15;
       ring.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
@@ -96,7 +101,8 @@ export default function Cursor() {
       document.removeEventListener('mousemove',  handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
-      mutationObserver.disconnect();
+      document.removeEventListener('mouseover',  handlePointerOver);
+      document.removeEventListener('mouseout',   handlePointerOut);
     };
   }, []);
 

@@ -31,6 +31,14 @@ export async function POST(req: NextRequest) {
 
     const siteUrl = getSiteUrl();
 
+    // Stripe only accepts publicly reachable HTTPS images — skip localhost
+    const coverImages =
+      article.coverImage.startsWith('http') && !article.coverImage.includes('localhost')
+        ? [article.coverImage]
+        : siteUrl.startsWith('https')
+          ? [`${siteUrl}${article.coverImage}`]
+          : undefined;
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -44,9 +52,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: article.title,
               description: `${article.format} · ${article.pages} pages · ${article.eventType}`,
-              images: article.coverImage.startsWith('http')
-                ? [article.coverImage]
-                : [`${siteUrl}${article.coverImage}`],
+              ...(coverImages ? { images: coverImages } : {}),
             },
           },
         },
