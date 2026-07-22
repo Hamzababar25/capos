@@ -30,7 +30,7 @@ const signatures: Drink[] = [
     desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
     origin: 'French pâtisserie meets Italian espresso',
     ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
-    image: '/image0(1).png',
+    image: '/cremblue.png',
     imageWidth: 1000,
     imageHeight: 1200,
   },
@@ -49,9 +49,23 @@ const signatures: Drink[] = [
     desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for a smooth indulgence.',
     origin: 'Inspired by Madrid’s café con leche',
     ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
-    image: '/image0.png',
+    image: '/image0(1).png',
     imageWidth: 1000,
     imageHeight: 1200,
+  },
+  {
+    name: 'Tiramisu Latte',
+    desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes, and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
+    origin: 'Inspired by the classic Italian dessert of the same name',
+    ingredients: 'Espresso · Vanilla · Mascarpone cold foam · Cocoa powder · Swiss chocolate',
+    image: '/tira.png',
+  },
+  {
+    name: 'La Dolce Latte',
+    desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and honey/caramel for rich sweetness. Finished with smooth cold foam for a creamy, luxurious sip that lives up to its name, "The Sweet Latte."',
+    origin: 'A nod to "la dolce vita" — the sweet life',
+    ingredients: 'Espresso · Brown sugar · Honey caramel · Cold foam',
+    image: '/ladoche.png',
   },
 ];
 
@@ -59,22 +73,22 @@ const essentialFlavors = ['Vanilla', 'Caramel', 'Hazelnut', 'Mocha', 'White Choc
 
 const collabItems: Drink[] = [
   {
-    name: 'Tiramisu Latte',
-    desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
-    origin: 'A love letter to Northern Italy',
-    ingredients: 'Espresso · Vanilla · Mascarpone foam · Cocoa · Swiss chocolate',
-    image: '/collab.jpeg',
-    imageWidth: 1200,
-    imageHeight: 1600,
+    name: 'Tonys Cup',
+    desc: 'Dark cherry and vanilla Italian soda topped with a swirl of cream. Bold & unapologetic refreshment',
+    origin: 'Inspired by classic Italian soda shops, with a bold cherry-vanilla twist.',
+    ingredients: 'Dark Cherry Syrup · Vanilla Syrup · Soda Water · Cream ',
+    image: '/tonycup.png',
+    imageWidth: 1000,
+    imageHeight: 1200,
   },
   {
-    name: 'La Dolce Latte',
-    desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and homemade caramel for rich sweetness. Finished with smooth cold foam.',
-    origin: '"The Sweet Latte", La Dolce Vita in a cup',
-    ingredients: 'Espresso · Brown sugar · House caramel · Cold foam',
-    image: '/capos4.jpg',
-    imageWidth: 1535,
-    imageHeight: 2300,
+    name: 'Elvira',
+    desc: 'A mysterious mix of blueberry and lavender syrups with sparkling soda, optionally swirled with cream for a dreamy purple haze',
+    origin: 'A moody blueberry-lavender blend for those who like a little mystery in their cup.',
+    ingredients: 'Blueberry Syrup · Lavender Syrup · Soda Water · Cream',
+    image: '/elvira.png',
+    imageWidth: 1000,
+    imageHeight: 1200,
   },
 ];
 
@@ -97,7 +111,7 @@ interface Category {
 const categories: Category[] = [
   { id: 'signatures', label: 'Signatures', count: signatures.length },
   { id: 'essentials', label: 'Essentials', count: 1 },
-  { id: 'collab',     label: 'Collab',     count: collabItems.length },
+  { id: 'refreshers', label: 'Refreshers', count: collabItems.length },
   { id: 'customize',  label: 'Customize',  count: addOns.length },
 ];
 
@@ -168,23 +182,22 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
  * Drink card with a hover-reveal overlay showing origin + ingredients.
  * The description slides out; the "story" (origin + ingredients) slides in.
  */
-function DrinkCard({ name, desc, origin, ingredients, tag, image, imageWidth, imageHeight, index }: Drink & { index: number }) {
+function DrinkCard({ name, desc, origin, ingredients, tag, image, index, className }: Drink & { index: number; className?: string }) {
   return (
     <article
-      className="cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] transition-[border-color,box-shadow] duration-500 hover:border-[rgba(151,29,19,0.5)] hover:shadow-[0_12px_40px_-12px_rgba(151,29,19,0.25)]"
+      className={`cat-drink group relative flex flex-col overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] transition-[border-color,box-shadow] duration-500 hover:border-[rgba(151,29,19,0.5)] hover:shadow-[0_12px_40px_-12px_rgba(151,29,19,0.25)]${className ? ` ${className}` : ''}`}
       data-reveal
     >
       {/* Photo — inset/framed, sized to its own natural aspect ratio, clips with a gentle Ken Burns on hover */}
       {image && (
         <div className="p-6 pb-0">
-          <div className="relative mx-auto w-3/4 overflow-hidden rounded-sm border border-[rgba(151,29,19,0.15)]">
+          <div className="relative mx-auto aspect-32/43 w-2/4 lg:w-98 overflow-hidden rounded-sm border border-[rgba(151,29,19,0.15)]">
             <Image
               src={image}
               alt={name}
-              width={imageWidth ?? 1122}
-              height={imageHeight ?? 1402}
+              fill
               sizes="(max-width: 768px) 75vw, 25vw"
-              className="block h-auto w-full brightness-90 contrast-105 transition-transform duration-[1.4s] ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover:scale-105"
+              className="object-cover brightness-90 contrast-105 transition-transform duration-[1.4s] ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover:scale-105"
             />
             {/* Number chip — on top of the image */}
             <span
@@ -312,12 +325,12 @@ export default function MenuPage() {
   const heroRef      = useRef<HTMLElement>(null);
   const sigRef       = useRef<HTMLElement>(null);
   const essRef       = useRef<HTMLElement>(null);
-  const collabRef    = useRef<HTMLElement>(null);
+  const refreshersRef = useRef<HTMLElement>(null);
   const customizeRef = useRef<HTMLElement>(null);
 
   useReveal(sigRef,       { stagger: 0.12 });
   useReveal(essRef,       { stagger: 0.10 });
-  useReveal(collabRef,    { stagger: 0.12 });
+  useReveal(refreshersRef, { stagger: 0.12 });
   useReveal(customizeRef, { stagger: 0.08 });
 
   /* Active category tracker */
@@ -580,9 +593,15 @@ export default function MenuPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {signatures.map((item, i) => (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {signatures.slice(0, 3).map((item, i) => (
             <DrinkCard key={item.name} {...item} index={i + 1} />
+          ))}
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {signatures.slice(3).map((item, i) => (
+            <DrinkCard key={item.name} {...item} index={i + 4} />
           ))}
         </div>
       </section>
@@ -595,8 +614,8 @@ export default function MenuPage() {
         ref={essRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
-        <div className="grid grid-cols-1 gap-14 md:grid-cols-[1fr_1fr] md:gap-[6vw]">
-          <div>
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_2fr] md:gap-8 lg:gap-[3.5vw]">
+          <div data-reveal>
             <Eyebrow>Capo&apos;s Essentials</Eyebrow>
             <SectionTitle>
               Simple.<br />
@@ -615,57 +634,68 @@ export default function MenuPage() {
             </SectionTitle>
           </div>
 
-          <div className="flex flex-col justify-center gap-8">
-            <div
-              className="flex flex-col gap-4 border-b border-[rgba(151,29,19,0.12)] pb-8"
-              data-reveal
-            >
-              <h3
-                className="m-0 font-semibold tracking-[-0.01em] text-white"
-                style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
-              >
-                Iced Latte
-              </h3>
-              <p
-                className="m-0 leading-[1.65] text-[rgba(240,237,230,0.55)]"
-                style={{ fontSize: 'max(0.9vw, 14px)' }}
-              >
-                Chilled espresso over ice with your choice of classic syrups
-                for a refreshing caffeine fix.
-              </p>
-              <div className="mt-1 flex flex-wrap gap-2">
-                {essentialFlavors.map((f) => (
-                  <span
-                    key={f}
-                    className="rounded-sm border border-[rgba(151,29,19,0.2)] px-3 py-1 text-[rgba(151,29,19,0.7)] transition-colors duration-300 hover:border-[rgba(151,29,19,0.5)] hover:text-[#971d13]"
-                    style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
-                  >
-                    {f}
-                  </span>
-                ))}
-              </div>
+          <div
+            className="relative grid grid-cols-1 gap-8 overflow-hidden rounded-[4px] border border-[rgba(151,29,19,0.12)] bg-[#0d1410] p-8 transition-[border-color,box-shadow] duration-500 hover:border-[rgba(151,29,19,0.5)] hover:shadow-[0_12px_40px_-12px_rgba(151,29,19,0.25)] md:grid-cols-[392px_1fr] md:p-10"
+            data-reveal
+          >
+            <div className="relative mx-auto aspect-32/43 w-2/4 overflow-hidden rounded-sm border border-[rgba(151,29,19,0.15)] md:w-full md:max-w-98">
+              <Image
+                src="/iced.png"
+                alt="Iced Latte"
+                fill
+                sizes="(max-width: 768px) 75vw, 25vw"
+                className="object-cover brightness-90 contrast-105"
+              />
             </div>
 
-            <p
-              className="m-0 leading-[1.7] text-[rgba(240,237,230,0.35)]"
-              style={{ fontSize: 'max(0.677vw, 12px)' }}
-              data-reveal
-            >
-              Customise your order, see below for available add-ons.
-            </p>
+            <div className="flex flex-col justify-center gap-8">
+              <div className="flex flex-col gap-4 border-b border-[rgba(151,29,19,0.12)] pb-8">
+                <h3
+                  className="m-0 font-semibold tracking-[-0.01em] text-white"
+                  style={{ fontSize: 'clamp(18px, 1.5vw, 24px)' }}
+                >
+                  Iced Latte
+                </h3>
+                <p
+                  className="m-0 leading-[1.65] text-[rgba(240,237,230,0.55)]"
+                  style={{ fontSize: 'max(0.9vw, 14px)' }}
+                >
+                  Chilled espresso over ice with your choice of classic syrups
+                  for a refreshing caffeine fix.
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {essentialFlavors.map((f) => (
+                    <span
+                      key={f}
+                      className="rounded-sm border border-[rgba(151,29,19,0.2)] px-3 py-1 text-[rgba(151,29,19,0.7)] transition-colors duration-300 hover:border-[rgba(151,29,19,0.5)] hover:text-[#971d13]"
+                      style={{ fontSize: 'max(0.677vw, 10px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}
+                    >
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <p
+                className="m-0 leading-[1.7] text-[rgba(240,237,230,0.35)]"
+                style={{ fontSize: 'max(0.677vw, 12px)' }}
+              >
+                Customise your order, see below for available add-ons.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       <Rule />
 
-      {/* -- COLLABORATION MENU --------------------------- */}
+      {/* -- REFRESHERS MENU ------------------------------ */}
       <section
-        id="collab"
-        ref={collabRef}
+        id="refreshers"
+        ref={refreshersRef}
         className="px-5 py-20 md:px-[3.9vw] md:py-28"
       >
-        {/* Collab header block */}
+        {/* Refreshers header block */}
         <div
           className="mb-14 rounded-[4px] border border-[rgba(151,29,19,0.15)] bg-[#0d1410] p-8 md:p-10"
           data-reveal
@@ -676,7 +706,7 @@ export default function MenuPage() {
                 className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
-                Collaboration Menu
+                Refreshers Menu
               </span>
               <p
                 className="m-0 font-semibold text-white"
@@ -718,7 +748,7 @@ export default function MenuPage() {
 
         <div className="mb-10">
           <SectionTitle>
-            Special<br />
+             Refreshers Menu <br />
             <span
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -729,7 +759,7 @@ export default function MenuPage() {
                 color: 'rgba(255,255,255,0.88)',
               }}
             >
-              collabs.
+              Italian Sodas
             </span>
           </SectionTitle>
         </div>
