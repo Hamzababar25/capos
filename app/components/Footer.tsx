@@ -13,8 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 const footerMarqueeItems = [
   'Available for Booking',
   '2026 Season Open',
-  'NY · NJ · CT · PA',
-  'By Invitation',
+  'NY · NJ · CT · PA · Beyond',
   'Handcrafted On-Site',
   'Est. 2025',
 ];

@@ -1,0 +1,41 @@
+/* Mysterious, dim-lit atmosphere for the Shop teaser page */
+
+.shop-shirt-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  filter: blur(38px) grayscale(1) brightness(0.45) contrast(1.1);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 68%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 68%);
+}
+
+.shop-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.shop-glow-word {
+  animation: shopFlicker 4.5s ease-in-out infinite;
+  text-shadow: 0 0 40px rgba(151, 29, 19, 0.55), 0 0 90px rgba(151, 29, 19, 0.25);
+}
+
+@keyframes shopFlicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(151, 29, 19, 0.55), 0 0 90px rgba(151, 29, 19, 0.25); }
+  42%      { opacity: 0.94; text-shadow: 0 0 24px rgba(151, 29, 19, 0.35), 0 0 60px rgba(151, 29, 19, 0.15); }
+  50%      { opacity: 1; text-shadow: 0 0 55px rgba(151, 29, 19, 0.7), 0 0 110px rgba(151, 29, 19, 0.35); }
+  68%      { opacity: 0.96; text-shadow: 0 0 30px rgba(151, 29, 19, 0.4), 0 0 70px rgba(151, 29, 19, 0.18); }
+}
+
+.shop-countdown {
+  animation: shopPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes shopPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(151, 29, 19, 0.15), 0 0 40px -12px rgba(151, 29, 19, 0.25); }
+  50%      { box-shadow: 0 0 0 1px rgba(151, 29, 19, 0.35), 0 0 70px -8px rgba(151, 29, 19, 0.5); }
+}
