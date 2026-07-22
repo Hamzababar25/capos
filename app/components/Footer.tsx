@@ -186,7 +186,7 @@ export default function Footer() {
                 <li><Link href="/"         className="c-footer-nav-link">Home</Link></li>
                 <li><Link href="/catering" className="c-footer-nav-link">Catering</Link></li>
                 <li><Link href="/moments"  className="c-footer-nav-link">Moments</Link></li>
-                <li><Link href="/articles" className="c-footer-nav-link">Articles</Link></li>
+                <li><Link href="/shop" className="c-footer-nav-link">Shop</Link></li>
                 <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('about')}>About</a></li>
                 <li><a href="#" className="c-footer-nav-link" onClick={scrollToSection('booking')}>Book Event</a></li>
               </ul>
