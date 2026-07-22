@@ -262,15 +262,15 @@ export default function GradientHero() {
             <div className="pixi-intro-foot-items">
               <div className="pixi-intro-foot-item t-text-lg">
                 <strong>New Jersey</strong>
-                <span className="pixi-intro-foot-sub">40.7375° N, 0.1278° W</span>
+                <span className="pixi-intro-foot-sub"></span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Sumatran Beans</strong>
-                <span className="pixi-intro-foot-sub">ethically sourced</span>
+                <strong>Ethically sourced</strong>
+                <span className="pixi-intro-foot-sub"></span>
               </div>
               <div className="pixi-intro-foot-item t-text-lg">
-                <strong>Italian Touch</strong>
-                <span className="pixi-intro-foot-sub">roasted to order</span>
+                <strong>Roasted to Order</strong>
+                <span className="pixi-intro-foot-sub"></span>
               </div>
             </div>
 
