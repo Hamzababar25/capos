@@ -706,19 +706,19 @@ export default function MenuPage() {
                 className="font-bold uppercase tracking-[0.22em] text-[#971d13]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
-                Refreshers Menu
+                {/* Refreshers Menu */}
               </span>
               <p
                 className="m-0 font-semibold text-white"
                 style={{ fontSize: 'clamp(16px, 1.3vw, 20px)' }}
               >
-                In collaboration with <span className="text-[#971d13]">Namkeen</span>
+                Capos <span className="text-[#971d13]">Refreshers</span>
               </p>
               <p
                 className="m-0 text-[rgba(240,237,230,0.45)]"
                 style={{ fontSize: 'max(0.9vw, 13px)' }}
               >
-                9 N Beverwyck Rd, Lake Hiawatha, NJ 07034
+                Crafted with fresh ingredients for a light, vibrant, and refreshing experience.
               </p>
             </div>
             <div className="flex flex-col gap-2 md:items-end">
@@ -727,7 +727,7 @@ export default function MenuPage() {
                   className="rounded-sm border border-[rgba(151,29,19,0.3)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(151,29,19,0.8)]"
                   style={{ fontSize: 'max(0.677vw, 10px)' }}
                 >
-                  Cars N&apos; Coffee
+                  Perfect for any time of day.
                 </span>
                 <span
                   className="rounded-sm border border-[rgba(240,237,230,0.12)] px-3 py-1.5 font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.4)]"
@@ -740,7 +740,7 @@ export default function MenuPage() {
                 className="m-0 text-[rgba(240,237,230,0.35)]"
                 style={{ fontSize: 'max(0.677vw, 11px)' }}
               >
-                9 AM – 1 PM &nbsp;·&nbsp; May 10, 2026
+                Refresh • Recharge • Enjoy
               </p>
             </div>
           </div>

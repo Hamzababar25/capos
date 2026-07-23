@@ -69,16 +69,16 @@ const events: Event[] = [
     location: 'Hoboken, NJ',
     type: 'Brand Activation',
     date: 'February 2026',
-    image: '/capos-3.PNG',
+    image: '/momento.jpg',
   },
   {
     id: 6,
-    title: 'Winter Gala',
-    venue: 'Waldorf Astoria',
-    location: 'Manhattan, NY',
-    type: 'Corporate',
-    date: 'January 2026',
-    image: '/capos3.PNG',
+    title: 'Zayan’s Coffee Corral',
+    venue: 'Private Venue',
+    location: 'New Jersey',
+    type: 'Birthday Party',
+    date: 'October 2025',
+    image: '/zayan.jpg',
   },
 ];
 

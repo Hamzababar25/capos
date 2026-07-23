@@ -320,7 +320,7 @@
 }
 
 .mp-slide-img {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   filter: brightness(0.88) contrast(1.08) saturate(1.02);
 }
