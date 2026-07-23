@@ -28,7 +28,7 @@ interface Event {
 const events: Event[] = [
     {
     id: 1,
-    title: 'Dinner at Hill',
+    title: 'Dinner at Hills',
     venue: 'Hill of Herats',
     location: 'Washington Valley Rd, NJ',
     type: 'Private Party',
@@ -60,16 +60,16 @@ const events: Event[] = [
     location: 'Parsippany–Troy Hills Township, NJ',
     type: 'Pop-up',
     date: 'March 2026',
-    image: '/rosie.PNG',
+    image: '/momento.jpg',
   },
   {
     id: 5,
-    title: 'The Morning Ritual',
+    title: 'Zafar Bro’s x PSA Rutgers x Motherland PK',
     venue: 'Rooftop at The Standard',
     location: 'Hoboken, NJ',
     type: 'Brand Activation',
     date: 'February 2026',
-    image: '/momento.jpg',
+    image: '/zafar.jpeg',
   },
   {
     id: 6,
@@ -96,26 +96,26 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     quote:
-      'Capo’s made our wedding morning feel like a boutique café. Every guest asked where the coffee was from, the rose saffron latte stole the show.',
-    author: 'Sana & Adil',
-    role: 'Bride & Groom',
-    event: 'Long Island, NY · May 2026',
+      'The team has real craft, you can taste it. From the tiramisu latte to how carefully they poured each cup, it was clearly built by people who love what they do.',
+    author: 'Hasan Zafar',
+    role: 'Founder, Namkeen',
+    event: 'Collab Pop-up · May 2026',
   },
   {
     id: 2,
     quote:
       'Working with Capo’s was effortless. They arrived early, set up beautifully, and treated every one of our 300 attendees like a VIP. Our team is already asking when they’ll be back.',
-    author: 'Meera Patel',
+    author: 'Annika Huq',
     role: 'Head of Events',
-    event: 'Studio 47 · April 2026',
+    event: 'Corporate · April 2026',
   },
   {
     id: 3,
     quote:
-      'The team has real craft, you can taste it. From the tiramisu latte to how carefully they poured each cup, it was clearly built by people who love what they do.',
-    author: 'Farhan Qureshi',
-    role: 'Founder, Namkeen',
-    event: 'Collab Pop-up · May 2026',
+      'Capo’s made our wedding morning feel like a boutique café. Every guest asked where the coffee was from, the rose saffron latte stole the show.',
+    author: 'Sana & Adil',
+    role: 'Bride & Groom',
+    event: 'Long Island, NY · May 2026',
   },
 ];
 

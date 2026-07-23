@@ -102,7 +102,7 @@ export default function Footer() {
         <div className="c-footer-head">
           <div className="c-footer-head-eyebrow">
             <span className="c-footer-head-dot" aria-hidden />
-            <span>Colophon</span>
+            <span></span>
             <span className="c-footer-head-rule" aria-hidden />
           </div>
           <h2 className="c-footer-title t-h2">
