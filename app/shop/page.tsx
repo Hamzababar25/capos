@@ -8,7 +8,7 @@ import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
 import './shop.css';
 
 /* Launch: midnight at the end of August 15th (America/New_York) → Aug 16, 2026 00:00 */
-const LAUNCH_DATE = new Date('2026-08-16T00:00:00-04:00');
+const LAUNCH_DATE = new Date('2026-08-14T00:00:00-04:00');
 
 function getTimeLeft() {
   const diff = Math.max(0, LAUNCH_DATE.getTime() - Date.now());
@@ -114,7 +114,7 @@ export default function ShopPage() {
             className="m-0 mb-14 max-w-140 leading-[1.7] text-[rgba(240,237,230,0.55)]"
             style={{ fontSize: 'max(1.25vw, 18px)' }}
           >
-            Our shop is being crafted with care and launches August 15th Midnight.
+            Our shop is being crafted with care and launches August 14th Midnight.
             Check back soon.
           </p>
 

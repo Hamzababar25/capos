@@ -14,7 +14,7 @@ const categories = [
     items: [
       {
         q: 'How do I book CAPOS for my event?',
-        a: 'Fill out our catering inquiry form on the website, or email us directly at hello@capos.coffee. Share your event date, venue, and guest count and we\'ll get back to you within 24–48 hours to confirm availability and discuss the details.',
+        a: 'Fill out our catering inquiry form on the website, or email us directly at info@capos.coffee. Share your event date, venue, and guest count and we\'ll get back to you within 24–48 hours to confirm availability and discuss the details.',
       },
       {
         q: 'How far in advance should I book?',
@@ -211,11 +211,11 @@ export default function FAQPage() {
               Can&apos;t find your answer here? Reach out directly, we reply within 24 hours.
             </p>
             <a
-              href="mailto:hello@capos.coffee"
+              href="mailto:info@capos.coffee"
               className="btn-primary"
               style={{ padding: '13px 28px', fontSize: 'max(0.677vw, 11px)', letterSpacing: '0.12em' }}
             >
-              hello@capos.coffee →
+              info@capos.coffee →
             </a>
           </div>
         </div>

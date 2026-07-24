@@ -26,17 +26,9 @@ interface Event {
 }
 
 const events: Event[] = [
-    {
-    id: 1,
-    title: 'Dinner at Hills',
-    venue: 'Hill of Herats',
-    location: 'Washington Valley Rd, NJ',
-    type: 'Private Party',
-    date: 'March 2026',
-    image: '/Bar.png',
-  },
+    
   {
-    id: 2,
+    id: 1,
     title: 'Tuscany Rose Watch Trading Show',
     venue: 'Englishtown',
     location: 'Monmouth County, NJ',
@@ -45,13 +37,22 @@ const events: Event[] = [
     image: '/watch.jpeg',
   },
   {
+    id: 2,
+    title: 'Zafar Bro’s x PSA Rutgers x Motherland PK',
+    venue: 'Rooftop at The Standard',
+    location: 'Hoboken, NJ',
+    type: 'Brand Activation',
+    date: 'February 2026',
+    image: '/zafar.jpeg',
+  },
+  {
     id: 3,
-    title: 'Pakistan Day Parade',
-    venue: ' Grove Ave & Oak Tree Rd',
-    location: 'Edison, NJ',
-    type: 'Pop-up',
-    date: 'August 2025',
-    image: '/parade.png',
+    title: 'Dinner at Hills',
+    venue: 'Hill of Herats',
+    location: 'Washington Valley Rd, NJ',
+    type: 'Private Party',
+    date: 'March 2026',
+    image: '/Bar.png',
   },
   {
     id: 4,
@@ -60,17 +61,19 @@ const events: Event[] = [
     location: 'Parsippany–Troy Hills Township, NJ',
     type: 'Pop-up',
     date: 'March 2026',
-    image: '/momento.jpg',
+    image: '/capos1.PNG',
   },
   {
     id: 5,
-    title: 'Zafar Bro’s x PSA Rutgers x Motherland PK',
-    venue: 'Rooftop at The Standard',
-    location: 'Hoboken, NJ',
-    type: 'Brand Activation',
-    date: 'February 2026',
-    image: '/zafar.jpeg',
+    title: 'Pakistan Day Parade',
+    venue: ' Grove Ave & Oak Tree Rd',
+    location: 'Edison, NJ',
+    type: 'Pop-up',
+    date: 'August 2025',
+    image: '/parade.png',
   },
+  
+  
   {
     id: 6,
     title: 'Zayan’s Coffee Corral',

@@ -8,9 +8,9 @@ import './stats-section.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: '5+', label: 'Years of\nmastery',      num: 5, suffix: '+'  },
+  { value: '10+', label: 'Years of\nmastery',      num: 10, suffix: '+'  },
   { value: '100',  label: 'Events\n Catered', num: 100, suffix: '+'   },
-  { value: '5000', label: 'Cups\nserved', num: 5000,  suffix: '+' },
+  { value: '1000', label: 'Cups\nserved', num: 1000,  suffix: '+' },
 ];
 
 export default function StatsSection() {
@@ -33,7 +33,7 @@ export default function StatsSection() {
       onEnter: () => {
         gsap.to(dividers, { opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: 'expo.out' });
         gsap.to(numbers,  { opacity: 1, y: 0, duration: 1,   stagger: 0.15, ease: 'expo.out', delay: 0.1 });
-        gsap.to(labels,   { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: 'expo.out', delay: 0.2 });
+        gsap.to(labels,   { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: 'expo.out', delay: 0.1 });
 
         // count each number from 0 → target, slow ease-out over 3.5 s
         numbers.forEach((el, i) => {
@@ -44,7 +44,7 @@ export default function StatsSection() {
             if (!start) start = ts;
             const p = Math.min((ts - start) / duration, 1);
             // quintic ease-out — very slow at the end so the last few digits "tick" in
-            const eased = 1 - Math.pow(1 - p, 5);
+            const eased = 1 - Math.pow(1 - p, 3);
             el.textContent = Math.floor(eased * num) + suffix;
             if (p < 1) requestAnimationFrame(tick);
           };
