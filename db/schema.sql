@@ -1,9 +1,8 @@
--- CAPOS Articles — ready for Supabase / Postgres
--- Apply when the database is provisioned. Until then, lib/articles.ts seeds the catalog.
+-- CAPOS Articles + Purchases schema
+-- Applied via Supabase migration / SQL editor
 
 create extension if not exists "pgcrypto";
 
--- ── Articles catalog ──────────────────────────────────────
 create table if not exists public.articles (
   id            text primary key,
   slug          text unique not null,
@@ -27,7 +26,6 @@ create table if not exists public.articles (
   updated_at    timestamptz not null default now()
 );
 
--- ── Purchases (Stripe checkout outcomes) ──────────────────
 create table if not exists public.article_purchases (
   id                    uuid primary key default gen_random_uuid(),
   article_id            text not null references public.articles(id),
@@ -48,12 +46,12 @@ create index if not exists article_purchases_email_idx
 create index if not exists article_purchases_article_idx
   on public.article_purchases (article_id);
 
--- RLS: public can read active articles; purchases are service-role only
 alter table public.articles enable row level security;
 alter table public.article_purchases enable row level security;
 
+drop policy if exists "Public read active articles" on public.articles;
 create policy "Public read active articles"
   on public.articles for select
   using (active = true);
 
--- No public policies on purchases — insert/update via service role / webhook only
+-- Purchases: no public policies — service role only (webhook / server)

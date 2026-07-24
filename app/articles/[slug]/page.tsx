@@ -1,12 +1,12 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
 import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
-import { ARTICLES, formatPrice, type Article } from '@/lib/articles';
+import { formatPrice, getArticleBySlug, type Article } from '@/lib/articles';
 import '../articles.css';
 
 function ArticleDetailInner() {
@@ -14,15 +14,26 @@ function ArticleDetailInner() {
   const searchParams = useSearchParams();
   const slug = params?.slug ?? '';
 
-  const article = useMemo<Article | null>(
-    () => ARTICLES.find((a) => a.slug === slug) ?? null,
-    [slug]
-  );
-
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loadingArticle, setLoadingArticle] = useState(true);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const cancelled = searchParams.get('cancelled') === '1';
+
+  useEffect(() => {
+    let cancelledFetch = false;
+    setLoadingArticle(true);
+    getArticleBySlug(slug).then((a) => {
+      if (!cancelledFetch) {
+        setArticle(a);
+        setLoadingArticle(false);
+      }
+    });
+    return () => {
+      cancelledFetch = true;
+    };
+  }, [slug]);
 
   useEffect(() => {
     if (cancelled) setError('');
@@ -60,6 +71,14 @@ function ArticleDetailInner() {
       setLoading(false);
     }
   };
+
+  if (loadingArticle) {
+    return (
+      <main className="ad-hero" style={{ minHeight: '50vh' }}>
+        <p className="ad-eyebrow t-h6">Loading…</p>
+      </main>
+    );
+  }
 
   if (!article) {
     return (

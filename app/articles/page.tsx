@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
-import { ARTICLES, formatPrice, type Article } from '@/lib/articles';
+import { ARTICLES, formatPrice, getArticles, type Article } from '@/lib/articles';
 import './articles.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -55,7 +55,17 @@ export default function ArticlesPage() {
   const heroRef = useRef<HTMLElement>(null);
   const featuredRef = useRef<HTMLElement>(null);
   const catalogRef = useRef<HTMLElement>(null);
-  const [articles] = useState(ARTICLES);
+  const [articles, setArticles] = useState<Article[]>(ARTICLES);
+
+  useEffect(() => {
+    let cancelled = false;
+    getArticles().then((list) => {
+      if (!cancelled && list.length) setArticles(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -133,7 +143,7 @@ export default function ArticlesPage() {
     requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => triggers.forEach((t) => t.kill());
-  }, []);
+  }, [articles]);
 
   const featured = articles.filter((a) => a.featured);
 

@@ -1,8 +1,9 @@
 /**
- * Articles catalog — currently seeded in-memory.
- * Swap `getArticles` / `getArticleBySlug` to Supabase once DB is live
- * (see db/schema.sql). Keep this interface stable so the UI doesn't change.
+ * Articles catalog — reads from Supabase when configured,
+ * otherwise falls back to in-memory seed (local / offline).
  */
+
+import { createServerClient, isSupabaseConfigured } from './supabase';
 
 export interface Article {
   id: string;
@@ -23,7 +24,26 @@ export interface Article {
   publishedAt: string;
 }
 
-/** Seed catalog — 4 event-tied editorial pieces */
+type ArticleRow = {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  body: string[] | null;
+  event_type: string;
+  event_label: string;
+  price_cents: number;
+  currency: string;
+  cover_image: string;
+  gallery: string[] | null;
+  pages: number;
+  format: string;
+  featured: boolean;
+  published_at: string;
+};
+
+/** Seed catalog — 4 event-tied editorial pieces (also used to seed DB) */
 export const ARTICLES: Article[] = [
   {
     id: 'art_wedding_morning',
@@ -119,6 +139,27 @@ export const ARTICLES: Article[] = [
   },
 ];
 
+function mapRow(row: ArticleRow): Article {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    subtitle: row.subtitle,
+    excerpt: row.excerpt,
+    body: row.body ?? [],
+    eventType: row.event_type,
+    eventLabel: row.event_label,
+    priceCents: row.price_cents,
+    currency: (row.currency as 'usd') || 'usd',
+    coverImage: row.cover_image,
+    gallery: row.gallery ?? [],
+    pages: row.pages,
+    format: (row.format as Article['format']) || 'Digital PDF',
+    featured: row.featured,
+    publishedAt: row.published_at,
+  };
+}
+
 export function formatPrice(cents: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -127,15 +168,71 @@ export function formatPrice(cents: number, currency: string = 'usd'): string {
   }).format(cents / 100);
 }
 
-/** Drop-in for future: replace body with supabase.from('articles').select('*') */
 export async function getArticles(): Promise<Article[]> {
-  return ARTICLES;
+  if (!isSupabaseConfigured()) return ARTICLES;
+
+  const supabase = createServerClient();
+  if (!supabase) return ARTICLES;
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('active', true)
+    .order('published_at', { ascending: false });
+
+  if (error || !data?.length) {
+    if (error) console.warn('[articles] supabase fallback:', error.message);
+    return ARTICLES;
+  }
+
+  return (data as ArticleRow[]).map(mapRow);
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  return ARTICLES.find((a) => a.slug === slug) ?? null;
+  if (!isSupabaseConfigured()) {
+    return ARTICLES.find((a) => a.slug === slug) ?? null;
+  }
+
+  const supabase = createServerClient();
+  if (!supabase) {
+    return ARTICLES.find((a) => a.slug === slug) ?? null;
+  }
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', slug)
+    .eq('active', true)
+    .maybeSingle();
+
+  if (error || !data) {
+    if (error) console.warn('[articles] supabase slug fallback:', error.message);
+    return ARTICLES.find((a) => a.slug === slug) ?? null;
+  }
+
+  return mapRow(data as ArticleRow);
 }
 
 export async function getArticleById(id: string): Promise<Article | null> {
-  return ARTICLES.find((a) => a.id === id) ?? null;
+  if (!isSupabaseConfigured()) {
+    return ARTICLES.find((a) => a.id === id) ?? null;
+  }
+
+  const supabase = createServerClient();
+  if (!supabase) {
+    return ARTICLES.find((a) => a.id === id) ?? null;
+  }
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('id', id)
+    .eq('active', true)
+    .maybeSingle();
+
+  if (error || !data) {
+    return ARTICLES.find((a) => a.id === id) ?? null;
+  }
+
+  return mapRow(data as ArticleRow);
 }

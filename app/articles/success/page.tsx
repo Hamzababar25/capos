@@ -11,11 +11,39 @@ import '../articles.css';
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
-  const [ready, setReady] = useState(false);
+  const [status, setStatus] = useState<'loading' | 'paid' | 'error'>('loading');
+  const [title, setTitle] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setReady(true);
-  }, []);
+    if (!sessionId) {
+      setStatus('paid');
+      return;
+    }
+
+    let cancelled = false;
+    fetch(`/api/checkout/session?session_id=${encodeURIComponent(sessionId)}`)
+      .then(async (res) => {
+        const data = await res.json();
+        if (cancelled) return;
+        if (!res.ok) {
+          setStatus('error');
+          return;
+        }
+        setStatus(data.paid ? 'paid' : 'error');
+        setTitle(data.article?.title ?? null);
+        setEmail(data.email ?? null);
+        setSaved(Boolean(data.purchaseSaved));
+      })
+      .catch(() => {
+        if (!cancelled) setStatus('error');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId]);
 
   return (
     <main className="as-main">
@@ -28,20 +56,50 @@ function SuccessContent() {
       />
 
       <div className="as-inner">
-        <span className="as-eyebrow t-h6">Payment confirmed</span>
+        <span className="as-eyebrow t-h6">
+          {status === 'loading'
+            ? 'Confirming payment'
+            : status === 'paid'
+              ? 'Payment confirmed'
+              : 'Almost there'}
+        </span>
         <h1 className="as-title">
-          The pour is <i>yours.</i>
+          {status === 'paid' ? (
+            <>
+              The pour is <i>yours.</i>
+            </>
+          ) : status === 'loading' ? (
+            <>Confirming…</>
+          ) : (
+            <>
+              We&apos;re <i>checking</i> that.
+            </>
+          )}
         </h1>
         <p className="as-copy">
-          Thank you for supporting Capo&apos;s editorial library.
-          {sessionId
-            ? ' Your Stripe receipt is on the way.'
-            : ' Your purchase went through.'}{' '}
-          Digital delivery will attach to this checkout once the database is connected.
+          {status === 'loading' && 'Verifying your Stripe checkout with Capo’s library…'}
+          {status === 'paid' && (
+            <>
+              Thank you{email ? `, ${email}` : ''}
+              {title ? (
+                <>
+                  {' '}
+                  — <strong style={{ color: '#fff' }}>{title}</strong> is yours.
+                </>
+              ) : (
+                ' for supporting Capo’s editorial library.'
+              )}{' '}
+              {saved
+                ? 'Your purchase is saved in our records.'
+                : 'Your Stripe receipt is on the way. Purchase record will sync once the webhook is running.'}
+            </>
+          )}
+          {status === 'error' &&
+            'We could not verify this session yet. If you were charged, your receipt from Stripe is still valid — email us at hello@capos.coffee.'}
         </p>
-        {ready && sessionId && (
+        {sessionId && (
           <p className="as-copy" style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
-            Session · {sessionId.slice(0, 18)}…
+            Session · {sessionId.slice(0, 22)}…
           </p>
         )}
         <div className="as-actions">
