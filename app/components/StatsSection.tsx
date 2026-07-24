@@ -8,9 +8,9 @@ import './stats-section.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: '10+', label: 'Years of\nmastery',      num: 10, suffix: '+'  },
+  { value: '7+', label: 'Years of\nmastery',      num: 7, suffix: '+'  },
   { value: '100',  label: 'Events\n Catered', num: 100, suffix: '+'   },
-  { value: '1000', label: 'Cups\nserved', num: 1000,  suffix: '+' },
+  { value: '5000', label: 'Cups\nserved', num: 5000,  suffix: '+' },
 ];
 
 export default function StatsSection() {

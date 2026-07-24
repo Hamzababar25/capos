@@ -121,8 +121,8 @@ export default function Footer() {
               Reach out for collaborations, wholesale enquiries, <br />
               or simply a great cup of conversation.
             </p>
-            <a href="mailto:hello@capos.coffee" className="c-footer-email">
-              info@capos.com
+            <a href="mailto:info@capos.coffee" className="c-footer-email">
+              info@capos.coffee
               <span className="c-footer-arrow">→</span>
             </a>
           </div>
