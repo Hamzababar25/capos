@@ -121,8 +121,8 @@ export default function Footer() {
               Reach out for collaborations, wholesale enquiries, <br />
               or simply a great cup of conversation.
             </p>
-            <a href="mailto:hello@capos.coffee" className="c-footer-email">
-              info@capos.com
+            <a href="mailto:info@capos.coffee" className="c-footer-email">
+              info@capos.coffee
               <span className="c-footer-arrow">→</span>
             </a>
           </div>
@@ -254,11 +254,11 @@ export default function Footer() {
         <div className="c-footer-bottom">
           <div className="c-footer-bottom-left">
             <span className="c-footer-muted t-text-sm">
-              © 2025 · CAPOS Coffee · All rights reserved
+              © 2025 · CAPOS Coffee LLC· All rights reserved
             </span>
             <br/>
             <span className="c-footer-signature t-text-sm">
-              Crafted with <span className="c-footer-signature-heart" aria-hidden>♦</span> in New Jersey
+              Crafted <span className="c-footer-signature-heart" aria-hidden></span> in New Jersey
             </span>
           </div>
 

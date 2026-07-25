@@ -63,7 +63,7 @@ const signatures: Drink[] = [
   {
     name: 'La Dolce Latte',
     desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and honey/caramel for rich sweetness. Finished with smooth cold foam for a creamy, luxurious sip that lives up to its name, "The Sweet Latte."',
-    origin: 'A nod to "la dolce vita" — the sweet life',
+    origin: 'A nod to "la dolce vita"  the sweet life',
     ingredients: 'Espresso · Brown sugar · Honey caramel · Cold foam',
     image: '/ladoche.png',
   },
@@ -73,11 +73,11 @@ const essentialFlavors = ['Vanilla', 'Caramel', 'Hazelnut', 'Mocha', 'White Choc
 
 const collabItems: Drink[] = [
   {
-    name: 'Tonys Cup',
-    desc: 'Dark cherry and vanilla Italian soda topped with a swirl of cream. Bold & unapologetic refreshment',
-    origin: 'Inspired by classic Italian soda shops, with a bold cherry-vanilla twist.',
-    ingredients: 'Dark Cherry Syrup · Vanilla Syrup · Soda Water · Cream ',
-    image: '/tonycup.png',
+    name: "Tony's Cup",
+    desc: "Dark cherry and vanilla Italian soda topped with a swirl of cream. Bold & unapologetic refreshment",
+    origin: "Inspired by classic Italian soda shops, with a bold cherry-vanilla twist.",
+    ingredients: "Dark Cherry Syrup · Vanilla Syrup · Soda Water · Cream ",
+    image: "/tonycup.png",
     imageWidth: 1000,
     imageHeight: 1200,
   },
@@ -94,10 +94,10 @@ const collabItems: Drink[] = [
 
 const addOns = [
   'Extra shot of espresso',
-  'Oat milk / Almond milk',
+  'Oat milk',
+  'Almond milk',
   'Rose petals / Drizzle',
   'Extra syrup pump',
-  'Biscoff bomb',
 ];
 
 /* ── Category tabs ─────────────────────────────────── */
@@ -798,7 +798,7 @@ export default function MenuPage() {
               </span>
             </SectionTitle>
             <p
-              className="mt-6 leading-[1.7] text-[rgba(240,237,230,0.5)]"
+              className="mt-20 pt-10 leading-[1.7] text-[rgba(240,237,230,0.5)]"
               style={{ fontSize: 'max(1.04vw, 15px)' }}
               data-reveal
             >
@@ -846,7 +846,7 @@ export default function MenuPage() {
           style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}
           aria-hidden
         >
-          CAPOS
+          CAPOS 
         </p>
         <p
           className="m-0 max-w-[360px] leading-[1.7] text-[rgba(240,237,230,0.4)]"
@@ -856,11 +856,11 @@ export default function MenuPage() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-6">
           <a
-            href="mailto:hello@capos.coffee"
+            href="mailto:info@capos.coffee"
             className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
-            hello@capos.coffee
+            info@capos.coffee
           </a>
           <span className="text-[rgba(240,237,230,0.2)]" aria-hidden>·</span>
           <a

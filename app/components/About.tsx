@@ -29,7 +29,7 @@ const chapters: Chapter[] = [
     subtitle: 'Any time · Any place',
     description:
       'Whether it’s a wedding, corporate event, or private celebration, Capo’s Coffee adds a touch of elegance with café-quality beverages and an unforgettable guest experience.',
-    image: '/capos1.PNG',
+    image: '/momento.jpg',
   },
   {
     id: 2,

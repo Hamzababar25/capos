@@ -322,7 +322,7 @@ export default function CateringForm() {
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
               <span className="w-[18px] shrink-0 text-[#971d13]" aria-hidden>✉</span>
               <a href="mailto:info@capos.com" className="text-white transition-colors duration-300 hover:text-[#971d13]">
-                info@capos.com
+                info@capos.coffee
               </a>
             </li>
             <li className="flex items-center gap-3 text-[rgba(240,237,230,0.7)]" style={{ fontSize: 'max(0.9vw, 14px)' }}>
