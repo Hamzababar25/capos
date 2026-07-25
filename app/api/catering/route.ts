@@ -12,7 +12,7 @@ const TO   = process.env.RESEND_TO    ?? 'hello@capos.coffee';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, eventType, eventDate, venue, guests, notes } = body;
+    const { name, email, phone, eventType, eventDate, venue, guests, budget, notes } = body;
 
     // Basic server-side validation
     if (!name || !email || !phone || !eventType || !eventDate || !venue || !guests) {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       to:       TO,
       replyTo:  email,
       subject:  `New Catering Inquiry: ${eventType} · ${eventDate}`,
-      react:    createElement(CateringInquiry, { name, email, phone, eventType, eventDate, venue, guests, notes }),
+      react:    createElement(CateringInquiry, { name, email, phone, eventType, eventDate, venue, guests, budget, notes }),
     });
 
     // 2. Auto-reply to customer

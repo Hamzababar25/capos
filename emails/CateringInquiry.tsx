@@ -11,6 +11,7 @@ interface Props {
   eventDate: string;
   venue: string;
   guests: string;
+  budget?: string;
   notes?: string;
 }
 
@@ -22,7 +23,7 @@ const muted   = '#8a7d6b';
 const border  = 'rgba(200,146,42,0.20)';
 
 export default function CateringInquiry({
-  name, email, phone, eventType, eventDate, venue, guests, notes,
+  name, email, phone, eventType, eventDate, venue, guests, budget, notes,
 }: Props) {
   return (
     <Html>
@@ -93,6 +94,15 @@ export default function CateringInquiry({
                 <Text style={{ margin: 0, fontSize: 14, color: warm }}>{guests}</Text>
               </Column>
             </Row>
+
+            {budget && (
+              <Row style={{ marginBottom: 20 }}>
+                <Column>
+                  <Text style={{ margin: '0 0 4px', fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: amber }}>Estimated Budget</Text>
+                  <Text style={{ margin: 0, fontSize: 14, color: warm }}>{budget}</Text>
+                </Column>
+              </Row>
+            )}
 
             {notes && (
               <>

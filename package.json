@@ -11,6 +11,7 @@
   "dependencies": {
     "@pixi/react": "^8.0.5",
     "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.8",
     "framer-motion": "^12.39.0",
