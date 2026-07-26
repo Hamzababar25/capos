@@ -30,7 +30,7 @@ const signatures: Drink[] = [
     desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
     origin: 'French pâtisserie meets Italian espresso',
     ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
-    image: '/cremblue.png',
+    image: '/creme-blu.jpg',
     imageWidth: 1000,
     imageHeight: 1200,
   },
@@ -862,15 +862,15 @@ export default function MenuPage() {
           >
             info@capos.coffee
           </a>
-          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden>·</span>
+          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden></span>
           <a
             href="tel:+17327894792"
             className="font-bold uppercase tracking-[0.14em] text-[rgba(240,237,230,0.45)] transition-colors hover:text-[#971d13]"
             style={{ fontSize: 'max(0.677vw, 11px)' }}
           >
-            +1 (732) 789-4792
+            {/* +1 (732) 789-4792 */}
           </a>
-          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden>·</span>
+          <span className="text-[rgba(240,237,230,0.2)]" aria-hidden></span>
           <a
             href="#"
             className="btn-primary"
