@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createElement } from 'react';
 import NewsletterWelcome from '@/emails/NewsletterWelcome';
+import { appendNewsletterSubscriber, isGoogleSheetsConfigured } from '@/lib/googleSheets';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,6 +32,16 @@ export async function POST(req: NextRequest) {
       subject: `New newsletter subscriber: ${email}`,
       react:   createElement(NewsletterWelcome, { email }),
     });
+
+    // 3. Log the signup to Google Sheets. Best-effort: a logging failure
+    // shouldn't block the subscriber's confirmation.
+    if (isGoogleSheetsConfigured()) {
+      try {
+        await appendNewsletterSubscriber(email);
+      } catch (sheetErr) {
+        console.error('[/api/newsletter] Google Sheets append failed', sheetErr);
+      }
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
