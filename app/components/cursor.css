@@ -79,15 +79,26 @@
   background: rgba(151, 29, 19, 0.08);
 }
 
-/* ── Sanity Studio — restore native cursor ───────────── */
+/* ── Sanity Studio — restore native cursor everywhere ── */
 @media (pointer: fine) {
+  html.studio-mode,
+  html.studio-mode body,
+  html.studio-mode *,
   html:has([data-studio]),
   html:has([data-studio]) body,
+  html:has([data-studio]) *,
   [data-studio],
   [data-studio] * {
     cursor: auto !important;
   }
 
+  html.studio-mode a,
+  html.studio-mode button,
+  html.studio-mode input,
+  html.studio-mode textarea,
+  html.studio-mode select,
+  html.studio-mode [role='button'],
+  html.studio-mode [data-ui],
   html:has([data-studio]) a,
   html:has([data-studio]) button,
   html:has([data-studio]) input,

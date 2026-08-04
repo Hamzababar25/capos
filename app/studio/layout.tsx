@@ -1,6 +1,8 @@
+import StudioCursorFix from './StudioCursorFix';
+
 /**
- * Full-viewport shell for Sanity Studio — sits above site chrome (cursor, etc.).
- * `data-studio` restores the native mouse cursor (site uses cursor: none globally).
+ * Full-viewport shell for Sanity Studio — sits above site chrome.
+ * StudioCursorFix restores the native mouse cursor for the whole document.
  */
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +17,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
         cursor: 'auto',
       }}
     >
+      <StudioCursorFix />
       {children}
     </div>
   );

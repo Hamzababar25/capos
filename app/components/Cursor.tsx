@@ -11,7 +11,7 @@ export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
-  // Hide custom cursor on Sanity Studio only — separate from setup effect
+  // Hide custom cursor on Sanity Studio + restore native pointer
   useEffect(() => {
     const dot = dotRef.current;
     const ring = ringRef.current;
@@ -20,6 +20,18 @@ export default function Cursor() {
     const hide = Boolean(pathname?.startsWith('/studio'));
     dot.style.display = hide ? 'none' : '';
     ring.style.display = hide ? 'none' : '';
+
+    if (hide) {
+      document.documentElement.classList.add('studio-mode');
+      document.body.classList.add('studio-mode');
+      document.documentElement.style.setProperty('cursor', 'auto', 'important');
+      document.body.style.setProperty('cursor', 'auto', 'important');
+    } else {
+      document.documentElement.classList.remove('studio-mode');
+      document.body.classList.remove('studio-mode');
+      document.documentElement.style.removeProperty('cursor');
+      document.body.style.removeProperty('cursor');
+    }
   }, [pathname]);
 
   useEffect(() => {
