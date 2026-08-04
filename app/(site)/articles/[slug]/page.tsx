@@ -4,8 +4,8 @@ import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
-import Navigation from '../../components/Navigation';
-import Footer from '../../components/Footer';
+import Navigation from '@/app/components/Navigation';
+import Footer from '@/app/components/Footer';
 import { formatPrice, getArticleBySlug, type Article } from '@/lib/articles';
 import '../articles.css';
 

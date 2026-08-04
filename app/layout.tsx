@@ -1,9 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import SmoothScroll from "./components/SmoothScroll";
-import Cursor from "./components/Cursor";
-import LoadingScreen from "./components/LoadingScreen";
-import PageTransition from "./components/PageTransition";
-import MagneticButtons from "./components/MagneticButtons";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,8 +27,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* Explicit viewport meta so mobile browsers render at the right density
-   and don't allow accidental pinch-zoom breaking the WebGL cursor. */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -42,6 +35,11 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
+/**
+ * Minimal root shell — shared by marketing site + Sanity Studio.
+ * Site chrome (cursor, Lenis, loading) lives in `app/(site)/layout.tsx`
+ * so /studio stays fast and keeps the native mouse cursor.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,18 +55,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
-        {/* Accessible skip-to-content — invisible until keyboard-focused */}
-        <a href="#main" className="skip-link">Skip to content</a>
-        <LoadingScreen />
-        <Cursor />
-        <MagneticButtons />
-        <SmoothScroll>
-          <PageTransition>
-            <div id="main">{children}</div>
-          </PageTransition>
-        </SmoothScroll>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -6,9 +6,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import { RoseFlourish, CupFlourish, BeanFlourish } from '../components/Flourishes';
+import Navigation from '@/app/components/Navigation';
+import Footer from '@/app/components/Footer';
+import { RoseFlourish, CupFlourish, BeanFlourish } from '@/app/components/Flourishes';
 import './page.css';
 
 gsap.registerPlugin(ScrollTrigger);

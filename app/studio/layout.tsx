@@ -1,23 +1,25 @@
-import StudioCursorFix from './StudioCursorFix';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Capo's Studio",
+  robots: { index: false, follow: false },
+};
 
 /**
- * Full-viewport shell for Sanity Studio — sits above site chrome.
- * StudioCursorFix restores the native mouse cursor for the whole document.
+ * Isolated Studio shell — no Lenis, custom cursor, or loading screen.
  */
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      data-studio
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 10000,
+        zIndex: 1,
         background: '#fff',
         overflow: 'auto',
         cursor: 'auto',
       }}
     >
-      <StudioCursorFix />
       {children}
     </div>
   );

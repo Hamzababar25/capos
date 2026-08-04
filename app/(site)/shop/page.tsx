@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navigation from '../components/Navigation';
-import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
+import Navigation from '@/app/components/Navigation';
+import { RoseFlourish, BeanFlourish } from '@/app/components/Flourishes';
 import './shop.css';
 
 /* Launch: midnight at the end of August 15th (America/New_York) → Aug 16, 2026 00:00 */

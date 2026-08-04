@@ -3,9 +3,9 @@
 import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import Navigation from '../../components/Navigation';
-import Footer from '../../components/Footer';
-import { RoseFlourish } from '../../components/Flourishes';
+import Navigation from '@/app/components/Navigation';
+import Footer from '@/app/components/Footer';
+import { RoseFlourish } from '@/app/components/Flourishes';
 import '../articles.css';
 
 function SuccessContent() {

@@ -5,9 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
+import Navigation from '@/app/components/Navigation';
+import Footer from '@/app/components/Footer';
+import { RoseFlourish, BeanFlourish } from '@/app/components/Flourishes';
 import { ARTICLES, formatPrice, getArticles, type Article } from '@/lib/articles';
 import './articles.css';
 

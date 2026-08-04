@@ -4,10 +4,10 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Navigation from '../components/Navigation';
+import Navigation from '@/app/components/Navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { RoseFlourish, BeanFlourish } from '../components/Flourishes';
+import { RoseFlourish, BeanFlourish } from '@/app/components/Flourishes';
 
 gsap.registerPlugin(ScrollTrigger);
 
