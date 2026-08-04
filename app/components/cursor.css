@@ -79,6 +79,25 @@
   background: rgba(151, 29, 19, 0.08);
 }
 
+/* ── Sanity Studio — restore native cursor ───────────── */
+@media (pointer: fine) {
+  html:has([data-studio]),
+  html:has([data-studio]) body,
+  [data-studio],
+  [data-studio] * {
+    cursor: auto !important;
+  }
+
+  html:has([data-studio]) a,
+  html:has([data-studio]) button,
+  html:has([data-studio]) input,
+  html:has([data-studio]) textarea,
+  html:has([data-studio]) select,
+  html:has([data-studio]) [role='button'] {
+    cursor: pointer !important;
+  }
+}
+
 /* ── Fallback: touch/coarse pointer devices ──────────── */
 @media (pointer: coarse), (hover: none) {
   .cursor-dot,
