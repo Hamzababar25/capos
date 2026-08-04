@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
 import Navigation from '@/app/components/Navigation';
 import Footer from '@/app/components/Footer';
-import { formatPrice, getArticleBySlug, type Article } from '@/lib/articles';
+import { formatPrice, type Article } from '@/lib/articles';
 import '../articles.css';
 
 function ArticleDetailInner() {
@@ -22,14 +22,23 @@ function ArticleDetailInner() {
   const cancelled = searchParams.get('cancelled') === '1';
 
   useEffect(() => {
+    if (!slug) return;
     let cancelledFetch = false;
     setLoadingArticle(true);
-    getArticleBySlug(slug).then((a) => {
-      if (!cancelledFetch) {
-        setArticle(a);
-        setLoadingArticle(false);
-      }
-    });
+    fetch(`/api/articles/${encodeURIComponent(slug)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data: { article?: Article }) => {
+        if (!cancelledFetch) {
+          setArticle(data.article ?? null);
+          setLoadingArticle(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelledFetch) {
+          setArticle(null);
+          setLoadingArticle(false);
+        }
+      });
     return () => {
       cancelledFetch = true;
     };

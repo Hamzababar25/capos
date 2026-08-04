@@ -3,8 +3,16 @@ import { apiVersion, dataset, isSanityConfigured, projectId } from '@/sanity/env
 
 export { isSanityConfigured };
 
+/**
+ * Server-side Sanity client.
+ * This dataset requires a token for reads (public query returns []).
+ * Never import this into client components — use /api/articles instead.
+ */
 export function getSanityClient(): SanityClient | null {
   if (!isSanityConfigured()) return null;
+
+  const token =
+    process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_WRITE_TOKEN;
 
   return createClient({
     projectId,
@@ -12,6 +20,7 @@ export function getSanityClient(): SanityClient | null {
     apiVersion,
     useCdn: false,
     perspective: 'published',
+    ...(token ? { token } : {}),
   });
 }
 

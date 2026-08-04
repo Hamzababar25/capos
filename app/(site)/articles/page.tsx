@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/app/components/Navigation';
 import Footer from '@/app/components/Footer';
 import { RoseFlourish, BeanFlourish } from '@/app/components/Flourishes';
-import { ARTICLES, formatPrice, getArticles, type Article } from '@/lib/articles';
+import { ARTICLES, formatPrice, type Article } from '@/lib/articles';
 import './articles.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -59,9 +59,19 @@ export default function ArticlesPage() {
 
   useEffect(() => {
     let cancelled = false;
-    getArticles().then((list) => {
-      if (!cancelled && list.length) setArticles(list);
-    });
+    // Server API uses Sanity token — browser cannot read this dataset publicly
+    fetch('/api/articles')
+      .then((r) => r.json())
+      .then((data: { articles?: Article[]; source?: string }) => {
+        if (cancelled) return;
+        if (data.articles?.length) {
+          setArticles(data.articles);
+          if (process.env.NODE_ENV === 'development') {
+            console.info('[articles] source:', data.source);
+          }
+        }
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
