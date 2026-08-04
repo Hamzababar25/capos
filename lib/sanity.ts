@@ -10,7 +10,7 @@ export function getSanityClient(): SanityClient | null {
     projectId,
     dataset,
     apiVersion,
-    useCdn: true,
+    useCdn: false,
     perspective: 'published',
   });
 }
