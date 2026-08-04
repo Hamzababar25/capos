@@ -1,9 +1,12 @@
 /**
- * Articles catalog — reads from Supabase when configured,
- * otherwise falls back to in-memory seed (local / offline).
+ * Articles catalog priority:
+ * 1. Sanity CMS (client-editable at /studio)
+ * 2. Supabase (sales DB mirror)
+ * 3. In-memory seed (offline / first boot)
  */
 
-import { createServerClient, isSupabaseConfigured } from './supabase';
+import { createServerClient, createServiceClient, isSupabaseConfigured } from './supabase';
+import { getSanityClient, isSanityConfigured } from './sanity';
 
 export interface Article {
   id: string;
@@ -43,7 +46,47 @@ type ArticleRow = {
   published_at: string;
 };
 
-/** Seed catalog — 4 event-tied editorial pieces (also used to seed DB) */
+type SanityArticle = {
+  articleId: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  body: string[] | null;
+  eventType: string;
+  eventLabel: string;
+  priceCents: number;
+  currency: string;
+  coverImage: string;
+  gallery: string[] | null;
+  pages: number;
+  format: string;
+  featured: boolean;
+  publishedAt: string;
+  active?: boolean;
+};
+
+const ARTICLE_PROJECTION = `{
+  articleId,
+  "slug": slug.current,
+  title,
+  subtitle,
+  excerpt,
+  body,
+  eventType,
+  eventLabel,
+  priceCents,
+  currency,
+  coverImage,
+  gallery,
+  pages,
+  format,
+  featured,
+  publishedAt,
+  active
+}`;
+
+/** Seed catalog — 4 event-tied editorial pieces (also used to seed Sanity / DB) */
 export const ARTICLES: Article[] = [
   {
     id: 'art_wedding_morning',
@@ -160,6 +203,27 @@ function mapRow(row: ArticleRow): Article {
   };
 }
 
+function mapSanity(doc: SanityArticle): Article {
+  return {
+    id: doc.articleId,
+    slug: doc.slug,
+    title: doc.title,
+    subtitle: doc.subtitle,
+    excerpt: doc.excerpt,
+    body: doc.body ?? [],
+    eventType: doc.eventType,
+    eventLabel: doc.eventLabel,
+    priceCents: doc.priceCents,
+    currency: (doc.currency as 'usd') || 'usd',
+    coverImage: doc.coverImage,
+    gallery: doc.gallery ?? [],
+    pages: doc.pages,
+    format: (doc.format as Article['format']) || 'Digital PDF',
+    featured: Boolean(doc.featured),
+    publishedAt: doc.publishedAt,
+  };
+}
+
 export function formatPrice(cents: number, currency: string = 'usd'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -168,11 +232,27 @@ export function formatPrice(cents: number, currency: string = 'usd'): string {
   }).format(cents / 100);
 }
 
-export async function getArticles(): Promise<Article[]> {
-  if (!isSupabaseConfigured()) return ARTICLES;
+async function fetchFromSanity(): Promise<Article[] | null> {
+  const client = getSanityClient();
+  if (!client) return null;
+
+  try {
+    const docs = await client.fetch<SanityArticle[]>(
+      `*[_type == "article" && active != false] | order(publishedAt desc) ${ARTICLE_PROJECTION}`
+    );
+    if (!docs?.length) return null;
+    return docs.map(mapSanity);
+  } catch (err) {
+    console.warn('[articles] sanity fetch failed:', err);
+    return null;
+  }
+}
+
+async function fetchFromSupabase(): Promise<Article[] | null> {
+  if (!isSupabaseConfigured()) return null;
 
   const supabase = createServerClient();
-  if (!supabase) return ARTICLES;
+  if (!supabase) return null;
 
   const { data, error } = await supabase
     .from('articles')
@@ -182,57 +262,123 @@ export async function getArticles(): Promise<Article[]> {
 
   if (error || !data?.length) {
     if (error) console.warn('[articles] supabase fallback:', error.message);
-    return ARTICLES;
+    return null;
   }
 
   return (data as ArticleRow[]).map(mapRow);
 }
 
+export async function getArticles(): Promise<Article[]> {
+  if (isSanityConfigured()) {
+    const fromSanity = await fetchFromSanity();
+    if (fromSanity?.length) return fromSanity;
+  }
+
+  const fromSupabase = await fetchFromSupabase();
+  if (fromSupabase?.length) return fromSupabase;
+
+  return ARTICLES;
+}
+
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  if (!isSupabaseConfigured()) {
-    return ARTICLES.find((a) => a.slug === slug) ?? null;
+  if (isSanityConfigured()) {
+    const client = getSanityClient();
+    if (client) {
+      try {
+        const doc = await client.fetch<SanityArticle | null>(
+          `*[_type == "article" && slug.current == $slug && active != false][0] ${ARTICLE_PROJECTION}`,
+          { slug }
+        );
+        if (doc) return mapSanity(doc);
+      } catch (err) {
+        console.warn('[articles] sanity slug failed:', err);
+      }
+    }
   }
 
-  const supabase = createServerClient();
-  if (!supabase) {
-    return ARTICLES.find((a) => a.slug === slug) ?? null;
+  if (isSupabaseConfigured()) {
+    const supabase = createServerClient();
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('slug', slug)
+        .eq('active', true)
+        .maybeSingle();
+
+      if (!error && data) return mapRow(data as ArticleRow);
+      if (error) console.warn('[articles] supabase slug fallback:', error.message);
+    }
   }
 
-  const { data, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('slug', slug)
-    .eq('active', true)
-    .maybeSingle();
-
-  if (error || !data) {
-    if (error) console.warn('[articles] supabase slug fallback:', error.message);
-    return ARTICLES.find((a) => a.slug === slug) ?? null;
-  }
-
-  return mapRow(data as ArticleRow);
+  return ARTICLES.find((a) => a.slug === slug) ?? null;
 }
 
 export async function getArticleById(id: string): Promise<Article | null> {
-  if (!isSupabaseConfigured()) {
-    return ARTICLES.find((a) => a.id === id) ?? null;
+  if (isSanityConfigured()) {
+    const client = getSanityClient();
+    if (client) {
+      try {
+        const doc = await client.fetch<SanityArticle | null>(
+          `*[_type == "article" && articleId == $id && active != false][0] ${ARTICLE_PROJECTION}`,
+          { id }
+        );
+        if (doc) return mapSanity(doc);
+      } catch (err) {
+        console.warn('[articles] sanity id failed:', err);
+      }
+    }
   }
 
-  const supabase = createServerClient();
-  if (!supabase) {
-    return ARTICLES.find((a) => a.id === id) ?? null;
+  if (isSupabaseConfigured()) {
+    const supabase = createServerClient();
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('id', id)
+        .eq('active', true)
+        .maybeSingle();
+
+      if (!error && data) return mapRow(data as ArticleRow);
+    }
   }
 
-  const { data, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('id', id)
-    .eq('active', true)
-    .maybeSingle();
+  return ARTICLES.find((a) => a.id === id) ?? null;
+}
 
-  if (error || !data) {
-    return ARTICLES.find((a) => a.id === id) ?? null;
+/**
+ * Mirror article into Supabase so purchase FK stays valid when Sanity is source of truth.
+ */
+export async function ensureArticleInSupabase(article: Article): Promise<void> {
+  const supabase = createServiceClient();
+  if (!supabase) return;
+
+  const { error } = await supabase.from('articles').upsert(
+    {
+      id: article.id,
+      slug: article.slug,
+      title: article.title,
+      subtitle: article.subtitle,
+      excerpt: article.excerpt,
+      body: article.body,
+      event_type: article.eventType,
+      event_label: article.eventLabel,
+      price_cents: article.priceCents,
+      currency: article.currency,
+      cover_image: article.coverImage,
+      gallery: article.gallery,
+      pages: article.pages,
+      format: article.format,
+      featured: article.featured,
+      published_at: article.publishedAt,
+      active: true,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'id' }
+  );
+
+  if (error) {
+    console.warn('[articles] supabase mirror failed:', error.message);
   }
-
-  return mapRow(data as ArticleRow);
 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getArticleBySlug } from '@/lib/articles';
+import { ensureArticleInSupabase, getArticleBySlug } from '@/lib/articles';
 import { getStripe, getSiteUrl } from '@/lib/stripe';
 
 export async function POST(req: NextRequest) {
@@ -16,6 +16,9 @@ export async function POST(req: NextRequest) {
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
+
+    // Keep Supabase articles row in sync for purchase FK when Sanity is CMS
+    await ensureArticleInSupabase(article);
 
     const stripe = getStripe();
     if (!stripe) {

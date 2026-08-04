@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import gsap from 'gsap';
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*▓▒░';
@@ -9,42 +10,52 @@ const TARGET_TEXT = 'MEMBERS ONLY';
 // TESTER KNOB: tweak the thunder background video's opacity while previewing.
 const VIDEO_OPACITY = 0.28;
 
+function present<T extends Element>(el: T | null | undefined): el is T {
+  return Boolean(el);
+}
+
 export default function LoadingScreen() {
-  const overlayRef   = useRef<HTMLDivElement>(null);
-  const videoRef     = useRef<HTMLVideoElement>(null);
-  const scanlineRef  = useRef<HTMLDivElement>(null);
-  const eyebrowRef   = useRef<HTMLParagraphElement>(null);
-  const logoRef      = useRef<HTMLDivElement>(null);
-  const lineRef      = useRef<HTMLDivElement>(null);
-  const tagRef       = useRef<HTMLParagraphElement>(null);
+  const pathname = usePathname();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const scanlineRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const tagRef = useRef<HTMLParagraphElement>(null);
   const scrambleRafRef = useRef<number>(0);
+  const playedRef = useRef(false);
+
+  // Studio: never mount the loading overlay
+  const isStudio = Boolean(pathname?.startsWith('/studio'));
 
   useEffect(() => {
+    // Skip Studio; play once on the first non-studio mount
+    if (isStudio || playedRef.current) return;
+
     const overlay = overlayRef.current;
-    const video   = videoRef.current;
+    const video = videoRef.current;
     if (!overlay || !video) return;
 
+    playedRef.current = true;
     document.body.style.overflow = 'hidden';
 
-    // occasional whole-frame flicker + jitter, like a loose antenna signal
     const flicker = gsap.timeline({ repeat: -1 });
     const flickerStep = () => {
-      const jitter = Math.random();
-      if (jitter > 0.88) {
-        gsap.to(video, {
-          opacity: Math.max(0, VIDEO_OPACITY - 0.1) + Math.random() * 0.15,
-          x: (Math.random() - 0.5) * 6,
-          duration: 0.05,
-          onComplete: () => gsap.to(video, { opacity: VIDEO_OPACITY, x: 0, duration: 0.08 }),
-        });
-      }
+      if (Math.random() <= 0.88) return;
+      gsap.to(video, {
+        opacity: Math.max(0, VIDEO_OPACITY - 0.1) + Math.random() * 0.15,
+        x: (Math.random() - 0.5) * 6,
+        duration: 0.05,
+        onComplete: () =>
+          gsap.to(video, { opacity: VIDEO_OPACITY, x: 0, duration: 0.08 }),
+      });
     };
     flicker.to({}, { duration: 0.09, repeat: -1, onRepeat: flickerStep });
 
-    // slow vertical drift of the scanline overlay for a rolling-picture feel
-    if (scanlineRef.current) {
-      gsap.set(scanlineRef.current, { backgroundPositionY: '0px' });
-      gsap.to(scanlineRef.current, {
+    const scanline = scanlineRef.current;
+    if (scanline) {
+      gsap.set(scanline, { backgroundPositionY: '0px' });
+      gsap.to(scanline, {
         backgroundPositionY: '400px',
         duration: 8,
         repeat: -1,
@@ -52,7 +63,6 @@ export default function LoadingScreen() {
       });
     }
 
-    /* -- alphabet scramble → reveal on the brand name -- */
     const scrambleLogo = () => {
       const el = logoRef.current;
       if (!el) return () => {};
@@ -65,11 +75,15 @@ export default function LoadingScreen() {
         let out = '';
         for (let idx = 0; idx < TARGET_TEXT.length; idx++) {
           const ch = TARGET_TEXT[idx];
-          if (ch === ' ') { out += ' '; continue; }
+          if (ch === ' ') {
+            out += ' ';
+            continue;
+          }
           const revealAt = duration * 0.2 + idx * perCharDelay;
-          out += elapsed >= revealAt
-            ? ch
-            : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
+          out +=
+            elapsed >= revealAt
+              ? ch
+              : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
         }
         el.textContent = out;
 
@@ -83,7 +97,6 @@ export default function LoadingScreen() {
       return () => cancelAnimationFrame(scrambleRafRef.current);
     };
 
-    /* -- GSAP timeline -------------------------------- */
     const tl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = '';
@@ -93,54 +106,77 @@ export default function LoadingScreen() {
 
     let stopScramble = () => {};
 
-    tl
-      // eyebrow fades in
-      .fromTo(eyebrowRef.current,
+    const eyebrow = eyebrowRef.current;
+    const logo = logoRef.current;
+    const tag = tagRef.current;
+
+    if (eyebrow) {
+      tl.fromTo(
+        eyebrow,
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
-      )
-      // logo rises up while its letters scramble through and lock into place
-      .call(() => { stopScramble = scrambleLogo(); }, [], '-=0.2')
-      .fromTo(logoRef.current,
+      );
+    }
+
+    tl.call(
+      () => {
+        stopScramble = scrambleLogo();
+      },
+      [],
+      '-=0.2'
+    );
+
+    if (logo) {
+      tl.fromTo(
+        logo,
         { opacity: 0, y: 36 },
         { opacity: 1, y: 0, duration: 0.75, ease: 'expo.out' },
         '-=0.2'
-      )
-      // amber line sweeps left → right beneath the logo
-      .fromTo(lineRef.current,
-        { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.9, ease: 'expo.inOut' },
-        '-=0.3'
-      )
-      // tagline
-      .fromTo(tagRef.current,
+      );
+    }
+
+    if (tag) {
+      tl.fromTo(
+        tag,
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
         '-=0.45'
-      )
-      // hold
-      .to({}, { duration: 0.9 })
-      // fade everything out
-      .to([eyebrowRef.current, logoRef.current, lineRef.current, tagRef.current], {
-        opacity: 0, y: -16,
+      );
+    }
+
+    tl.to({}, { duration: 0.9 });
+
+    const fadeTargets = [eyebrow, logo, tag].filter(present);
+    if (fadeTargets.length) {
+      tl.to(fadeTargets, {
+        opacity: 0,
+        y: -16,
         duration: 0.4,
         stagger: 0.04,
         ease: 'power3.in',
-      })
-      // wipe overlay upward
-      .to(overlay, {
+      });
+    }
+
+    tl.to(
+      overlay,
+      {
         yPercent: -100,
         duration: 0.9,
         ease: 'expo.inOut',
-      }, '-=0.1');
+      },
+      '-=0.1'
+    );
 
     return () => {
       cancelAnimationFrame(scrambleRafRef.current);
       stopScramble();
       flicker.kill();
       tl.kill();
+      document.body.style.overflow = '';
     };
-  }, []);
+  }, [isStudio]);
+
+  if (isStudio) return null;
 
   return (
     <div
@@ -158,7 +194,6 @@ export default function LoadingScreen() {
         overflow: 'hidden',
       }}
     >
-      {/* Thunder / atmospheric background video */}
       <video
         ref={videoRef}
         src="/Thunder.mp4"
@@ -178,7 +213,6 @@ export default function LoadingScreen() {
         }}
       />
 
-      {/* Rolling scanlines */}
       <div
         ref={scanlineRef}
         style={{
@@ -192,7 +226,6 @@ export default function LoadingScreen() {
         }}
       />
 
-      {/* CRT vignette */}
       <div
         style={{
           position: 'absolute',
@@ -203,10 +236,7 @@ export default function LoadingScreen() {
         }}
       />
 
-      {/* Content block */}
       <div style={{ position: 'relative', textAlign: 'center' }}>
-
-        {/* Eyebrow */}
         <p
           ref={eyebrowRef}
           style={{
@@ -223,7 +253,6 @@ export default function LoadingScreen() {
           Est. 2025 · Tri-State Area
         </p>
 
-        {/* Brand name */}
         <div
           ref={logoRef}
           style={{
@@ -241,18 +270,6 @@ export default function LoadingScreen() {
           MEMBERS ONLY
         </div>
 
-        {/* White sweep line — below the heading */}
-        {/* <div
-          ref={lineRef}
-          style={{
-            height: 1,
-            background: 'linear-gradient(90deg, #ffffff 0%, rgba(255,255,255,0.1) 100%)',
-            marginTop: 14,
-            borderRadius: 1,
-          }}
-        /> */}
-
-        {/* Tagline */}
         <p
           ref={tagRef}
           style={{
@@ -265,9 +282,7 @@ export default function LoadingScreen() {
             marginTop: 16,
             opacity: 0,
           }}
-        >
-          
-        </p>
+        />
       </div>
     </div>
   );

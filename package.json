@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:sanity": "node --env-file=.env.local scripts/seed-sanity.mjs"
   },
   "dependencies": {
     "@pixi/react": "^8.0.5",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
+    "@sanity/client": "^7.26.2",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.9.0",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.8",
     "framer-motion": "^12.39.0",
@@ -19,17 +23,21 @@
     "gsap": "^3.15.0",
     "lenis": "^1.3.23",
     "next": "16.2.6",
+    "next-sanity": "^13.3.1",
     "pixi.js": "^8.18.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.16.0",
-    "stripe": "^22.3.2"
+    "sanity": "^6.9.0",
+    "stripe": "^22.3.2",
+    "styled-components": "^6.5.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/styled-components": "^5.1.36",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
