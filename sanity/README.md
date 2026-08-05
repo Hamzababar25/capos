@@ -1,45 +1,77 @@
 # Capos × Sanity CMS (Step 3)
 
-Client edits articles at **`/studio`**. Site reads from Sanity first; Supabase still stores purchases.
+Client edits articles at **`/studio`**. Site reads from Sanity. Supabase mirrors articles + stores purchases.
 
-## One-time setup
+## Flow
 
-1. Create a free project: https://www.sanity.io/manage → **Create project** → name `capos`
-2. Copy **Project ID**
-3. Add to `.env.local` (and Vercel):
-
-```bash
-NEXT_PUBLIC_SANITY_PROJECT_ID=yourProjectId
-NEXT_PUBLIC_SANITY_DATASET=production
+```
+Studio Publish → Sanity webhook → /api/webhooks/sanity → Supabase articles
+                              ↘ site reads Sanity via /api/articles
 ```
 
-4. CORS: Sanity → Project → API → CORS origins  
-   - `http://localhost:3000` (Allow credentials)  
-   - your Vercel URL (Allow credentials)
+## Env (`.env.local` + Vercel)
 
-5. Write token (for seeding only): API → Tokens → Add API token → **Editor**  
-   ```bash
-   SANITY_API_WRITE_TOKEN=sk...
-   ```
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=kqc2ytxi
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_WRITE_TOKEN=sk...          # Editor token (read + seed)
+SANITY_WEBHOOK_SECRET=...             # shared secret for webhook / sync
+```
 
-6. Restart `npm run dev` → open http://localhost:3000/studio → log in with Sanity account
+## Sanity → Supabase webhook (production)
 
-7. Seed the 4 articles:
-   ```bash
-   npm run seed:sanity
-   ```
+1. Open https://www.sanity.io/manage/project/kqc2ytxi/api  
+2. **Webhooks** → **Create webhook**
+3. Settings:
+   - **Name:** `supabase-articles-sync`
+   - **URL:** `https://capos.coffee/api/webhooks/sanity?secret=YOUR_SANITY_WEBHOOK_SECRET`
+   - **Dataset:** `production`
+   - **Trigger on:** Create, Update, Delete
+   - **Filter:** `_type == "article"`
+   - **Projection** (optional but recommended):
 
-Invite the Capos client as a **Editor** in Sanity Manage so they can edit without seeing code.
+```groq
+{
+  _id,
+  _type,
+  articleId,
+  "slug": slug.current,
+  title,
+  subtitle,
+  excerpt,
+  body,
+  eventType,
+  eventLabel,
+  priceCents,
+  currency,
+  coverImage,
+  gallery,
+  pages,
+  format,
+  featured,
+  publishedAt,
+  active
+}
+```
+
+4. Save. Next Studio **Publish** → Supabase `articles` row updates within seconds.
+
+## Manual sync (catch-up)
+
+```bash
+curl -X POST "http://localhost:3000/api/articles/sync" \
+  -H "Authorization: Bearer $SANITY_WEBHOOK_SECRET"
+```
 
 ## Who edits what
 
 | Content | Where |
 |---------|--------|
 | Titles, body, prices, images, featured | Sanity `/studio` |
-| Purchases / sales | Supabase `article_purchases` |
+| Mirror catalog + purchases | Supabase |
 
-## Fallback order
+## Fallback order (site)
 
-1. Sanity (if project ID set + docs exist)  
+1. Sanity (via `/api/articles` + token)  
 2. Supabase `articles`  
-3. In-memory seed in `lib/articles.ts`
+3. In-memory seed

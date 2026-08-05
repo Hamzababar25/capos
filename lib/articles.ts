@@ -350,9 +350,16 @@ export async function getArticleById(id: string): Promise<Article | null> {
 /**
  * Mirror article into Supabase so purchase FK stays valid when Sanity is source of truth.
  */
-export async function ensureArticleInSupabase(article: Article): Promise<void> {
+export async function ensureArticleInSupabase(
+  article: Article,
+  options: { active?: boolean } = {}
+): Promise<{ ok: boolean; error?: string }> {
   const supabase = createServiceClient();
-  if (!supabase) return;
+  if (!supabase) {
+    return { ok: false, error: 'Supabase service client not configured' };
+  }
+
+  const active = options.active ?? true;
 
   const { error } = await supabase.from('articles').upsert(
     {
@@ -372,7 +379,7 @@ export async function ensureArticleInSupabase(article: Article): Promise<void> {
       format: article.format,
       featured: article.featured,
       published_at: article.publishedAt,
-      active: true,
+      active,
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'id' }
@@ -380,5 +387,53 @@ export async function ensureArticleInSupabase(article: Article): Promise<void> {
 
   if (error) {
     console.warn('[articles] supabase mirror failed:', error.message);
+    return { ok: false, error: error.message };
   }
+
+  return { ok: true };
+}
+
+/** Soft-delete in Supabase (keeps purchase history / FK). */
+export async function deactivateArticleInSupabase(
+  articleId: string
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createServiceClient();
+  if (!supabase) {
+    return { ok: false, error: 'Supabase service client not configured' };
+  }
+
+  const { error } = await supabase
+    .from('articles')
+    .update({ active: false, updated_at: new Date().toISOString() })
+    .eq('id', articleId);
+
+  if (error) {
+    console.warn('[articles] supabase deactivate failed:', error.message);
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true };
+}
+
+/** Pull every active Sanity article into Supabase (catch-up / webhook helper). */
+export async function syncAllArticlesToSupabase(): Promise<{
+  ok: boolean;
+  synced: number;
+  errors: string[];
+}> {
+  const list = await fetchFromSanity();
+  if (!list?.length) {
+    return { ok: false, synced: 0, errors: ['No Sanity articles to sync'] };
+  }
+
+  const errors: string[] = [];
+  let synced = 0;
+
+  for (const article of list) {
+    const result = await ensureArticleInSupabase(article);
+    if (result.ok) synced += 1;
+    else errors.push(`${article.id}: ${result.error ?? 'failed'}`);
+  }
+
+  return { ok: errors.length === 0, synced, errors };
 }
