@@ -33,7 +33,10 @@ type SanityDoc = {
 
 function authorize(req: NextRequest): boolean {
   const secret = process.env.SANITY_WEBHOOK_SECRET;
-  if (!secret) return true;
+  // Never open webhook without a secret in production
+  if (!secret) {
+    return process.env.NODE_ENV !== 'production' && !process.env.VERCEL;
+  }
 
   const header =
     req.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ||

@@ -16,8 +16,13 @@ export async function POST(req: NextRequest) {
     req.nextUrl.searchParams.get('secret') ||
     '';
 
-  // Local/dev: allow if no secret configured
-  if (secret && auth !== secret) {
+  const isProd = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL);
+
+  if (!secret) {
+    if (isProd) {
+      return NextResponse.json({ error: 'Sync secret not configured' }, { status: 503 });
+    }
+  } else if (auth !== secret) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

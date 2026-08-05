@@ -15,8 +15,23 @@ Studio Publish → Sanity webhook → /api/webhooks/sanity → Supabase articles
 NEXT_PUBLIC_SANITY_PROJECT_ID=kqc2ytxi
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_WRITE_TOKEN=sk...          # Editor token (read + seed)
-SANITY_WEBHOOK_SECRET=...             # shared secret for webhook / sync
+SANITY_WEBHOOK_SECRET=...             # required for webhook / sync
+STUDIO_USER=capos                     # browser gate for /studio
+STUDIO_PASSWORD=...                   # required on Vercel / production
 ```
+
+## Access control (important)
+
+`/studio` has **two locks**:
+
+1. **Browser password** (`STUDIO_USER` / `STUDIO_PASSWORD`) — site pe pehla gate  
+2. **Sanity login** — sirf invited project members edit kar sakte hain  
+
+Public visitors articles change **nahi** kar sakte. Client ko invite karo:
+
+https://www.sanity.io/manage/project/kqc2ytxi/members → **Invite** → role **Editor**
+
+Random Google sign-in se project mein entry nahi milti jab tak aap invite na karo.
 
 ## Sanity → Supabase webhook (production)
 
