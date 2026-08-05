@@ -161,9 +161,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unrecognized payload' }, { status: 400 });
     }
 
-    const result = await ensureArticleInSupabase(article, {
-      active: body.active !== false,
-    });
+    // Earlier branch already handled active === false (soft-delete)
+    const result = await ensureArticleInSupabase(article, { active: true });
 
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 500 });
