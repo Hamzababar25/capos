@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const COOKIE = 'capos_studio_gate';
+
+function expectedToken() {
+  const user = process.env.STUDIO_USER || 'capos';
+  const pass = process.env.STUDIO_PASSWORD || '';
+  if (!pass) return null;
+  // Edge-safe base64url
+  const raw = `${user}:${pass}`;
+  const b64 = btoa(raw).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  return b64;
+}
+
 /**
- * Extra lock on /studio — browser password prompt before Sanity login.
- * Set STUDIO_USER + STUDIO_PASSWORD in env (Vercel + .env.local).
- * If unset in development, studio stays open (Sanity login still required).
- * In production, password is required when STUDIO_PASSWORD is set.
+ * Cookie gate for /studio — avoids Chrome Basic-auth ERR_TOO_MANY_RETRIES.
+ * Login page: /studio-login
  */
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -13,41 +23,33 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const user = process.env.STUDIO_USER || 'capos';
-  const pass = process.env.STUDIO_PASSWORD;
+  // Never gate the login page itself
+  if (pathname.startsWith('/studio-login')) {
+    return NextResponse.next();
+  }
 
-  // Production without password = block studio entirely (fail closed)
-  if (!pass) {
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+  const expected = expectedToken();
+  const isProd = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL);
+
+  if (!expected) {
+    if (isProd) {
       return new NextResponse(
-        'Studio is locked. Set STUDIO_PASSWORD in environment variables.',
+        'Studio is locked. Set STUDIO_PASSWORD in Vercel environment variables.',
         { status: 403 }
       );
     }
     return NextResponse.next();
   }
 
-  const auth = req.headers.get('authorization');
-  if (auth?.startsWith('Basic ')) {
-    try {
-      const decoded = atob(auth.slice(6));
-      const colon = decoded.indexOf(':');
-      const u = colon >= 0 ? decoded.slice(0, colon) : '';
-      const p = colon >= 0 ? decoded.slice(colon + 1) : '';
-      if (u === user && p === pass) {
-        return NextResponse.next();
-      }
-    } catch {
-      // fall through to challenge
-    }
+  const cookie = req.cookies.get(COOKIE)?.value;
+  if (cookie && cookie === expected) {
+    return NextResponse.next();
   }
 
-  return new NextResponse('Authentication required', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="Capos Studio", charset="UTF-8"',
-    },
-  });
+  const login = req.nextUrl.clone();
+  login.pathname = '/studio-login';
+  login.searchParams.set('next', pathname);
+  return NextResponse.redirect(login);
 }
 
 export const config = {
