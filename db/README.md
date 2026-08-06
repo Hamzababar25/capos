@@ -34,6 +34,11 @@ User: `postgres.hiavrqvxatbkgucvqwpm`
 |-------|---------|
 | `articles` | Catalog (public read when `active`) |
 | `article_purchases` | Stripe orders (service role only) |
+| `event_inquiries` | Catering form leads (service role only; also mirrored to Sanity Studio) |
+
+```bash
+psql "$CONN" -f db/event_inquiries.sql
+```
 
 ## Verify purchase save
 

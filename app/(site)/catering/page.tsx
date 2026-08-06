@@ -8,97 +8,13 @@ import Navigation from '@/app/components/Navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RoseFlourish, BeanFlourish } from '@/app/components/Flourishes';
+import { FALLBACK_MENU, type CateringMenu, type MenuDrink } from '@/lib/menu';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ── Data ──────────────────────────────────────────── */
 
-interface Drink {
-  name: string;
-  desc: string;
-  origin?: string;
-  ingredients?: string;
-  tag?: string | null;
-  image?: string;
-  imageWidth?: number;
-  imageHeight?: number;
-}
-
-const signatures: Drink[] = [
-  {
-    name: 'Crème Brûlée Latte',
-    desc: 'Rich espresso blended with velvety milk, layered with a cloud of golden caramel custard, tucked under a decadent hard-top of candied caramelised sugar.',
-    origin: 'French pâtisserie meets Italian espresso',
-    ingredients: 'Espresso · Milk · Caramel custard · Torched sugar',
-    image: '/creme-blu.jpg',
-    imageWidth: 1000,
-    imageHeight: 1200,
-  },
-  {
-    name: 'Rose Saffron Latte',
-    desc: 'A luxurious floral blend of fragrant rose syrup and warm cardamom, finished with a cloud of sweet cold foam and topped with rose petals and saffron threads.',
-    origin: 'A quiet nod to Persian tearooms',
-    ingredients: 'Espresso · Rose syrup · Cardamom · Cold foam · Saffron',
-    tag: "",
-    image: '/rose-saf.jpg',
-    imageWidth: 1000,
-    imageHeight: 1200,
-  },
-  {
-    name: 'Latte España',
-    desc: 'A creamy Spanish latte made with bold espresso and silky oat milk, subtly sweetened with condensed milk and cold foam for a smooth indulgence.',
-    origin: 'Inspired by Madrid’s café con leche',
-    ingredients: 'Espresso · Oat milk · Condensed milk · Cold foam',
-    image: '/esp.png',
-    imageWidth: 1000,
-    imageHeight: 1200,
-  },
-  {
-    name: 'Tiramisu Latte',
-    desc: 'A dessert-style latte featuring bold espresso, soft vanilla notes, and a luxurious mascarpone cold foam. Topped with cocoa powder and Swiss chocolate.',
-    origin: 'Inspired by the classic Italian dessert of the same name',
-    ingredients: 'Espresso · Vanilla · Mascarpone cold foam · Cocoa powder · Swiss chocolate',
-    image: '/tira.png',
-  },
-  {
-    name: 'La Dolce Latte',
-    desc: 'A silky iced latte crafted with golden espresso and a blend of brown sugar and honey/caramel for rich sweetness. Finished with smooth cold foam for a creamy, luxurious sip that lives up to its name, "The Sweet Latte."',
-    origin: 'A nod to "la dolce vita"  the sweet life',
-    ingredients: 'Espresso · Brown sugar · Honey caramel · Cold foam',
-    image: '/ladoche.png',
-  },
-];
-
-const essentialFlavors = ['Vanilla', 'Caramel', 'Hazelnut', 'Mocha', 'White Chocolate'];
-
-const collabItems: Drink[] = [
-  {
-    name: "Tony's Cup",
-    desc: "Dark cherry and vanilla Italian soda topped with a swirl of cream. Bold & unapologetic refreshment",
-    origin: "Inspired by classic Italian soda shops, with a bold cherry-vanilla twist.",
-    ingredients: "Dark Cherry Syrup · Vanilla Syrup · Soda Water · Cream ",
-    image: "/tonycup.png",
-    imageWidth: 1000,
-    imageHeight: 1200,
-  },
-  {
-    name: 'Elvira',
-    desc: 'A mysterious mix of blueberry and lavender syrups with sparkling soda, optionally swirled with cream for a dreamy purple haze',
-    origin: 'A moody blueberry-lavender blend for those who like a little mystery in their cup.',
-    ingredients: 'Blueberry Syrup · Lavender Syrup · Soda Water · Cream',
-    image: '/elvira.png',
-    imageWidth: 1000,
-    imageHeight: 1200,
-  },
-];
-
-const addOns = [
-  'Extra shot of espresso',
-  'Oat milk',
-  'Almond milk',
-  'Rose petals / Drizzle',
-  'Extra syrup pump',
-];
+type Drink = MenuDrink;
 
 /* ── Category tabs ─────────────────────────────────── */
 
@@ -107,13 +23,6 @@ interface Category {
   label: string;
   count: number;
 }
-
-const categories: Category[] = [
-  { id: 'signatures', label: 'Signatures', count: signatures.length },
-  { id: 'essentials', label: 'Essentials', count: 1 },
-  { id: 'refreshers', label: 'Refreshers', count: collabItems.length },
-  { id: 'customize',  label: 'Customize',  count: addOns.length },
-];
 
 /* ── Scroll reveal hook ────────────────────────────── */
 
@@ -315,6 +224,33 @@ function DrinkCard({ name, desc, origin, ingredients, tag, image, index, classNa
 
 export default function MenuPage() {
   const router = useRouter();
+  const [menu, setMenu] = useState<CateringMenu>(FALLBACK_MENU);
+
+  const signatures = menu.signatures;
+  const collabItems = menu.refreshers;
+  const essentialFlavors = menu.essentialFlavors;
+  const addOns = menu.addOns;
+  const featured = menu.featured ?? signatures[0] ?? null;
+
+  const categories: Category[] = [
+    { id: 'signatures', label: 'Signatures', count: signatures.length },
+    { id: 'essentials', label: 'Essentials', count: 1 },
+    { id: 'refreshers', label: 'Refreshers', count: collabItems.length },
+    { id: 'customize', label: 'Customize', count: addOns.length },
+  ];
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/menu')
+      .then((r) => r.json())
+      .then((data: CateringMenu) => {
+        if (!cancelled && data?.signatures?.length) setMenu(data);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const goToBooking = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -350,7 +286,7 @@ export default function MenuPage() {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [signatures.length, collabItems.length, addOns.length]);
 
   const scrollToCat = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -538,14 +474,13 @@ export default function MenuPage() {
                 className="m-0 mb-3 font-semibold tracking-[-0.02em] text-white"
                 style={{ fontSize: 'clamp(28px, 3.2vw, 48px)' }}
               >
-                Rose Saffron Latte
+                {featured?.name ?? 'Featured drink'}
               </h2>
               <p
                 className="m-0 max-w-[560px] leading-[1.7] text-[rgba(240,237,230,0.6)]"
                 style={{ fontSize: 'max(0.95vw, 15px)' }}
               >
-                A luxurious floral blend of fragrant rose syrup, warm cardamom,
-                sweet cold foam, finished with rose petals and saffron threads.
+                {featured?.desc ?? ''}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 md:justify-end">

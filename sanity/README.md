@@ -78,12 +78,22 @@ curl -X POST "http://localhost:3000/api/articles/sync" \
   -H "Authorization: Bearer $SANITY_WEBHOOK_SECRET"
 ```
 
+## Seed content (menu + marquee + orders)
+
+```bash
+npm run seed:content
+```
+
 ## Who edits what
 
-| Content | Where |
-|---------|--------|
-| Titles, body, prices, images, featured | Sanity `/studio` |
-| Mirror catalog + purchases | Supabase |
+| Content | Where in Studio |
+|---------|-----------------|
+| Event inquiries (New / Responded) | Event Inquiries |
+| Article orders (fulfill) | Orders |
+| Menu drinks | Menu |
+| Marquee + essentials + add-ons | Site Settings (Marquee) |
+| Articles catalog | Articles |
+| Purchases (source of truth) | Supabase `article_purchases` (auto-mirrored to Studio) |
 
 ## Fallback order (site)
 

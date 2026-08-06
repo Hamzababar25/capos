@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:sanity": "node --env-file=.env.local scripts/seed-sanity.mjs"
+    "seed:sanity": "node --env-file=.env.local scripts/seed-sanity.mjs",
+    "seed:content": "node --env-file=.env.local scripts/seed-content.mjs"
   },
   "dependencies": {
     "@pixi/react": "^8.0.5",
