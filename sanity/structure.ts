@@ -1,22 +1,27 @@
 import type { StructureResolver } from 'sanity/structure';
 
+/**
+ * Simple admin-style sidebar for Capos client.
+ * Clear names, no Vision / clutter — just the lists they need.
+ */
 const SETTINGS_ID = 'siteSettings';
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Capos')
+    .title('Capos Admin')
     .items([
+      // ── Leads ──────────────────────────────────────────
       S.listItem()
-        .title('Event Inquiries')
+        .title('1. Event Bookings')
         .child(
           S.list()
-            .title('Event Inquiries')
+            .title('Event Bookings')
             .items([
               S.listItem()
-                .title('New')
+                .title('New (need reply)')
                 .child(
                   S.documentList()
-                    .title('New inquiries')
+                    .title('New bookings')
                     .filter('_type == "eventInquiry" && status == "new"')
                     .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
                 ),
@@ -29,10 +34,10 @@ export const structure: StructureResolver = (S) =>
                     .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
                 ),
               S.listItem()
-                .title('All inquiries')
+                .title('All bookings')
                 .child(
                   S.documentList()
-                    .title('All inquiries')
+                    .title('All bookings')
                     .filter('_type == "eventInquiry"')
                     .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
                 ),
@@ -40,24 +45,25 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title('Orders')
+        .title('2. Newsletter Emails')
+        .child(
+          S.documentList()
+            .title('Newsletter subscribers')
+            .filter('_type == "newsletterSubscriber"')
+            .defaultOrdering([{ field: 'subscribedAt', direction: 'desc' }])
+        ),
+
+      S.listItem()
+        .title('3. Article Orders')
         .child(
           S.list()
-            .title('Article Orders')
+            .title('Orders')
             .items([
               S.listItem()
-                .title('All orders')
+                .title('Need to fulfill')
                 .child(
                   S.documentList()
-                    .title('All orders')
-                    .filter('_type == "articleOrder"')
-                    .defaultOrdering([{ field: 'paidAt', direction: 'desc' }])
-                ),
-              S.listItem()
-                .title('Pending fulfillment')
-                .child(
-                  S.documentList()
-                    .title('Pending fulfillment')
+                    .title('Pending')
                     .filter(
                       '_type == "articleOrder" && fulfillmentStatus != "fulfilled"'
                     )
@@ -73,67 +79,44 @@ export const structure: StructureResolver = (S) =>
                     )
                     .defaultOrdering([{ field: 'paidAt', direction: 'desc' }])
                 ),
+              S.listItem()
+                .title('All orders')
+                .child(
+                  S.documentList()
+                    .title('All orders')
+                    .filter('_type == "articleOrder"')
+                    .defaultOrdering([{ field: 'paidAt', direction: 'desc' }])
+                ),
             ])
         ),
 
       S.divider(),
 
+      // ── Website content ────────────────────────────────
       S.listItem()
-        .title('Menu')
+        .title('4. Menu (drinks)')
         .child(
-          S.list()
-            .title('Catering Menu')
-            .items([
-              S.listItem()
-                .title('All drinks')
-                .child(
-                  S.documentList()
-                    .title('Menu drinks')
-                    .filter('_type == "menuDrink"')
-                    .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }])
-                ),
-              S.listItem()
-                .title('Signatures')
-                .child(
-                  S.documentList()
-                    .title('Signatures')
-                    .filter('_type == "menuDrink" && category == "signature"')
-                    .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }])
-                ),
-              S.listItem()
-                .title('Refreshers')
-                .child(
-                  S.documentList()
-                    .title('Refreshers')
-                    .filter('_type == "menuDrink" && category == "refresher"')
-                    .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }])
-                ),
-            ])
+          S.documentList()
+            .title('Menu drinks')
+            .filter('_type == "menuDrink"')
+            .defaultOrdering([{ field: 'sortOrder', direction: 'asc' }])
         ),
 
       S.listItem()
-        .title('Site Settings (Marquee)')
+        .title('5. Marquee & extras')
         .child(
           S.document()
             .schemaType('siteSettings')
             .documentId(SETTINGS_ID)
-            .title('Marquee · Essentials · Add-ons')
+            .title('Marquee · Flavors · Add-ons')
         ),
 
-      S.divider(),
-
-      S.documentTypeListItem('article').title('Articles'),
-
-      S.divider(),
-
-      ...S.documentTypeListItems().filter(
-        (item) =>
-          ![
-            'article',
-            'eventInquiry',
-            'articleOrder',
-            'menuDrink',
-            'siteSettings',
-          ].includes(item.getId() ?? '')
-      ),
+      S.listItem()
+        .title('6. Articles (for sale)')
+        .child(
+          S.documentList()
+            .title('Articles')
+            .filter('_type == "article"')
+            .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
+        ),
     ]);

@@ -35,6 +35,7 @@ User: `postgres.hiavrqvxatbkgucvqwpm`
 | `articles` | Catalog (public read when `active`) |
 | `article_purchases` | Stripe orders (service role only) |
 | `event_inquiries` | Catering form leads (service role only; also mirrored to Sanity Studio) |
+| `newsletter_subscribers` | Footer newsletter signups (mirrored to Sanity) |
 
 ```bash
 psql "$CONN" -f db/event_inquiries.sql

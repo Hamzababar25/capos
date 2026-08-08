@@ -3,11 +3,12 @@ import { Resend } from 'resend';
 import { createElement } from 'react';
 import NewsletterWelcome from '@/emails/NewsletterWelcome';
 import { appendNewsletterSubscriber, isGoogleSheetsConfigured } from '@/lib/googleSheets';
+import { saveNewsletterSubscriber } from '@/lib/newsletter';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = process.env.RESEND_FROM ?? 'CAPOS Coffee <onboarding@resend.dev>';
-const TO   = process.env.RESEND_TO   ?? 'hello@capos.coffee';
+const TO = process.env.RESEND_TO ?? 'hello@capos.coffee';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,24 +18,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
-    // 1. Welcome email to subscriber
-    await resend.emails.send({
-      from:    FROM,
-      to:      email,
-      subject: 'Welcome to CAPOS: Stories from Origin',
-      react:   createElement(NewsletterWelcome, { email }),
-    });
+    // 1. Save to Supabase + Sanity Studio
+    const saved = await saveNewsletterSubscriber(email);
+    if (!saved.ok) {
+      console.error('[/api/newsletter] save failed', saved.errors);
+      // Still try emails — but report if Sanity failed hard
+    }
 
-    // 2. Internal notification (so you know someone signed up)
-    await resend.emails.send({
-      from:    FROM,
-      to:      TO,
-      subject: `New newsletter subscriber: ${email}`,
-      react:   createElement(NewsletterWelcome, { email }),
-    });
+    // 2. Welcome email to subscriber (best-effort in test mode)
+    try {
+      const { error } = await resend.emails.send({
+        from: FROM,
+        to: email,
+        subject: 'Welcome to CAPOS: Stories from Origin',
+        react: createElement(NewsletterWelcome, { email }),
+      });
+      if (error) console.error('[/api/newsletter] welcome failed', error);
+    } catch (err) {
+      console.error('[/api/newsletter] welcome threw', err);
+    }
 
-    // 3. Log the signup to Google Sheets. Best-effort: a logging failure
-    // shouldn't block the subscriber's confirmation.
+    // 3. Internal notification
+    try {
+      const { error } = await resend.emails.send({
+        from: FROM,
+        to: TO,
+        subject: `New newsletter subscriber: ${email}`,
+        react: createElement(NewsletterWelcome, { email }),
+      });
+      if (error) console.error('[/api/newsletter] notify failed', error);
+    } catch (err) {
+      console.error('[/api/newsletter] notify threw', err);
+    }
+
+    // 4. Optional Google Sheets
     if (isGoogleSheetsConfigured()) {
       try {
         await appendNewsletterSubscriber(email);
@@ -43,9 +60,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      saved: saved.ok,
+      saveErrors: saved.errors,
+    });
   } catch (err) {
     console.error('[/api/newsletter]', err);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 });
   }
 }
