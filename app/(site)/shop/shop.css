@@ -30,12 +30,3 @@
   50%      { opacity: 1; text-shadow: 0 0 55px rgba(151, 29, 19, 0.7), 0 0 110px rgba(151, 29, 19, 0.35); }
   68%      { opacity: 0.96; text-shadow: 0 0 30px rgba(151, 29, 19, 0.4), 0 0 70px rgba(151, 29, 19, 0.18); }
 }
-
-.shop-countdown {
-  animation: shopPulse 3.2s ease-in-out infinite;
-}
-
-@keyframes shopPulse {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(151, 29, 19, 0.15), 0 0 40px -12px rgba(151, 29, 19, 0.25); }
-  50%      { box-shadow: 0 0 0 1px rgba(151, 29, 19, 0.35), 0 0 70px -8px rgba(151, 29, 19, 0.5); }
-}

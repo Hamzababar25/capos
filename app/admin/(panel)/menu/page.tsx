@@ -19,6 +19,7 @@ export default function AdminMenuPage() {
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch('/api/admin/menu');
@@ -56,6 +57,23 @@ export default function AdminMenuPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, category: 'signature', desc: '' }),
     });
+    load();
+  };
+
+  const removeDrink = async (drink: Drink) => {
+    const ok = window.confirm(`Delete “${drink.name}” from the menu? This cannot be undone.`);
+    if (!ok) return;
+    setDeleting(drink._id);
+    setError('');
+    const res = await fetch(`/api/admin/menu?id=${encodeURIComponent(drink._id)}`, {
+      method: 'DELETE',
+    });
+    setDeleting(null);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error || 'Delete failed');
+      return;
+    }
     load();
   };
 
@@ -148,14 +166,25 @@ export default function AdminMenuPage() {
                 />
                 Active on website
               </label>
-              <button
-                type="button"
-                className="admin-btn admin-btn-primary"
-                disabled={saving === d._id}
-                onClick={() => update(d)}
-              >
-                {saving === d._id ? 'Saving…' : 'Save'}
-              </button>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                <button
+                  type="button"
+                  className="admin-btn admin-btn-primary"
+                  disabled={saving === d._id || deleting === d._id}
+                  onClick={() => update(d)}
+                >
+                  {saving === d._id ? 'Saving…' : 'Save'}
+                </button>
+                <button
+                  type="button"
+                  className="admin-btn"
+                  style={{ borderColor: 'rgba(151,29,19,0.55)', color: '#f0a39c' }}
+                  disabled={saving === d._id || deleting === d._id}
+                  onClick={() => removeDrink(d)}
+                >
+                  {deleting === d._id ? 'Deleting…' : 'Delete'}
+                </button>
+              </div>
             </div>
           </div>
         ))}

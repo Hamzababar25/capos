@@ -75,3 +75,17 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ drink: doc });
 }
+
+export async function DELETE(req: NextRequest) {
+  const denied = requireAdmin(req);
+  if (denied) return denied;
+
+  const sanity = getSanityWriteClient();
+  if (!sanity) return NextResponse.json({ error: 'Sanity write unavailable' }, { status: 503 });
+
+  const id = req.nextUrl.searchParams.get('id') || '';
+  if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+
+  await sanity.delete(id);
+  return NextResponse.json({ ok: true, deleted: id });
+}
