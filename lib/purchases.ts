@@ -67,6 +67,7 @@ export async function upsertPaidPurchase(
       currency: purchase.currency,
       status,
       paid_at: paidAt,
+      // fulfillment_status uses DB default 'pending' on insert; not overwritten on upsert
     },
     { onConflict: 'stripe_session_id' }
   );
