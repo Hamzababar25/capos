@@ -235,7 +235,8 @@ export default function GradientHero() {
             </p>
             <a
               href="#booking"
-              className="pixi-intro-cta btn-primary pointer-events-auto px-7 py-3.5 text-xs tracking-[0.12em] opacity-0"
+              className="pixi-intro-cta btn-primary pointer-events-auto px-7 py-3.5 text-xs tracking-[0.12em]"
+              style={{ opacity: 0 }}
             >
               <span>Book Your Event</span>
               <span className="pixi-intro-cta-arrow" aria-hidden="true">→</span>

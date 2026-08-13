@@ -29,18 +29,19 @@
   pointer-events: auto;
   background: transparent;
   border: 0;
-  padding: 4px 0;
+  padding: 4px 6px 4px 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.5);
   font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   transition: color 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8), 0 0 14px rgba(0, 0, 0, 0.6);
 }
 
 .sl-btn:hover {
@@ -78,21 +79,22 @@
 
 /* Active state — red, longer dash, always shows label */
 .sl-btn.is-active {
-  color: #971d13;
+  color: #c0302a;
 }
 .sl-btn.is-active .sl-num {
-  color: #971d13;
+  color: #c0302a;
 }
 .sl-btn.is-active .sl-dash {
   width: 28px;
   opacity: 1;
-  background: #971d13;
-  box-shadow: 0 0 10px rgba(151, 29, 19, 0.5);
+  background: #c0302a;
+  box-shadow: 0 0 12px rgba(151, 29, 19, 0.8);
 }
 .sl-btn.is-active .sl-label {
   opacity: 1;
   transform: translateX(0);
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 /* Hide on tablet & below — rail becomes visual clutter on narrow screens */

@@ -66,9 +66,10 @@ const chapters: Chapter[] = [
 /* ── Component ───────────────────────────────────── */
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pinRef     = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
+  const sectionRef   = useRef<HTMLElement>(null);
+  const pinRef       = useRef<HTMLDivElement>(null);
+  const progressRef  = useRef<HTMLDivElement>(null);
+  const activeIdxRef = useRef(0);
   const [activeIdx, setActiveIdx] = useState(0);
 
   /* Pinned split-scroll: vertical scroll -> chapter advance */
@@ -103,7 +104,11 @@ export default function About() {
               chapters.length - 1,
               Math.floor(p * chapters.length * 0.999)
             );
-            setActiveIdx(idx);
+            // Only trigger a React re-render when the chapter actually changes
+            if (idx !== activeIdxRef.current) {
+              activeIdxRef.current = idx;
+              setActiveIdx(idx);
+            }
             if (progressRef.current) {
               progressRef.current.style.transform = `scaleY(${p})`;
             }
